@@ -1,0 +1,229 @@
+{
+  "users": [
+    {
+      "id": "usr_admin",
+      "fullName": "System Administrator",
+      "email": "admin@apollo.edu",
+      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.0T4jqtpazJsvBG2m3XpwbaBaX.EXZ5O",
+      "role": "Administrator"
+    },
+    {
+      "id": "usr_unithead",
+      "fullName": "Prof. Ramesh Rao (Unit Head)",
+      "email": "unithead@apollo.edu",
+      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.P4H2JNIT8kI6A/APfEFyyfKEIRDdn.y",
+      "role": "Unit Head"
+    },
+    {
+      "id": "usr_transport",
+      "fullName": "Mr. Venkat Reddy (Transport Officer)",
+      "email": "transport@apollo.edu",
+      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.NcLAv2EJJ18Me3K6HGHl.B1y9b0GcQK",
+      "role": "Transport Officer"
+    },
+    {
+      "id": "usr_faculty",
+      "fullName": "Dr. Anita Desai (Faculty)",
+      "email": "faculty@apollo.edu",
+      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.c9Z341LJlXOeDLhEM9yuOt0t0ne7e8K",
+      "role": "Teaching Faculty"
+    },
+    {
+      "id": "usr_pc",
+      "fullName": "Dr. Suresh Kumar (Program Coordinator)",
+      "email": "pc@apollo.edu",
+      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.47wngPvm8AcI0nxogN0gjq4mXxzSAla",
+      "role": "Program Coordinator"
+    },
+    {
+      "id": "usr_dean",
+      "fullName": "Dr. Meenakshi Sundaram (Dean)",
+      "email": "dean@apollo.edu",
+      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.B4iVFeSl1uZ98usfOet2aib/mdWp3ga",
+      "role": "Dean"
+    },
+    {
+      "id": "usr_staff",
+      "fullName": "Sri Krishna Murthy (Staff)",
+      "email": "staff@apollo.edu",
+      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.HB9tdLR4jmSpBbZMErcUcMGyE8jYCL2",
+      "role": "Non-Teaching Staff"
+    }
+  ],
+  "stock": {
+    "waterBottles": 50,
+    "chairs": 200,
+    "centerTables": 15
+  },
+  "venues": [
+    {
+      "id": "v1",
+      "name": "Main Auditorium"
+    },
+    {
+      "id": "v2",
+      "name": "Dr. PCR Knowledge Center Seminar Hall"
+    },
+    {
+      "id": "v3",
+      "name": "Lecture Hall 101"
+    },
+    {
+      "id": "v4",
+      "name": "Conference Hall (TAU Block)"
+    }
+  ],
+  "stockOrders": [
+    {
+      "id": "RO-101",
+      "item": "Water Bottles",
+      "qty": 15,
+      "requestedBy": "Dr. Anita Desai (Teaching Faculty)",
+      "dateTime": "2026-10-18 at 10:00",
+      "claimedBy": "Non-Teaching Staff",
+      "status": "delivered"
+    },
+    {
+      "id": "RO-102",
+      "item": "Chairs",
+      "qty": 40,
+      "requestedBy": "Dr. Suresh Kumar (Program Coordinator)",
+      "dateTime": "2026-10-19 at 14:00",
+      "claimedBy": null,
+      "status": "pending"
+    }
+  ],
+  "venueBookings": [
+    {
+      "id": "VB-201",
+      "venue": "Main Auditorium",
+      "bookedBy": "Dr. Suresh Kumar (Program Coordinator)",
+      "date": "2026-10-20",
+      "timeDuration": "09:30 - 13:00",
+      "purpose": "Annual IEEE Technical Symposium",
+      "status": "approved"
+    },
+    {
+      "id": "VB-202",
+      "venue": "Conference Hall (TAU Block)",
+      "bookedBy": "Dr. Anita Desai (Teaching Faculty)",
+      "date": "2026-10-22",
+      "timeDuration": "14:00 - 16:30",
+      "purpose": "Department Board of Studies Meeting",
+      "status": "pending"
+    }
+  ],
+  "transportRequests": [
+    {
+      "guest": "Dr. Vikram Chandra",
+      "vehicle": "1x Executive Sedan (Innova/Ciaz)",
+      "dateTime": "2026-10-26 at 11:00",
+      "destination": "Tirupati Railway Station",
+      "purpose": "Guest Lecture",
+      "requestedBy": "Dr. Suresh Kumar (Program Coordinator)",
+      "id": "TR-7887",
+      "status": "approved"
+    },
+    {
+      "id": "TR-1001",
+      "guest": "Prof. K. Narayanan (AIIMS New Delhi)",
+      "vehicle": "1x Executive Sedan (Innova/Ciaz)",
+      "vehicleCount": 1,
+      "vehicleType": "Executive Sedan (Innova/Ciaz)",
+      "dateTime": "2026-10-21 at 08:30",
+      "destination": "Tirupati Airport (TIR) to Campus Guest House",
+      "purpose": "Keynote Speaker for National Medical Conclave",
+      "requestedBy": "Dr. Meenakshi Sundaram (Dean)",
+      "status": "pending"
+    },
+    {
+      "id": "TR-1002",
+      "guest": "Accreditation Inspection Committee (4 Members)",
+      "vehicle": "1x SUV (Scorpio/Fortuner)",
+      "vehicleCount": 1,
+      "vehicleType": "SUV (Scorpio/Fortuner)",
+      "dateTime": "2026-10-25 at 09:00",
+      "destination": "Renigunta Railway Station to Campus Block A",
+      "purpose": "Official Inspection Visit",
+      "requestedBy": "Dr. Suresh Kumar (Program Coordinator)",
+      "status": "approved"
+    }
+  ],
+  "waterReadings": [
+    {
+      "date": "2026-10-15",
+      "wpl1": 420,
+      "wpl2": 30,
+      "total": 450
+    },
+    {
+      "date": "2026-10-14",
+      "wpl1": 410,
+      "wpl2": 28,
+      "total": 438
+    },
+    {
+      "date": "2026-10-13",
+      "wpl1": 435,
+      "wpl2": 32,
+      "total": 467
+    },
+    {
+      "date": "2026-10-12",
+      "wpl1": 395,
+      "wpl2": 25,
+      "total": 420
+    },
+    {
+      "date": "2026-10-11",
+      "wpl1": 415,
+      "wpl2": 29,
+      "total": 444
+    }
+  ],
+  "electricityReadings": [
+    {
+      "date": "2026-10-15",
+      "venue": "College Block - Medical College",
+      "reading": 25015
+    },
+    {
+      "date": "2026-10-15",
+      "venue": "College Block - ACON",
+      "reading": 4672
+    },
+    {
+      "date": "2026-10-15",
+      "venue": "Girls Hostel",
+      "reading": 19565
+    },
+    {
+      "date": "2026-10-15",
+      "venue": "Boys Hostel",
+      "reading": 27701
+    },
+    {
+      "date": "2026-10-15",
+      "venue": "Dr. PCR Knowledge Center (TAU Block)",
+      "reading": 12450
+    },
+    {
+      "date": "2026-10-15",
+      "venue": "Street Lights, Security Gate, Temple, Borewells",
+      "reading": 8320
+    }
+  ],
+  "transportEmails": [
+    {
+      "id": "EML-1792127821461",
+      "transportId": "TR-7887",
+      "to": "transport.officer@apollo-uni.edu",
+      "from": "campusflow-notifications@apollo-uni.edu",
+      "subject": "Action Required: Transport Request #TR-7887 for Dr. Vikram Chandra",
+      "body": "Dear Transport Officer,\n\nA new university vehicle requisition has been submitted:\n- Request ID: #TR-7887\n- Guest/Delegation: Dr. Vikram Chandra\n- Vehicle Details: 1x Executive Sedan (Innova/Ciaz)\n- Date & Time: 2026-10-26 at 11:00\n- Destination: Tirupati Railway Station\n- Requested By: Dr. Suresh Kumar (Program Coordinator)\n- Purpose: Guest Lecture\n\nClick the link below to review, approve or reject this booking directly on the CampusFlow portal:\nhttp://localhost:3000/index.html?view=transportReqView&reqId=TR-7887&role=Transport+Officer",
+      "approvalLink": "http://localhost:3000/index.html?view=transportReqView&reqId=TR-7887&role=Transport+Officer",
+      "sentAt": "2026-10-16T05:17:01.461Z",
+      "status": "sent"
+    }
+  ]
+}

@@ -1,0 +1,2813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apollo University - Resource Management System</title>
+
+<!-- Chart.js CDN for Interactive Graphs -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* ================= GLOBAL STYLES ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --primary: #0F766E;
+    --primary-dark: #115E59;
+    --primary-light: #0D9488;
+    --accent-orange: #F97316;
+    --accent-blue: #0284C7;
+    --accent-green: #10B981;
+    --bg-light: #F4F7F6;
+    --card-bg: #FFFFFF;
+    --text-dark: #1F2937;
+    --text-muted: #6B7280;
+    --border-color: #D1D5DB;
+    --sidebar-width: 230px;
+}
+
+body {
+    background: var(--bg-light);
+    color: var(--text-dark);
+    display: flex;
+    min-height: 100vh;
+}
+
+#toastNotification {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #064E3B;
+    color: #FFFFFF;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    font-size: 13.5px;
+    font-weight: bold;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    z-index: 2000;
+    border-left: 5px solid #34D399;
+    animation: toastSlideIn 0.3s ease-out;
+}
+@keyframes toastSlideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 99;
+}
+
+/* ================= COMPACT FIXED SIDEBAR ================= */
+aside {
+    width: var(--sidebar-width);
+    height: calc(100vh - 40px);
+    position: fixed;
+    top: 20px;
+    left: 15px;
+    background: #064E3B;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    z-index: 100;
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding: 15px 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    background: #022C22;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.sidebar-header .logo {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: white;
+    padding: 3px;
+    margin-bottom: 6px;
+}
+
+.sidebar-header h1 {
+    font-size: 14px;
+    color: #5EEAD4;
+    line-height: 1.2;
+}
+
+.sidebar-header h2 {
+    font-size: 11px;
+    font-weight: normal;
+    color: #9CA3AF;
+    margin-top: 2px;
+}
+
+.nav-list {
+    list-style: none;
+    padding: 5px 0;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 12px;
+    color: #E5E7EB;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+    border-left: 3px solid transparent;
+}
+
+.nav-link:hover, .nav-link.active {
+    background: #047857;
+    color: #FFFFFF;
+    border-left-color: #34D399;
+}
+
+.dropdown-menu {
+    display: none;
+    background: #022C22;
+    list-style: none;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 7px 12px 7px 25px;
+    color: #CBD5E1;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dropdown-menu a:hover, .dropdown-menu a.sub-active {
+    color: #34D399;
+    background: rgba(255,255,255,0.05);
+}
+
+.show-dropdown {
+    display: block !important;
+}
+
+.arrow {
+    font-size: 10px;
+    transition: 0.3s;
+}
+
+.rotate-arrow {
+    transform: rotate(180deg);
+}
+
+.badge-count {
+    font-size: 10px;
+    background: #EF4444;
+    color: white;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.badge-soon {
+    font-size: 9px;
+    background: #D97706;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 8px;
+    font-weight: normal;
+}
+
+.sidebar-footer {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 5px 0;
+    background: #022C22;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* ================= MAIN WRAPPER ================= */
+.wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin-left: calc(var(--sidebar-width) + 30px);
+}
+
+header {
+    background: var(--card-bg);
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #E5E7EB;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+.header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.mobile-toggle-btn {
+    display: none;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.header-title-area h2 {
+    color: var(--primary);
+    font-size: 20px;
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-info {
+    text-align: right;
+}
+
+.user-info .user-name {
+    font-weight: bold;
+    font-size: 13px;
+    color: var(--text-dark);
+}
+
+.user-info .user-role {
+    font-size: 11px;
+    background: #E0F2FE;
+    color: #0369A1;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.profile-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--primary);
+}
+
+main {
+    width: 95%;
+    max-width: 1200px;
+    margin: 20px auto;
+    flex: 1;
+}
+
+.view-section {
+    display: none;
+}
+
+.view-section.active-view {
+    display: block;
+}
+
+main p.subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+main hr {
+    border: none;
+    height: 2px;
+    background: var(--border-color);
+    margin-bottom: 20px;
+}
+
+/* ================= KPI CARDS ================= */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.kpi-card {
+    background: white;
+    padding: 16px 18px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.kpi-card.blue { border-left-color: var(--accent-blue); }
+.kpi-card.orange { border-left-color: var(--accent-orange); }
+.kpi-card.green { border-left-color: var(--accent-green); }
+.kpi-card.purple { border-left-color: #7C3AED; }
+
+.kpi-card h4 {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+}
+
+.kpi-card .val {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.kpi-card .kpi-sub {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* ================= CARDS & FORMS ================= */
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border-top: 4px solid var(--primary);
+}
+
+.card h3 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-size: 17px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-height: 320px;
+    margin-top: 10px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 13.5px;
+    outline: none;
+    background: white;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
+
+button {
+    margin-top: 12px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: 0.2s;
+    margin-right: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+button:hover {
+    background: var(--primary-dark);
+}
+
+.btn-reset {
+    background: #6B7280;
+}
+.btn-reset:hover {
+    background: #4B5563;
+}
+
+/* ================= STATUS PILLS ================= */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.status-pill.pending { background: #FEF3C7; color: #B45309; border: 1px solid #FCD34D; }
+.status-pill.claimed { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; }
+.status-pill.delivered { background: #EDE9FE; color: #6D28D9; border: 1px solid #DDD6FE; }
+.status-pill.approved { background: #D1FAE5; color: #047857; border: 1px solid #A7F3D0; }
+.status-pill.rejected { background: #FEE2E2; color: #B91C1C; border: 1px solid #FECACA; }
+
+.plant-tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+}
+.plant-tag.wpl1 { background: #CCFBF1; color: #0F766E; border: 1px solid #99F6E4; }
+.plant-tag.wpl2 { background: #E0F2FE; color: #0284C7; border: 1px solid #BAE6FD; }
+
+.stock-qty-chip {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-dark);
+}
+
+.btn-action-small {
+    padding: 5px 10px;
+    font-size: 11px;
+    margin: 2px;
+    border-radius: 4px;
+}
+.btn-approve { background: #10B981; }
+.btn-approve:hover { background: #059669; }
+.btn-reject { background: #EF4444; }
+.btn-reject:hover { background: #DC2626; }
+.btn-claim { background: #0284C7; }
+.btn-claim:hover { background: #0369A1; }
+.btn-delivered { background: #7C3AED; }
+.btn-delivered:hover { background: #6D28D9; }
+
+/* Table Highlight for Targeted Link Approval */
+.highlight-row {
+    background-color: #FEF3C7 !important;
+    outline: 2px dashed #D97706;
+    animation: highlightPulse 2s infinite;
+}
+@keyframes highlightPulse {
+    0%, 100% { outline-color: #D97706; }
+    50% { outline-color: #10B981; }
+}
+
+/* ================= TABLES ================= */
+.table-container {
+    max-height: 460px;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-top: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th {
+    background: var(--primary);
+    color: white;
+    padding: 10px 14px;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #E5E7EB;
+    text-align: center;
+    font-size: 13px;
+}
+
+tr:nth-child(even) { background: #F9FAFB; }
+tr:hover { background: #F0FDF4; }
+
+.elec-reading-input {
+    width: 150px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 6px 8px;
+}
+
+tr.category-row td {
+    background: #E2E8F0;
+    color: #1E293B;
+    font-weight: bold;
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 7px 14px;
+    border-top: 2px solid #CBD5E1;
+}
+
+.empty-state {
+    padding: 35px 20px;
+    text-align: center;
+    color: var(--text-muted);
+}
+.empty-state-text {
+    font-size: 13.5px;
+    font-weight: 500;
+}
+
+.role-banner-alert {
+    background: #E0F2FE;
+    border-left: 4px solid #0284C7;
+    color: #0369A1;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 440px;
+    max-width: 90%;
+}
+
+footer {
+    background: var(--primary);
+    color: white;
+    text-align: center;
+    padding: 14px;
+    margin-top: 30px;
+    font-size: 13px;
+}
+
+@media screen and (max-width: 768px) {
+    aside {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        border-radius: 0;
+        transform: translateX(-100%);
+        margin: 0;
+        z-index: 200;
+    }
+    aside.mobile-open { transform: translateX(0); }
+    .sidebar-overlay.active { display: block; }
+    .wrapper { margin-left: 0; }
+    .mobile-toggle-btn { display: inline-block; }
+    header { padding: 12px 15px; }
+    .header-title-area h2 { font-size: 16px; }
+    main { width: 100%; padding: 0 10px; }
+    .card { padding: 15px; }
+    .form-group { min-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+
+<div id="toastNotification">
+    <span id="toastIcon">✅</span>
+    <span id="toastMessage">Action completed successfully!</span>
+</div>
+
+<!-- ================= LEFT SIDEBAR ================= -->
+<aside id="sidebar">
+    <div>
+        <div class="sidebar-header">
+            <img src="logo.png" alt="Apollo Logo" class="logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1046/1046269.png'">
+            <h1>The Apollo University</h1>
+            <h2>Resource Management System</h2>
+        </div>
+
+        <ul class="nav-list">
+            <!-- 1. Dashboard -->
+            <li class="nav-item" id="navItem-dashboard">
+                <a class="nav-link active" id="nav-dash" onclick="switchView('dashboardView', this)">
+                    <span>📊 Dashboard</span>
+                </a>
+            </li>
+
+            <!-- 2. Utilities (Water & Electricity) -->
+            <li class="nav-item" id="navItem-utilities">
+                <a class="nav-link" onclick="toggleDropdown('resourceMenu', 'resArrow')">
+                    <span>⚡ Utilities</span>
+                    <span id="resArrow" class="arrow">▼</span>
+                </a>
+                <ul id="resourceMenu" class="dropdown-menu">
+                    <li><a id="nav-water" onclick="switchView('waterView', this)">💧 Water Usage</a></li>
+                    <li><a id="nav-elec" onclick="switchView('electricityView', this)">⚡ Electricity Usage</a></li>
+                </ul>
+            </li>
+
+            <!-- 3. Resource Availability / Stock Management -->
+            <li class="nav-item" id="navItem-resources">
+                <a class="nav-link" id="nav-res" onclick="switchView('resourceAvailView', this)">
+                    <span>📦 Resources & Stock</span>
+                    <span id="resourceStaffBadge" class="badge-count" style="display:none;">0</span>
+                </a>
+            </li>
+
+            <!-- 4. Venue Booking -->
+            <li class="nav-item" id="navItem-venue">
+                <a class="nav-link" id="nav-venue" onclick="switchView('venueBookingView', this)">
+                    <span>🏛️ Venue Booking</span>
+                </a>
+            </li>
+
+            <!-- 5. Transport Request -->
+            <li class="nav-item" id="navItem-transport">
+                <a class="nav-link" id="nav-trans" onclick="switchView('transportReqView', this)">
+                    <span>🚌 Transport Request</span>
+                    <span id="transportPendingBadge" class="badge-count" style="display:none;">0</span>
+                </a>
+            </li>
+
+            <!-- 6. Reports -->
+            <li class="nav-item" id="navItem-reports">
+                <a class="nav-link" id="nav-rep" onclick="switchView('reportsView', this)">
+                    <span>📈 Reports</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="sidebar-footer">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="nav-link" onclick="openModal('settingsModal')">⚙️ Settings (Role Switch)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="openModal('helpModal')">❓ Help & Support</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="handleLogout()" style="color: #FCA5A5;">🚪 Logout</a>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+<!-- ================= MAIN WRAPPER ================= -->
+<div class="wrapper">
+    <header>
+        <div class="header-left-group">
+            <button class="mobile-toggle-btn" onclick="toggleMobileSidebar()">☰</button>
+            <div class="header-title-area">
+                <h2 id="pageTitle">Dashboard Overview</h2>
+            </div>
+        </div>
+
+        <div class="user-area">
+            <div class="user-info">
+                <div class="user-name" id="userNameDisplay">Logged In User</div>
+                <span class="user-role" id="roleDisplay">Administrator</span>
+            </div>
+            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" class="profile-img" alt="User" onclick="openModal('settingsModal')" title="Click to Switch Role">
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Dynamic Role Banner for Testing Clarity -->
+        <div class="role-banner-alert" id="roleBannerAlert">
+            <div>
+                <strong>Active Mode:</strong> <span id="bannerRoleName">Administrator</span> &mdash; <span id="bannerRoleDesc">Full administrative control. All data and operational modules accessible.</span>
+            </div>
+            <button type="button" class="btn-action-small btn-claim" onclick="openModal('settingsModal')" style="margin:0;">Switch Role</button>
+        </div>
+
+        <!-- ================= 1. DASHBOARD VIEW ================= -->
+        <div id="dashboardView" class="view-section active-view">
+            <p class="subtitle">Real-time monitoring and executive summary of university resources.</p>
+            <hr>
+
+            <!-- KPI Metric Summary Badges -->
+            <div class="kpi-grid">
+                <div class="kpi-card green">
+                    <h4>Today's Water Log</h4>
+                    <div class="val" id="dashWaterTotal">0 KL</div>
+                    <div class="kpi-sub">WPL-1 & WPL-2 Total</div>
+                </div>
+                <div class="kpi-card orange">
+                    <h4>Today's Electricity Log</h4>
+                    <div class="val" id="dashElecTotal">0 kWh</div>
+                    <div class="kpi-sub">Campus Substation Meters</div>
+                </div>
+                <div class="kpi-card blue">
+                    <h4>Stock Requisitions</h4>
+                    <div class="val" id="dashStockCount">0 Orders</div>
+                    <div class="kpi-sub">Supplies queued or delivered</div>
+                </div>
+                <div class="kpi-card purple">
+                    <h4>Venue Bookings</h4>
+                    <div class="val" id="dashVenueCount">0 Booked</div>
+                    <div class="kpi-sub" id="dashVenuePendingSub">0 Pending Approval</div>
+                </div>
+                <div class="kpi-card">
+                    <h4>Transport Trips</h4>
+                    <div class="val" id="dashTransportCount">0 Logged</div>
+                    <div class="kpi-sub" id="dashTransportPendingSub">0 Awaiting Approval</div>
+                </div>
+            </div>
+
+            <!-- Overview Chart -->
+            <section class="card">
+                <h3>📊 Monthly Resource Consumption Chart</h3>
+                <div class="chart-container">
+                    <canvas id="dashOverviewChart"></canvas>
+                </div>
+            </section>
+
+            <section class="card">
+                <h3>Water Usage Summary</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th>WPL-1 (Flow Meter)</th><th>WPL-2 (Approx.)</th><th>Total</th></tr>
+                        </thead>
+                        <tbody id="dashWaterTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card">
+                <h3>Electricity Usage Summary</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th>Top Venues Recorded</th><th>Total Reading (kWh)</th></tr>
+                        </thead>
+                        <tbody id="dashElecTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= 2. WATER USAGE VIEW ================= -->
+        <div id="waterView" class="view-section">
+            <p class="subtitle">Enter and view daily water consumption details.</p>
+            <hr>
+
+            <!-- Daily Entry (Non-Teaching Staff & Admin/Unit Head Only) -->
+            <section class="card" id="waterEntryCard">
+                <h3>Daily Water Entry</h3>
+                <div class="form-row">
+                    <div class="form-group"><label>Date *</label><input type="date" id="waterEntryDate" value="2026-10-16"></div>
+                    <div class="form-group"><label><span class="plant-tag wpl1">WPL-1</span> (Flow Meter KL) *</label><input type="number" id="waterEntryWpl1" value="0" min="0" placeholder="Enter KL"></div>
+                    <div class="form-group"><label><span class="plant-tag wpl2">WPL-2</span> (Approx. KL) *</label><input type="number" id="waterEntryWpl2" value="0" min="0" placeholder="Enter KL"></div>
+                </div>
+                <button type="button" onclick="submitWaterReading()">Submit Reading</button>
+            </section>
+
+            <!-- Water Chart -->
+            <section class="card">
+                <h3>💧 Water Meter Reading Trends (KL)</h3>
+                <div class="chart-container">
+                    <canvas id="waterChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Filter Section -->
+            <section class="card">
+                <h3>Filter Water Readings</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Filter Type</label>
+                        <select id="waterFilterType" onchange="changeWaterFilter()">
+                            <option value="">All Readings</option>
+                            <option value="date">Date</option>
+                            <option value="month">Month</option>
+                            <option value="daterange">Date Range</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Water Plant</label>
+                        <select id="waterPlantFilter"><option value="All">All Plants</option><option value="WPL-1">WPL-1</option><option value="WPL-2">WPL-2</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sort By</label>
+                        <select id="waterSortOrder">
+                            <option value="newest">Date (Newest First)</option>
+                            <option value="oldest">Date (Oldest First)</option>
+                            <option value="highest">Highest Consumption</option>
+                            <option value="lowest">Lowest Consumption</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="waterDynamicFilter" class="form-row"></div>
+
+                <button type="button" onclick="applyWaterFilter()">Apply Filter</button>
+                <button type="button" class="btn-reset" onclick="resetWaterFilter()">Reset</button>
+            </section>
+
+            <!-- Reading History -->
+            <section class="card">
+                <h3>Reading History</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th><span class="plant-tag wpl1">WPL-1</span> (KL)</th><th><span class="plant-tag wpl2">WPL-2</span> (KL)</th><th>Daily Total (KL)</th></tr>
+                        </thead>
+                        <tbody id="waterHistoryTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= 3. ELECTRICITY VIEW ================= -->
+        <div id="electricityView" class="view-section">
+            <p class="subtitle">Enter and view daily electricity consumption details.</p>
+            <hr>
+
+            <!-- Daily Entry (Non-Teaching Staff & Admin/Unit Head Only) -->
+            <section class="card" id="elecEntryCard">
+                <h3>Daily Electricity Entry</h3>
+                <div class="form-group" style="margin-bottom: 15px; max-width: 320px;">
+                    <label>Select Date *</label>
+                    <input type="date" id="elecEntryDate" value="2026-10-16">
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Sl. No.</th><th>Venue / Zone</th><th>Reading (kWh)</th></tr>
+                        </thead>
+                        <tbody id="elecEntryTableBody">
+                            <tr class="category-row"><td colspan="3">🏛️ College Block & Academic Wings</td></tr>
+                            <tr><td>1</td><td style="text-align:left; font-weight:600;">College Block - Medical College</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>2</td><td style="text-align:left; font-weight:600;">College Block - ACON</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>3</td><td style="text-align:left; font-weight:600;">College Block - ACOP</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>4</td><td style="text-align:left; font-weight:600;">College Block - TAU, ATC, Telecom, Cafeteria, Ooty House, Axis Bank</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>5</td><td style="text-align:left; font-weight:600;">Dr. PCR Knowledge Center (TAU Block)</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+
+                            <tr class="category-row"><td colspan="3">🏢 Hostels & Residential Quarters</td></tr>
+                            <tr><td>6</td><td style="text-align:left; font-weight:600;">Girls Hostel</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>7</td><td style="text-align:left; font-weight:600;">Boys Hostel</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>8</td><td style="text-align:left; font-weight:600;">Resident Hostel</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>9</td><td style="text-align:left; font-weight:600;">Deluxe Girls Hostel</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>10</td><td style="text-align:left; font-weight:600;">Deluxe Boys Hostel</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>11</td><td style="text-align:left; font-weight:600;">Teaching Quarters</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>12</td><td style="text-align:left; font-weight:600;">Non-Teaching Quarters</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+
+                            <tr class="category-row"><td colspan="3">⚡ Campus Amenities, Utilities & Auxiliary</td></tr>
+                            <tr><td>13</td><td style="text-align:left; font-weight:600;">Kitchen Block</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>14</td><td style="text-align:left; font-weight:600;">Guest House</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>15</td><td style="text-align:left; font-weight:600;">Maintenance Block (STP, WTP, Fire Pumps)</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>16</td><td style="text-align:left; font-weight:600;">Street Lights, Security Gate, Temple, Borewells</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                            <tr><td>17</td><td style="text-align:left; font-weight:600;">Others (Vendors, DBS, ICCO, Hari Narayana)</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" onclick="submitElectricityReading()">Submit Reading</button>
+            </section>
+
+            <!-- Electricity Doughnut Breakdown Chart -->
+            <section class="card">
+                <h3>⚡ Power Consumption Distribution by Venue</h3>
+                <div class="chart-container" style="max-height:300px; display:flex; justify-content:center;">
+                    <canvas id="elecChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Filter -->
+            <section class="card">
+                <h3>Filter Electricity Readings</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Filter Type</label>
+                        <select id="elecFilterType" onchange="changeElecFilter()">
+                            <option value="">All Readings</option>
+                            <option value="date">Date</option>
+                            <option value="month">Month</option>
+                            <option value="daterange">Date Range</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Venue</label>
+                        <select id="elecVenueFilter"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sort By</label>
+                        <select id="elecSortOrder">
+                            <option value="newest">Date (Newest First)</option>
+                            <option value="oldest">Date (Oldest First)</option>
+                            <option value="highest">Highest Reading</option>
+                            <option value="lowest">Lowest Reading</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="elecDynamicFilter" class="form-row"></div>
+
+                <button type="button" onclick="applyElecFilter()">Apply Filter</button>
+                <button type="button" class="btn-reset" onclick="resetElecFilter()">Reset</button>
+            </section>
+
+            <!-- Reading History -->
+            <section class="card">
+                <h3>Reading History</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th>Venue</th><th>Reading (kWh)</th></tr>
+                        </thead>
+                        <tbody id="elecHistoryTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= 4. RESOURCE AVAILABILITY & STOCK MANAGEMENT ================= -->
+        <div id="resourceAvailView" class="view-section">
+            <p class="subtitle">Check live availability of campus equipment, enter physical stock, and requisition supplies.</p>
+            <hr>
+
+            <!-- Current Stock Summary (Always viewable) -->
+            <section class="card" style="border-top-color: #0284C7;">
+                <h3>Current Stock Availability</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Stock Resource</th>
+                                <th>Current In-Stock Quantity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight:600; text-align:left;">💧 Water Bottles</td>
+                                <td><span class="stock-qty-chip" id="waterBottleDisplay">50</span> Crates</td>
+                                <td><span class="status-pill approved">● Available</span></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:600; text-align:left;">🪑 Chairs</td>
+                                <td><span class="stock-qty-chip" id="chairDisplay">200</span> Units</td>
+                                <td><span class="status-pill approved">● Available</span></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:600; text-align:left;">🪵 Center Tables</td>
+                                <td><span class="stock-qty-chip" id="tableDisplay">15</span> Units</td>
+                                <td><span class="status-pill approved">● Available</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Enter / Modify Stock Availability (Non-Teaching Staff & Admin/Unit Head Only) -->
+            <section class="card" id="resourceUpdateCard" style="border-top-color: #10B981;">
+                <h3>📦 Enter / Modify Stock Availability (Staff Control)</h3>
+                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Non-Teaching Staff has direct access to update inventory counts for water bottles, chairs, and center tables.</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Water Bottles (Crates Available)</label>
+                        <input type="number" id="waterBottles" value="50" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Chairs (Units Available)</label>
+                        <input type="number" id="chairs" value="200" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Center Tables (Units Available)</label>
+                        <input type="number" id="centerTables" value="15" min="0">
+                    </div>
+                </div>
+                <button type="button" id="btnUpdateStock" onclick="updateInventoryStock()">Save Stock Availability</button>
+            </section>
+
+            <!-- Resource Booking / Requisition Form (Faculty, PC, Dean, Admin, Unit Head) -->
+            <section class="card" id="resourceBookCard">
+                <h3>📝 Requisition Campus Resources</h3>
+                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Reserve water bottles, chairs, and center tables for academic sessions, seminars, or official events.</p>
+                <form onsubmit="handleResourceBooking(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Select Item *</label>
+                            <select id="bookItemSelect">
+                                <option value="Water Bottles">Water Bottles (Crates)</option>
+                                <option value="Chairs">Chairs</option>
+                                <option value="Center Tables">Center Tables</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Required Quantity *</label>
+                            <input type="number" id="bookItemQty" min="1" placeholder="e.g. 20" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Event Date *</label>
+                            <input type="date" id="bookEventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Required Time *</label>
+                            <input type="time" id="bookEventTime" required>
+                        </div>
+                    </div>
+                    <button type="submit">Submit Resource Requisition</button>
+                </form>
+            </section>
+
+            <!-- Stock Orders & Delivery Tracking -->
+            <section class="card" id="resourceOrdersCard">
+                <h3>📋 Resource Requisitions & Delivery Status</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th><th>Item & Qty</th><th>Requested By</th><th>Required Date & Time</th><th>Staff Handler</th><th>Status</th><th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resourceOrdersTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= 5. VENUE BOOKING VIEW ================= -->
+        <div id="venueBookingView" class="view-section">
+            <p class="subtitle">Book auditoriums, seminar halls, and campus spaces.</p>
+            <hr>
+
+            <!-- Admin Add Permanent Venue Card -->
+            <section class="card" id="adminAddVenueCard" style="display:none; border-top-color:#7C3AED;">
+                <h3>➕ Add New University Venue (Admin Only)</h3>
+                <form onsubmit="handleAddNewVenue(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Venue Name *</label>
+                            <input type="text" id="newVenueName" placeholder="e.g. Smart Seminar Hall 2" required>
+                        </div>
+                    </div>
+                    <button type="submit" style="background:#059669;">Save Venue to Directory</button>
+                </form>
+            </section>
+
+            <!-- Venue Booking Request Form -->
+            <section class="card" id="venueBookingFormCard">
+                <h3>🏛️ Venue Reservation Portal</h3>
+                <form id="venueBookingForm" onsubmit="handleVenueSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Select Venue *</label>
+                            <select id="venueSelect" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Booking Date *</label>
+                            <input type="date" id="venueDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>From Time *</label>
+                            <input type="time" id="venueFromTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label>To Time *</label>
+                            <input type="time" id="venueToTime" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Purpose of Booking *</label>
+                            <input type="text" id="venuePurpose" placeholder="e.g. National Healthcare Conference 2026" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="venueSubmitBtn">Request Venue Booking</button>
+                </form>
+            </section>
+
+            <!-- Venue Booking Schedule & Approval Table -->
+            <section class="card">
+                <h3>Venue Booking Requests & Schedule</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Req ID</th><th>Venue</th><th>Requested By</th><th>Date</th><th>Time Duration</th><th>Purpose</th><th>Status</th><th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="venueTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= 6. TRANSPORT REQUEST VIEW ================= -->
+        <div id="transportReqView" class="view-section">
+            <p class="subtitle">Request university vehicles for official travel and events.</p>
+            <hr>
+
+            <!-- Transport Booking Request Form (PC, Dean, Admin, Unit Head) -->
+            <section class="card" id="transportRequestForm">
+                <h3>🚌 Request University Transport</h3>
+                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">When a request is submitted, an email notification with a direct portal approval link is automatically dispatched to the Transport Officer.</p>
+                <form onsubmit="submitTransportRequest(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Guest / Delegation Name *</label>
+                            <input type="text" id="transGuest" placeholder="e.g. Dr. Rajesh Kumar (AIIMS Chief Guest)" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Vehicle Type *</label>
+                            <select id="transVehicleType" required>
+                                <option value="Executive Sedan (Innova/Ciaz)">Executive Sedan (Innova / Ciaz)</option>
+                                <option value="SUV (Scorpio/Fortuner)">SUV (Scorpio / Fortuner)</option>
+                                <option value="Minivan (12-Seater)">Minivan (12-Seater Tempo)</option>
+                                <option value="University Bus (30+ Seater)">University Bus (30+ Seater)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Vehicles *</label>
+                            <input type="number" id="transVehicleCount" min="1" value="1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pickup Date *</label>
+                            <input type="date" id="transDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Required Time *</label>
+                            <input type="time" id="transTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Destination / Pickup Point *</label>
+                            <input type="text" id="transDestination" placeholder="e.g. Tirupati Airport to Guest House" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Purpose of Official Travel</label>
+                            <input type="text" id="transPurpose" placeholder="e.g. Official Convocation Guest Transit">
+                        </div>
+                    </div>
+
+                    <button type="submit">Submit Transport Request</button>
+                </form>
+            </section>
+
+            <!-- Transport Bookings & Approval Table -->
+            <section class="card" id="transportListCard">
+                <h3>🚌 Transport Booking Requests (Approval Management)</h3>
+                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;"><strong>Access Policy:</strong> Only the Transport Officer has authorization to Approve or Reject vehicle requisitions.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Req ID</th><th>Guest / Delegation</th><th>Vehicle Details</th><th>Date & Time</th><th>Destination</th><th>Status</th><th>Officer Decision</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transportTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= 7. REPORTS VIEW ================= -->
+        <div id="reportsView" class="view-section">
+            <p class="subtitle">Generate, filter and download Water and Electricity reports.</p>
+            <hr>
+
+            <section class="card">
+                <h3>Generate Report</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Report Type</label>
+                        <select id="reportType" onchange="changeReportType()">
+                            <option value="">Select Report</option>
+                            <option value="water">Water Report</option>
+                            <option value="electricity">Electricity Report</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Filter Type</label>
+                        <select id="reportFilterType" onchange="changeReportFilter()">
+                            <option value="">Select Filter</option>
+                            <option value="date">Date</option>
+                            <option value="month">Month</option>
+                            <option value="daterange">Date Range</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sort By</label>
+                        <select id="reportSortOrder">
+                            <option value="newest">Date (Newest First)</option>
+                            <option value="oldest">Date (Oldest First)</option>
+                            <option value="highest">Highest Consumption</option>
+                            <option value="lowest">Lowest Consumption</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="reportDynamicFilter" class="form-row"></div>
+                <div id="reportSpecific" class="form-row"></div>
+
+                <button type="button" onclick="generateReport()">Generate Report</button>
+                <button type="button" class="btn-reset" onclick="resetReport()">Reset</button>
+            </section>
+
+            <section class="card">
+                <h3>Report Summary</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Category</th><th>Total Records</th><th>Average</th><th>Highest Reading</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Water</td><td id="repWaterCount">0</td><td id="repWaterAvg">0 KL</td><td id="repWaterMax">0 KL</td></tr>
+                            <tr><td>Electricity</td><td id="repElecCount">0</td><td id="repElecAvg">0 kWh</td><td id="repElecMax">0 kWh</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Water Report Preview -->
+            <section class="card" id="waterReport" style="display:none;">
+                <h3>Water Report Preview</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th>WPL-1 (KL)</th><th>WPL-2 (KL)</th><th>Total (KL)</th></tr>
+                        </thead>
+                        <tbody id="waterReportTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Electricity Report Preview -->
+            <section class="card" id="electricityReport" style="display:none;">
+                <h3>Electricity Report Preview</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th>Venue</th><th>Reading (kWh)</th></tr>
+                        </thead>
+                        <tbody id="electricityReportTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card">
+                <h3>Download Reports</h3>
+                <button type="button" onclick="showToast('Exporting PDF Report...')">Download PDF</button>
+                <button type="button" style="background: var(--accent-blue);" onclick="showToast('Exporting Excel Spreadsheet...')">Download Excel</button>
+                <button type="button" class="btn-reset" onclick="window.print()">Print Report</button>
+            </section>
+
+            <!-- Analytics Trend Chart -->
+            <section class="card">
+                <h3>📈 Analytics Usage Trend Chart</h3>
+                <div class="chart-container">
+                    <canvas id="reportsTrendChart"></canvas>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>Apollo University Resource Management System</p>
+    </footer>
+</div>
+
+<!-- ================= SETTINGS MODAL ================= -->
+<div id="settingsModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--primary); margin-bottom:12px;">System Settings</h3>
+
+        <div class="form-group">
+            <label>Active User Role</label>
+            <select id="roleSelector" onchange="changeUserRole()">
+                <option value="Administrator">Administrator</option>
+                <option value="Unit Head">Unit Head</option>
+                <option value="Transport Officer">Transport Officer</option>
+                <option value="Teaching Faculty">Teaching Faculty</option>
+                <option value="Program Coordinator">Program Coordinator</option>
+                <option value="Dean">Dean</option>
+                <option value="Non-Teaching Staff">Non-Teaching Staff</option>
+            </select>
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:8px; line-height:1.4;">
+            Switching role here immediately adjusts page permissions and module views so you can test every workflow.
+        </p>
+        <br>
+        <button onclick="closeModal('settingsModal')">Save & Close</button>
+    </div>
+</div>
+
+<!-- ================= TRANSPORT EMAIL DISPATCH MODAL ================= -->
+<div id="transportEmailModal" class="modal">
+    <div class="modal-content" style="width: 520px; max-width:95%;">
+        <h3 style="color:var(--primary); margin-bottom:8px;">📧 Email Dispatched to Transport Officer</h3>
+        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">
+            An official automated vehicle requisition notification has been dispatched with a direct website link for one-click approval:
+        </p>
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:12px; font-size:12.5px; line-height:1.6; margin-bottom:14px;">
+            <div><strong>To:</strong> <span id="emailModalTo">transport.officer@apollo-uni.edu</span></div>
+            <div><strong>Subject:</strong> <span id="emailModalSubject" style="color:var(--primary-dark); font-weight:bold;"></span></div>
+            <div style="margin-top:8px; padding:10px; background:white; border-radius:6px; border:1px solid #E5E7EB; white-space:pre-line; max-height:160px; overflow-y:auto; font-family:monospace; font-size:12px;" id="emailModalBody"></div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button type="button" id="emailModalDirectLinkBtn" onclick="openApprovalFromEmail()">🔗 Click Link to Open Approval as Transport Officer</button>
+            <button type="button" class="btn-reset" onclick="closeModal('transportEmailModal')">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= HELP MODAL ================= -->
+<div id="helpModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--primary); margin-bottom:12px;">Help & Support</h3>
+        <p style="color:var(--text-muted); font-size:13px; line-height:1.5;">
+            Apollo University Resource Management System supports utilities logging, inventory stock tracking, auditorium/venue scheduling, and vehicle transit.
+        </p>
+        <br>
+        <p style="font-size:13px;"><strong>Support Email:</strong> support@apollo-uni.edu</p>
+        <p style="font-size:13px; margin-top:4px;"><strong>Transport Office:</strong> transport.officer@apollo-uni.edu</p>
+        <br>
+        <button class="btn-reset" onclick="closeModal('helpModal')">Close</button>
+    </div>
+</div>
+
+<script>
+// ================= STATE & ROLE CONFIGURATION =================
+let currentUser = { fullName: "System Administrator", role: "Administrator" };
+let currentRole = "Administrator";
+let targetHighlightReqId = null;
+
+// ================= RBAC POLICY MATRIX =================
+// 1. Administrator: All info seen and accessible.
+// 2. Teaching Faculty: Only resource managing (view & book) and venue booking.
+// 3. Program Coordinator & Dean: Venue booking, resource management (view & book), transport booking.
+// 4. Transport Officer: To see the booking and has access to approve or reject. Receives email with direct link.
+// 5. Non-Teaching Staff: Enter or modify water & electricity readings, and (water bottles, chairs, center tables) enter availability under resources.
+// 6. Unit Head: Management overview across utilities, stock, venues, and transit.
+const ROLE_PERMISSIONS = {
+    "Administrator": {
+        navs: ['dashboard', 'utilities', 'resources', 'venue', 'transport', 'reports'],
+        defaultView: 'dashboardView',
+        canEditUtilities: true,
+        canEnterStockAvailability: true,
+        canBookResource: true,
+        canBookVenue: true,
+        canAddPermanentVenue: true,
+        canApproveVenue: true,
+        canRequestTransport: true,
+        canApproveTransport: true,
+        description: "Full administrative control. All data, reports, utilities, venues and approvals are accessible."
+    },
+    "Unit Head": {
+        navs: ['dashboard', 'utilities', 'resources', 'venue', 'transport', 'reports'],
+        defaultView: 'dashboardView',
+        canEditUtilities: true,
+        canEnterStockAvailability: true,
+        canBookResource: true,
+        canBookVenue: true,
+        canAddPermanentVenue: false,
+        canApproveVenue: true,
+        canRequestTransport: true,
+        canApproveTransport: false, // strictly Transport Officer
+        description: "Departmental executive. Has overview access, can book venues/stock/transport, but transport approval belongs strictly to Transport Officer."
+    },
+    "Transport Officer": {
+        navs: ['transport'],
+        defaultView: 'transportReqView',
+        canEditUtilities: false,
+        canEnterStockAvailability: false,
+        canBookResource: false,
+        canBookVenue: false,
+        canAddPermanentVenue: false,
+        canApproveVenue: false,
+        canRequestTransport: false,
+        canApproveTransport: true, // Only Transport Officer can approve or reject!
+        description: "Transport Operations. Can view all vehicle booking requests and is the sole authority with access to Approve or Reject transport requisitions."
+    },
+    "Teaching Faculty": {
+        navs: ['resources', 'venue'],
+        defaultView: 'resourceAvailView',
+        canEditUtilities: false,
+        canEnterStockAvailability: false,
+        canBookResource: true,
+        canBookVenue: true,
+        canAddPermanentVenue: false,
+        canApproveVenue: false,
+        canRequestTransport: false,
+        canApproveTransport: false,
+        description: "Faculty Access. Restricted strictly to Resource Managing (view stock & requisition) and Venue Booking (request venues)."
+    },
+    "Program Coordinator": {
+        navs: ['resources', 'venue', 'transport'],
+        defaultView: 'resourceAvailView',
+        canEditUtilities: false,
+        canEnterStockAvailability: false,
+        canBookResource: true,
+        canBookVenue: true,
+        canAddPermanentVenue: false,
+        canApproveVenue: false,
+        canRequestTransport: true,
+        canApproveTransport: false, // Transport Officer only
+        description: "Program Coordinator. Access restricted to Venue Booking, Resources Management (view & book), and Transport Requisition."
+    },
+    "Dean": {
+        navs: ['resources', 'venue', 'transport'],
+        defaultView: 'resourceAvailView',
+        canEditUtilities: false,
+        canEnterStockAvailability: false,
+        canBookResource: true,
+        canBookVenue: true,
+        canAddPermanentVenue: false,
+        canApproveVenue: false,
+        canRequestTransport: true,
+        canApproveTransport: false, // Transport Officer only
+        description: "Dean Access. Access restricted to Venue Booking, Resources Management (view & book), and Transport Booking."
+    },
+    "Non-Teaching Staff": {
+        navs: ['utilities', 'resources'],
+        defaultView: 'waterView',
+        canEditUtilities: true, // enter or modify water & electricity readings
+        canEnterStockAvailability: true, // enter availability of water bottles, chairs, center tables
+        canBookResource: false,
+        canBookVenue: false,
+        canAddPermanentVenue: false,
+        canApproveVenue: false,
+        canRequestTransport: false,
+        canApproveTransport: false,
+        description: "Campus Operations Staff. Has direct access to enter/modify Water & Electricity readings and update stock availability for water bottles, chairs, and center tables."
+    }
+};
+
+// ================= DATA ARRAYS =================
+let inventoryStock = { waterBottles: 50, chairs: 200, centerTables: 15 };
+let stockOrders = [];
+let venueOptions = ["Main Auditorium", "Dr. PCR Knowledge Center Seminar Hall", "Lecture Hall 101", "Conference Hall (TAU Block)"];
+let venueBookings = [];
+let transportRequests = [];
+let waterReadingsList = [];
+let electricityReadingsList = [];
+let electricityVenues = [
+    "College Block - Medical College",
+    "College Block - ACON",
+    "College Block - ACOP",
+    "College Block - TAU, ATC, Telecom, Cafeteria, Ooty House, Axis Bank",
+    "Dr. PCR Knowledge Center (TAU Block)",
+    "Girls Hostel",
+    "Boys Hostel",
+    "Resident Hostel",
+    "Deluxe Girls Hostel",
+    "Deluxe Boys Hostel",
+    "Teaching Quarters",
+    "Non-Teaching Quarters",
+    "Kitchen Block",
+    "Guest House",
+    "Maintenance Block (STP, WTP, Fire Pumps)",
+    "Street Lights, Security Gate, Temple, Borewells",
+    "Others (Vendors, DBS, ICCO, Hari Narayana)"
+];
+
+// ================= CHART INSTANCES =================
+let dashOverviewChartInstance = null;
+let waterChartInstance = null;
+let elecChartInstance = null;
+let reportsTrendChartInstance = null;
+
+// ================= UI NOTIFICATION TOAST =================
+function showToast(msg, icon = '✅') {
+    const toast = document.getElementById('toastNotification');
+    const msgEl = document.getElementById('toastMessage');
+    const iconEl = document.getElementById('toastIcon');
+    if (!toast) return;
+    msgEl.innerText = msg;
+    iconEl.innerText = icon;
+    toast.style.display = 'flex';
+    setTimeout(() => { toast.style.display = 'none'; }, 3400);
+}
+
+// ================= USER SESSION & ROLE MANAGEMENT =================
+function initUserSession() {
+    const storedUser = localStorage.getItem('apollo_user');
+    const savedRole = localStorage.getItem('apollo_active_role');
+
+    if (storedUser) {
+        try {
+            currentUser = JSON.parse(storedUser);
+            currentRole = savedRole || currentUser.role || 'Administrator';
+        } catch (e) {
+            currentRole = savedRole || 'Administrator';
+        }
+    } else {
+        currentRole = savedRole || 'Administrator';
+        currentUser = { fullName: `${currentRole} User`, role: currentRole };
+    }
+
+    // Check URL parameters for direct link navigation
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlRole = urlParams.get('role');
+    const urlReqId = urlParams.get('reqId');
+    const urlView = urlParams.get('view');
+
+    if (urlRole && ROLE_PERMISSIONS[urlRole]) {
+        currentRole = urlRole;
+    }
+    if (urlReqId) {
+        targetHighlightReqId = urlReqId;
+    }
+
+    document.getElementById('roleSelector').value = currentRole;
+    document.getElementById('roleDisplay').innerText = currentRole;
+    document.getElementById('userNameDisplay').innerText = currentUser.fullName || `${currentRole} User`;
+
+    applyRolePermissions();
+
+    if (urlView) {
+        const navEl = document.querySelector(`[onclick*="${urlView}"]`);
+        switchView(urlView, navEl);
+        if (urlReqId) {
+            setTimeout(() => {
+                highlightTransportRow(urlReqId);
+            }, 400);
+        }
+    }
+}
+
+// Called directly when the role dropdown inside Settings Modal changes
+function changeUserRole() {
+    const sel = document.getElementById('roleSelector');
+    currentRole = sel.value;
+    localStorage.setItem('apollo_active_role', currentRole);
+    if (currentUser) {
+        currentUser.role = currentRole;
+        localStorage.setItem('apollo_user', JSON.stringify(currentUser));
+    }
+
+    document.getElementById('roleDisplay').innerText = currentRole;
+    document.getElementById('userNameDisplay').innerText = `${currentRole} User`;
+
+    applyRolePermissions();
+    showToast(`Active role switched to: ${currentRole}`, '👤');
+}
+
+function handleLogout() {
+    if (!confirm("Are you sure you want to log out?")) return;
+    localStorage.removeItem('apollo_token');
+    localStorage.removeItem('apollo_user');
+    localStorage.removeItem('apollo_active_role');
+    window.location.href = 'login.html';
+}
+
+// ================= RBAC APPLICATION =================
+function applyRolePermissions() {
+    const perm = ROLE_PERMISSIONS[currentRole] || ROLE_PERMISSIONS["Administrator"];
+
+    // Update Banner Info
+    document.getElementById('bannerRoleName').innerText = currentRole;
+    document.getElementById('bannerRoleDesc').innerText = perm.description;
+
+    // Show / Hide Navigation items in Sidebar
+    const navMapping = {
+        'dashboard': document.getElementById('navItem-dashboard'),
+        'utilities': document.getElementById('navItem-utilities'),
+        'resources': document.getElementById('navItem-resources'),
+        'venue': document.getElementById('navItem-venue'),
+        'transport': document.getElementById('navItem-transport'),
+        'reports': document.getElementById('navItem-reports')
+    };
+
+    for (const [key, el] of Object.entries(navMapping)) {
+        if (el) {
+            el.style.display = perm.navs.includes(key) ? 'block' : 'none';
+        }
+    }
+
+    // Module Specific Permissions
+    // 1. Utilities Form (Water & Electricity Daily Entry)
+    const waterEntryCard = document.getElementById('waterEntryCard');
+    const elecEntryCard = document.getElementById('elecEntryCard');
+    if (waterEntryCard) waterEntryCard.style.display = perm.canEditUtilities ? 'block' : 'none';
+    if (elecEntryCard) elecEntryCard.style.display = perm.canEditUtilities ? 'block' : 'none';
+
+    // 2. Resource Availability (Physical Stock Update vs Requisition)
+    const resourceUpdateCard = document.getElementById('resourceUpdateCard');
+    const resourceBookCard = document.getElementById('resourceBookCard');
+    if (resourceUpdateCard) resourceUpdateCard.style.display = perm.canEnterStockAvailability ? 'block' : 'none';
+    if (resourceBookCard) resourceBookCard.style.display = perm.canBookResource ? 'block' : 'none';
+
+    // 3. Venue Booking (Add Permanent Venue vs Request Booking)
+    const adminAddVenueCard = document.getElementById('adminAddVenueCard');
+    const venueBookingFormCard = document.getElementById('venueBookingFormCard');
+    if (adminAddVenueCard) adminAddVenueCard.style.display = perm.canAddPermanentVenue ? 'block' : 'none';
+    if (venueBookingFormCard) venueBookingFormCard.style.display = perm.canBookVenue ? 'block' : 'none';
+
+    // 4. Transport Request Form
+    const transportRequestForm = document.getElementById('transportRequestForm');
+    if (transportRequestForm) transportRequestForm.style.display = perm.canRequestTransport ? 'block' : 'none';
+
+    // Check if the current view is permitted for this role; if not, switch to default permitted view
+    const currentActiveView = document.querySelector('.view-section.active-view')?.id;
+    const viewToNavMap = {
+        'dashboardView': 'dashboard',
+        'waterView': 'utilities',
+        'electricityView': 'utilities',
+        'resourceAvailView': 'resources',
+        'venueBookingView': 'venue',
+        'transportReqView': 'transport',
+        'reportsView': 'reports'
+    };
+
+    if (currentActiveView && !perm.navs.includes(viewToNavMap[currentActiveView])) {
+        switchView(perm.defaultView);
+    }
+
+    renderVenueTable();
+    renderTransportTable();
+    renderResourceOrdersTable();
+    updateDashboardWidgets();
+}
+
+// ================= BACKEND DATA LOAD =================
+async function loadServerData() {
+    try {
+        const res = await fetch('/api/data');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        if (data.inventoryStock) {
+            inventoryStock = data.inventoryStock;
+            document.getElementById('waterBottleDisplay').innerText = inventoryStock.waterBottles;
+            document.getElementById('chairDisplay').innerText = inventoryStock.chairs;
+            document.getElementById('tableDisplay').innerText = inventoryStock.centerTables;
+            document.getElementById('waterBottles').value = inventoryStock.waterBottles;
+            document.getElementById('chairs').value = inventoryStock.chairs;
+            document.getElementById('centerTables').value = inventoryStock.centerTables;
+        }
+
+        if (Array.isArray(data.venueOptions)) {
+            venueOptions = data.venueOptions;
+            populateVenueDropdown();
+        }
+
+        if (Array.isArray(data.stockOrders)) {
+            stockOrders = data.stockOrders;
+            renderResourceOrdersTable();
+        }
+
+        if (Array.isArray(data.venueBookings)) {
+            venueBookings = data.venueBookings;
+            renderVenueTable();
+        }
+
+        if (Array.isArray(data.transportRequests)) {
+            transportRequests = data.transportRequests;
+            renderTransportTable();
+        }
+
+        if (Array.isArray(data.waterReadings)) {
+            waterReadingsList = data.waterReadings;
+            renderWaterHistoryTable(waterReadingsList);
+        }
+
+        if (Array.isArray(data.electricityReadings)) {
+            electricityReadingsList = data.electricityReadings;
+            renderElecHistoryTable(electricityReadingsList);
+        }
+
+        updateDashboardWidgets();
+        updateCharts();
+
+        if (targetHighlightReqId) {
+            highlightTransportRow(targetHighlightReqId);
+        }
+    } catch (err) {
+        console.warn('Backend load notice (operating with local state):', err.message);
+    }
+}
+
+// ================= NAVIGATION VIEW SWITCHER =================
+function switchView(viewId, navEl) {
+    document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active-view'));
+    const target = document.getElementById(viewId);
+    if (target) target.classList.add('active-view');
+
+    document.querySelectorAll('.nav-link, .dropdown-menu a').forEach(l => {
+        l.classList.remove('active');
+        l.classList.remove('sub-active');
+    });
+
+    if (navEl) {
+        if (navEl.classList.contains('nav-link')) navEl.classList.add('active');
+        else navEl.classList.add('sub-active');
+    } else {
+        const link = document.querySelector(`[onclick*="${viewId}"]`);
+        if (link) {
+            if (link.classList.contains('nav-link')) link.classList.add('active');
+            else link.classList.add('sub-active');
+        }
+    }
+
+    const titleMap = {
+        'dashboardView': 'Dashboard Overview',
+        'waterView': 'Water Usage Analytics',
+        'electricityView': 'Electricity Usage Analytics',
+        'resourceAvailView': 'Resource Availability & Stock Management',
+        'venueBookingView': 'Venue Booking Portal',
+        'transportReqView': 'Transport Request Portal',
+        'reportsView': 'Reports & Analytics'
+    };
+    document.getElementById('pageTitle').innerText = titleMap[viewId] || 'Apollo RMS';
+    closeMobileSidebar();
+}
+
+function toggleMobileSidebar() {
+    document.getElementById('sidebar').classList.toggle('mobile-open');
+    document.getElementById('sidebarOverlay').classList.toggle('active');
+}
+
+function closeMobileSidebar() {
+    document.getElementById('sidebar').classList.remove('mobile-open');
+    document.getElementById('sidebarOverlay').classList.remove('active');
+}
+
+function toggleDropdown(menuId, arrowId) {
+    document.getElementById(menuId).classList.toggle('show-dropdown');
+    document.getElementById(arrowId).classList.toggle('rotate-arrow');
+}
+
+function openModal(id) { document.getElementById(id).style.display = "flex"; }
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+// ================= UTILITIES: WATER MODULE =================
+async function submitWaterReading() {
+    const d = document.getElementById('waterEntryDate').value;
+    const w1 = parseFloat(document.getElementById('waterEntryWpl1').value) || 0;
+    const w2 = parseFloat(document.getElementById('waterEntryWpl2').value) || 0;
+    const total = w1 + w2;
+
+    if (!d) {
+        alert("Please select a date.");
+        return;
+    }
+
+    const record = { date: d, wpl1: w1, wpl2: w2, total };
+
+    try {
+        const res = await fetch('/api/water', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(record)
+        });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.allWater)) {
+            waterReadingsList = data.allWater;
+        } else {
+            upsertLocalWater(record);
+        }
+    } catch (e) {
+        upsertLocalWater(record);
+    }
+
+    renderWaterHistoryTable(waterReadingsList);
+    updateDashboardWidgets();
+    updateCharts();
+    showToast(`Water reading for ${d} saved: ${total} KL`);
+}
+
+function upsertLocalWater(record) {
+    const idx = waterReadingsList.findIndex(w => w.date === record.date);
+    if (idx !== -1) waterReadingsList[idx] = record;
+    else waterReadingsList.unshift(record);
+}
+
+function renderWaterHistoryTable(data) {
+    const tbody = document.getElementById('waterHistoryTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="empty-state-text">No water readings recorded yet.</div></div></td></tr>`;
+        return;
+    }
+
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="font-weight:600;">${row.date}</td>
+            <td><span class="plant-tag wpl1">${row.wpl1} KL</span></td>
+            <td><span class="plant-tag wpl2">${row.wpl2} KL</span></td>
+            <td style="font-weight:bold; color:var(--primary-dark);">${row.total} KL</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function changeWaterFilter() {
+    const type = document.getElementById("waterFilterType").value;
+    const container = document.getElementById("waterDynamicFilter");
+    if (type === "date") {
+        container.innerHTML = `<div class="form-group"><label>Select Date</label><input type="date" id="waterFilterSpecificDate"></div>`;
+    } else if (type === "month") {
+        container.innerHTML = `<div class="form-group"><label>Select Month</label><input type="month" id="waterFilterSpecificMonth"></div>`;
+    } else if (type === "daterange") {
+        container.innerHTML = `
+            <div class="form-group"><label>From Date</label><input type="date" id="waterFilterDateFrom"></div>
+            <div class="form-group"><label>To Date</label><input type="date" id="waterFilterDateTo"></div>
+        `;
+    } else {
+        container.innerHTML = "";
+    }
+}
+
+function applyWaterFilter() {
+    const filterType = document.getElementById('waterFilterType').value;
+    const plant = document.getElementById('waterPlantFilter').value;
+    const sort = document.getElementById('waterSortOrder').value;
+
+    let filtered = [...waterReadingsList];
+    if (filterType === 'date') {
+        const val = document.getElementById('waterFilterSpecificDate')?.value;
+        if (val) filtered = filtered.filter(r => r.date === val);
+    } else if (filterType === 'month') {
+        const val = document.getElementById('waterFilterSpecificMonth')?.value;
+        if (val) filtered = filtered.filter(r => r.date.startsWith(val));
+    } else if (filterType === 'daterange') {
+        const from = document.getElementById('waterFilterDateFrom')?.value;
+        const to = document.getElementById('waterFilterDateTo')?.value;
+        if (from) filtered = filtered.filter(r => r.date >= from);
+        if (to) filtered = filtered.filter(r => r.date <= to);
+    }
+
+    if (plant === "WPL-1") filtered = filtered.filter(r => r.wpl1 > 0);
+    else if (plant === "WPL-2") filtered = filtered.filter(r => r.wpl2 > 0);
+
+    if (sort === 'oldest') filtered.sort((a,b) => a.date.localeCompare(b.date));
+    else if (sort === 'newest') filtered.sort((a,b) => b.date.localeCompare(a.date));
+    else if (sort === 'highest') filtered.sort((a,b) => b.total - a.total);
+    else if (sort === 'lowest') filtered.sort((a,b) => a.total - b.total);
+
+    renderWaterHistoryTable(filtered);
+    showToast(`Filter applied: ${filtered.length} record(s) found.`);
+}
+
+function resetWaterFilter() {
+    document.getElementById('waterFilterType').value = "";
+    document.getElementById('waterPlantFilter').value = "All";
+    document.getElementById('waterSortOrder').value = "newest";
+    document.getElementById('waterDynamicFilter').innerHTML = "";
+    renderWaterHistoryTable(waterReadingsList);
+}
+
+// ================= UTILITIES: ELECTRICITY MODULE =================
+async function submitElectricityReading() {
+    const d = document.getElementById('elecEntryDate').value;
+    if (!d) {
+        alert("Please select a date.");
+        return;
+    }
+
+    const inputs = document.querySelectorAll('#electricityView .elec-reading-input');
+    const newRecords = [];
+
+    inputs.forEach(input => {
+        const val = parseFloat(input.value) || 0;
+        if (val > 0) {
+            const row = input.closest('tr');
+            const venueName = row ? row.children[1].innerText.trim() : '';
+            if (venueName) newRecords.push({ date: d, venue: venueName, reading: val });
+        }
+    });
+
+    if (newRecords.length === 0) {
+        alert("Please enter at least one venue reading greater than 0.");
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/electricity', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newRecords)
+        });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.allElec)) {
+            electricityReadingsList = data.allElec;
+        } else {
+            newRecords.forEach(r => upsertLocalElec(r));
+        }
+    } catch (e) {
+        newRecords.forEach(r => upsertLocalElec(r));
+    }
+
+    renderElecHistoryTable(electricityReadingsList);
+    updateDashboardWidgets();
+    updateCharts();
+    showToast(`${newRecords.length} electricity reading(s) saved for ${d}`);
+}
+
+function upsertLocalElec(record) {
+    const idx = electricityReadingsList.findIndex(e => e.date === record.date && e.venue === record.venue);
+    if (idx !== -1) electricityReadingsList[idx] = record;
+    else electricityReadingsList.unshift(record);
+}
+
+function renderElecHistoryTable(data) {
+    const tbody = document.getElementById('elecHistoryTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3"><div class="empty-state"><div class="empty-state-text">No electricity readings recorded yet.</div></div></td></tr>`;
+        return;
+    }
+
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="font-weight:600;">${row.date}</td>
+            <td style="text-align:left; font-weight:600;">${row.venue}</td>
+            <td style="font-weight:bold; color:var(--accent-orange);">${row.reading.toLocaleString()} kWh</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function changeElecFilter() {
+    const type = document.getElementById("elecFilterType").value;
+    const container = document.getElementById("elecDynamicFilter");
+    if (type === "date") {
+        container.innerHTML = `<div class="form-group"><label>Select Date</label><input type="date" id="elecFilterSpecificDate"></div>`;
+    } else if (type === "month") {
+        container.innerHTML = `<div class="form-group"><label>Select Month</label><input type="month" id="elecFilterSpecificMonth"></div>`;
+    } else if (type === "daterange") {
+        container.innerHTML = `
+            <div class="form-group"><label>From Date</label><input type="date" id="elecFilterDateFrom"></div>
+            <div class="form-group"><label>To Date</label><input type="date" id="elecFilterDateTo"></div>
+        `;
+    } else {
+        container.innerHTML = "";
+    }
+}
+
+function applyElecFilter() {
+    const filterType = document.getElementById('elecFilterType').value;
+    const venue = document.getElementById('elecVenueFilter').value;
+    const sort = document.getElementById('elecSortOrder').value;
+
+    let filtered = [...electricityReadingsList];
+    if (filterType === 'date') {
+        const val = document.getElementById('elecFilterSpecificDate')?.value;
+        if (val) filtered = filtered.filter(r => r.date === val);
+    } else if (filterType === 'month') {
+        const val = document.getElementById('elecFilterSpecificMonth')?.value;
+        if (val) filtered = filtered.filter(r => r.date.startsWith(val));
+    } else if (filterType === 'daterange') {
+        const from = document.getElementById('elecFilterDateFrom')?.value;
+        const to = document.getElementById('elecFilterDateTo')?.value;
+        if (from) filtered = filtered.filter(r => r.date >= from);
+        if (to) filtered = filtered.filter(r => r.date <= to);
+    }
+
+    if (venue !== "All") {
+        filtered = filtered.filter(r => r.venue.toLowerCase().includes(venue.toLowerCase()));
+    }
+
+    if (sort === 'oldest') filtered.sort((a,b) => a.date.localeCompare(b.date));
+    else if (sort === 'newest') filtered.sort((a,b) => b.date.localeCompare(a.date));
+    else if (sort === 'highest') filtered.sort((a,b) => b.reading - a.reading);
+    else if (sort === 'lowest') filtered.sort((a,b) => a.reading - b.reading);
+
+    renderElecHistoryTable(filtered);
+    showToast(`Electricity filter applied: ${filtered.length} record(s) found.`);
+}
+
+function resetElecFilter() {
+    document.getElementById('elecFilterType').value = "";
+    document.getElementById('elecVenueFilter').value = "All";
+    document.getElementById('elecSortOrder').value = "newest";
+    document.getElementById('elecDynamicFilter').innerHTML = "";
+    renderElecHistoryTable(electricityReadingsList);
+}
+
+// ================= RESOURCE AVAILABILITY & STOCK MANAGEMENT =================
+// Non-Teaching Staff & Admin/Unit Head can enter availability
+async function updateInventoryStock() {
+    const wb = parseInt(document.getElementById('waterBottles').value) || 0;
+    const ch = parseInt(document.getElementById('chairs').value) || 0;
+    const ct = parseInt(document.getElementById('centerTables').value) || 0;
+
+    inventoryStock = { waterBottles: wb, chairs: ch, centerTables: ct };
+    document.getElementById('waterBottleDisplay').innerText = wb;
+    document.getElementById('chairDisplay').innerText = ch;
+    document.getElementById('tableDisplay').innerText = ct;
+
+    try {
+        await fetch('/api/stock', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(inventoryStock)
+        });
+        showToast("Stock availability updated successfully in database!");
+    } catch (e) {
+        showToast("Stock availability saved locally.");
+    }
+}
+
+// Faculty, PC, Dean, Admin, Unit Head can requisition/book resources
+async function handleResourceBooking(e) {
+    e.preventDefault();
+    const item = document.getElementById('bookItemSelect').value;
+    const qty = parseInt(document.getElementById('bookItemQty').value) || 0;
+    const date = document.getElementById('bookEventDate').value;
+    const time = document.getElementById('bookEventTime').value;
+
+    let available = 0;
+    if (item === "Water Bottles") available = inventoryStock.waterBottles;
+    else if (item === "Chairs") available = inventoryStock.chairs;
+    else if (item === "Center Tables") available = inventoryStock.centerTables;
+
+    if (qty > available) {
+        alert(`Insufficient stock! Currently available in campus inventory: ${available}`);
+        return;
+    }
+
+    if (item === "Water Bottles") inventoryStock.waterBottles -= qty;
+    else if (item === "Chairs") inventoryStock.chairs -= qty;
+    else if (item === "Center Tables") inventoryStock.centerTables -= qty;
+
+    document.getElementById('waterBottleDisplay').innerText = inventoryStock.waterBottles;
+    document.getElementById('chairDisplay').innerText = inventoryStock.chairs;
+    document.getElementById('tableDisplay').innerText = inventoryStock.centerTables;
+
+    const newOrder = {
+        id: 'RO-' + Math.floor(500 + Math.random() * 500),
+        item: item,
+        qty: qty,
+        requestedBy: `${currentUser.fullName} (${currentRole})`,
+        dateTime: `${date} at ${time}`,
+        claimedBy: null,
+        status: 'pending'
+    };
+
+    try {
+        await fetch('/api/stock/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newOrder)
+        });
+        await fetch('/api/stock', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(inventoryStock)
+        });
+    } catch (e) {}
+
+    stockOrders.unshift(newOrder);
+    renderResourceOrdersTable();
+    updateDashboardWidgets();
+    showToast(`Resource requisition #${newOrder.id} submitted!`);
+    e.target.reset();
+}
+
+function renderResourceOrdersTable() {
+    const tbody = document.getElementById('resourceOrdersTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const unclaimedCount = stockOrders.filter(o => o.claimedBy === null).length;
+    const badge = document.getElementById('resourceStaffBadge');
+    if (badge) {
+        badge.style.display = (currentRole === "Non-Teaching Staff" && unclaimedCount > 0) ? 'inline-block' : 'none';
+        badge.innerText = unclaimedCount;
+    }
+
+    if (stockOrders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-state-text">No resource requisitions logged yet.</div></div></td></tr>`;
+        return;
+    }
+
+    stockOrders.forEach(order => {
+        const row = document.createElement('tr');
+        let statusBadge = `<span class="status-pill ${order.status}">● ${order.status.toUpperCase()}</span>`;
+        let actionHTML = '';
+
+        if (currentRole === "Non-Teaching Staff") {
+            if (order.claimedBy === null) {
+                actionHTML = `<button type="button" class="btn-action-small btn-claim" onclick="claimResourceOrder('${order.id}')">Claim Order</button>`;
+            } else if (order.status === 'claimed') {
+                actionHTML = `<button type="button" class="btn-action-small btn-delivered" onclick="markResourceDelivered('${order.id}')">Mark Delivered</button>`;
+            } else {
+                actionHTML = `<span style="font-size:11px; color:var(--text-muted);">Completed</span>`;
+            }
+        } else {
+            if (order.status === 'delivered') {
+                actionHTML = `
+                    <button type="button" class="btn-action-small btn-approve" onclick="confirmResourceDelivery('${order.id}', 'approved')">Confirm</button>
+                    <button type="button" class="btn-action-small btn-reject" onclick="confirmResourceDelivery('${order.id}', 'rejected')">Issue</button>
+                `;
+            } else {
+                actionHTML = `<span style="font-size:11px; color:var(--text-muted);">${order.status}</span>`;
+            }
+        }
+
+        row.innerHTML = `
+            <td><strong>#${order.id}</strong></td>
+            <td style="text-align:left; font-weight:bold;">${order.qty}x ${order.item}</td>
+            <td>${order.requestedBy}</td>
+            <td>${order.dateTime}</td>
+            <td>${order.claimedBy ? '<strong>' + order.claimedBy + '</strong>' : '<span style="color:var(--text-muted);">Unassigned</span>'}</td>
+            <td>${statusBadge}</td>
+            <td>${actionHTML}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+async function claimResourceOrder(id) {
+    const order = stockOrders.find(o => o.id === id);
+    if (!order) return;
+    order.claimedBy = "Non-Teaching Staff";
+    order.status = 'claimed';
+    try {
+        await fetch(`/api/stock/orders/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'claimed', claimedBy: 'Non-Teaching Staff' })
+        });
+    } catch(e){}
+    renderResourceOrdersTable();
+    showToast(`Order #${id} claimed by Non-Teaching Staff.`);
+}
+
+async function markResourceDelivered(id) {
+    const order = stockOrders.find(o => o.id === id);
+    if (!order) return;
+    order.status = 'delivered';
+    try {
+        await fetch(`/api/stock/orders/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'delivered' })
+        });
+    } catch(e){}
+    renderResourceOrdersTable();
+    showToast(`Order #${id} marked as delivered.`);
+}
+
+async function confirmResourceDelivery(id, status) {
+    const order = stockOrders.find(o => o.id === id);
+    if (!order) return;
+    order.status = status;
+    try {
+        await fetch(`/api/stock/orders/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status })
+        });
+    } catch(e){}
+    renderResourceOrdersTable();
+    showToast(`Order #${id} status: ${status.toUpperCase()}`);
+}
+
+// ================= VENUE BOOKING MODULE =================
+function populateVenueDropdown() {
+    const sel = document.getElementById('venueSelect');
+    if (sel) {
+        sel.innerHTML = '';
+        venueOptions.forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v;
+            opt.innerText = v;
+            sel.appendChild(opt);
+        });
+    }
+
+    const elecFilterSel = document.getElementById('elecVenueFilter');
+    if (elecFilterSel) {
+        elecFilterSel.innerHTML = '<option value="All">All Venues</option>';
+        electricityVenues.forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v;
+            opt.innerText = v;
+            elecFilterSel.appendChild(opt);
+        });
+    }
+}
+
+async function handleAddNewVenue(e) {
+    e.preventDefault();
+    const newName = document.getElementById('newVenueName').value.trim();
+    if (!newName) return;
+    if (venueOptions.includes(newName)) {
+        alert("Venue already exists!");
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/venues', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: newName })
+        });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.venueOptions)) {
+            venueOptions = data.venueOptions;
+        } else {
+            venueOptions.push(newName);
+        }
+    } catch(err) {
+        venueOptions.push(newName);
+    }
+
+    populateVenueDropdown();
+    showToast(`Venue added to directory: ${newName}`);
+    e.target.reset();
+}
+
+async function handleVenueSubmit(e) {
+    e.preventDefault();
+    const vName = document.getElementById('venueSelect').value;
+    const vDate = document.getElementById('venueDate').value;
+    const fromT = document.getElementById('venueFromTime').value;
+    const toT = document.getElementById('venueToTime').value;
+    const purp = document.getElementById('venuePurpose').value;
+
+    const newBooking = {
+        id: 'VB-' + Math.floor(200 + Math.random() * 800),
+        venue: vName,
+        bookedBy: `${currentUser.fullName} (${currentRole})`,
+        date: vDate,
+        timeDuration: `${fromT} - ${toT}`,
+        purpose: purp,
+        status: 'pending'
+    };
+
+    try {
+        const res = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newBooking)
+        });
+        const data = await res.json();
+        if (data.success && data.booking) {
+            venueBookings.unshift(data.booking);
+        } else {
+            venueBookings.unshift(newBooking);
+        }
+    } catch (e) {
+        venueBookings.unshift(newBooking);
+    }
+
+    renderVenueTable();
+    updateDashboardWidgets();
+    e.target.reset();
+    showToast(`Venue request #${newBooking.id} submitted for review!`);
+}
+
+function renderVenueTable() {
+    const tbody = document.getElementById('venueTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const perm = ROLE_PERMISSIONS[currentRole] || ROLE_PERMISSIONS["Administrator"];
+
+    if (venueBookings.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-state-text">No venue bookings registered yet.</div></div></td></tr>`;
+        return;
+    }
+
+    venueBookings.forEach(b => {
+        const row = document.createElement('tr');
+        let actionHTML = '';
+        if (perm.canApproveVenue) {
+            if (b.status === 'pending') {
+                actionHTML = `
+                    <button type="button" class="btn-action-small btn-approve" onclick="updateVenueDecision('${b.id}', 'approved')">Approve</button>
+                    <button type="button" class="btn-action-small btn-reject" onclick="updateVenueDecision('${b.id}', 'rejected')">Reject</button>
+                `;
+            } else {
+                actionHTML = `<span style="font-size:11px; color:var(--text-muted); font-weight:bold;">${b.status.toUpperCase()}</span>`;
+            }
+        } else {
+            actionHTML = `<span style="font-size:11px; color:var(--text-muted);">View Only</span>`;
+        }
+
+        row.innerHTML = `
+            <td><strong>#${b.id}</strong></td>
+            <td style="text-align:left; font-weight:bold; color:var(--primary-dark);">${b.venue}</td>
+            <td>${b.bookedBy}</td>
+            <td><span style="font-weight:600;">${b.date}</span></td>
+            <td>${b.timeDuration}</td>
+            <td style="text-align:left;">${b.purpose}</td>
+            <td><span class="status-pill ${b.status}">● ${b.status.toUpperCase()}</span></td>
+            <td>${actionHTML}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+async function updateVenueDecision(id, decision) {
+    const b = venueBookings.find(x => x.id === id);
+    if (!b) return;
+    b.status = decision;
+    try {
+        await fetch(`/api/bookings/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: decision })
+        });
+    } catch(e){}
+    renderVenueTable();
+    updateDashboardWidgets();
+    showToast(`Venue booking #${id} marked as ${decision.toUpperCase()}`);
+}
+
+// ================= TRANSPORT MODULE & EMAIL NOTIFICATION =================
+// Only Transport Officer can approve or reject. When someone requests, an email is dispatched with direct link!
+async function submitTransportRequest(e) {
+    e.preventDefault();
+    const guest = document.getElementById('transGuest').value;
+    const vCount = document.getElementById('transVehicleCount').value;
+    const vType = document.getElementById('transVehicleType').value;
+    const date = document.getElementById('transDate').value;
+    const time = document.getElementById('transTime').value;
+    const dest = document.getElementById('transDestination').value;
+    const purp = document.getElementById('transPurpose').value;
+
+    const newReq = {
+        id: 'TR-' + Math.floor(1000 + Math.random() * 9000),
+        guest: guest,
+        vehicle: `${vCount}x ${vType}`,
+        vehicleCount: parseInt(vCount) || 1,
+        vehicleType: vType,
+        dateTime: `${date} at ${time}`,
+        destination: dest,
+        purpose: purp,
+        requestedBy: `${currentUser.fullName} (${currentRole})`,
+        status: 'pending'
+    };
+
+    let emailNotification = null;
+
+    try {
+        const res = await fetch('/api/transport', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newReq)
+        });
+        const data = await res.json();
+        if (data.success && data.transport) {
+            transportRequests.unshift(data.transport);
+            emailNotification = data.emailNotification;
+        } else {
+            transportRequests.unshift(newReq);
+        }
+    } catch (e) {
+        transportRequests.unshift(newReq);
+    }
+
+    renderTransportTable();
+    updateDashboardWidgets();
+    e.target.reset();
+
+    // Trigger Email Notification Modal displaying the link to Transport Officer
+    targetHighlightReqId = newReq.id;
+    showTransportEmailModal(newReq, emailNotification);
+}
+
+function showTransportEmailModal(req, emailData) {
+    const to = emailData ? emailData.to : 'transport.officer@apollo-uni.edu';
+    const sub = emailData ? emailData.subject : `Action Required: Transport Requisition #${req.id}`;
+    const body = emailData ? emailData.body : `Dear Transport Officer,\n\nA new transport booking #${req.id} for "${req.guest}" to "${req.destination}" has been submitted by ${req.requestedBy}.\n\nVehicle: ${req.vehicle}\nDate: ${req.dateTime}\n\nPlease click the approval link to review and decide.`;
+
+    document.getElementById('emailModalTo').innerText = to;
+    document.getElementById('emailModalSubject').innerText = sub;
+    document.getElementById('emailModalBody').innerText = body;
+
+    openModal('transportEmailModal');
+}
+
+// Clicking the link opens the website directly in Transport Officer mode with the target request highlighted!
+function openApprovalFromEmail() {
+    closeModal('transportEmailModal');
+
+    // Automatically switch active role to Transport Officer
+    currentRole = "Transport Officer";
+    document.getElementById('roleSelector').value = "Transport Officer";
+    document.getElementById('roleDisplay').innerText = "Transport Officer";
+    document.getElementById('userNameDisplay').innerText = "Transport Officer";
+    localStorage.setItem('apollo_active_role', "Transport Officer");
+
+    applyRolePermissions();
+    switchView('transportReqView');
+
+    if (targetHighlightReqId) {
+        setTimeout(() => {
+            highlightTransportRow(targetHighlightReqId);
+        }, 300);
+    }
+
+    showToast("Opened via Email Link: Transport Officer Mode Active. You can now Approve or Reject.", "🚌");
+}
+
+function highlightTransportRow(reqId) {
+    document.querySelectorAll('#transportTableBody tr').forEach(tr => {
+        tr.classList.remove('highlight-row');
+        if (tr.innerText.includes(`#${reqId}`)) {
+            tr.classList.add('highlight-row');
+            tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+}
+
+function renderTransportTable() {
+    const tbody = document.getElementById('transportTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const perm = ROLE_PERMISSIONS[currentRole] || ROLE_PERMISSIONS["Administrator"];
+    const pendingCount = transportRequests.filter(r => r.status === 'pending').length;
+    const badge = document.getElementById('transportPendingBadge');
+    if (badge) {
+        badge.style.display = (currentRole === "Transport Officer" && pendingCount > 0) ? 'inline-block' : 'none';
+        badge.innerText = pendingCount;
+    }
+
+    if (transportRequests.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-state-text">No transport requests recorded yet.</div></div></td></tr>`;
+        return;
+    }
+
+    transportRequests.forEach(req => {
+        const row = document.createElement('tr');
+        if (targetHighlightReqId && req.id === targetHighlightReqId) {
+            row.classList.add('highlight-row');
+        }
+
+        let actionHTML = '';
+        // Only Transport Officer (and Administrator) can approve or reject
+        if (perm.canApproveTransport) {
+            if (req.status === 'pending') {
+                actionHTML = `
+                    <button type="button" class="btn-action-small btn-approve" onclick="updateTransportDecision('${req.id}', 'approved')">Approve</button>
+                    <button type="button" class="btn-action-small btn-reject" onclick="updateTransportDecision('${req.id}', 'rejected')">Reject</button>
+                `;
+            } else {
+                actionHTML = `<span style="font-size:11px; color:var(--text-muted); font-weight:bold;">${req.status.toUpperCase()}</span>`;
+            }
+        } else {
+            actionHTML = `<span style="font-size:11px; color:var(--text-muted); font-style:italic;">Transport Officer Only</span>`;
+        }
+
+        row.innerHTML = `
+            <td><strong>#${req.id}</strong></td>
+            <td style="text-align:left; font-weight:bold;">${req.guest}</td>
+            <td>${req.vehicle}</td>
+            <td><span style="font-weight:600;">${req.dateTime}</span></td>
+            <td style="text-align:left; color:var(--primary-dark);">${req.destination}</td>
+            <td><span class="status-pill ${req.status}">● ${req.status.toUpperCase()}</span></td>
+            <td>${actionHTML}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+async function updateTransportDecision(id, decision) {
+    const req = transportRequests.find(r => r.id === id);
+    if (!req) return;
+    req.status = decision;
+    try {
+        await fetch(`/api/transport/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: decision })
+        });
+    } catch(e){}
+    renderTransportTable();
+    updateDashboardWidgets();
+    showToast(`Transport request #${id} marked as ${decision.toUpperCase()} by Transport Officer.`);
+}
+
+// ================= DASHBOARD SUMMARY DATA =================
+function updateDashboardWidgets() {
+    const latestWater = waterReadingsList[0] || { total: 0 };
+    document.getElementById('dashWaterTotal').innerText = `${latestWater.total} KL`;
+
+    const latestElecSum = electricityReadingsList.slice(0, 5).reduce((acc, r) => acc + (r.reading || 0), 0);
+    document.getElementById('dashElecTotal').innerText = `${latestElecSum.toLocaleString()} kWh`;
+
+    document.getElementById('dashStockCount').innerText = `${stockOrders.length} Orders`;
+    document.getElementById('dashVenueCount').innerText = `${venueBookings.length} Booked`;
+    document.getElementById('dashTransportCount').innerText = `${transportRequests.length} Logged`;
+
+    const pendingVenues = venueBookings.filter(v => v.status === 'pending').length;
+    document.getElementById('dashVenuePendingSub').innerText = `${pendingVenues} Pending Approval`;
+
+    const pendingTrans = transportRequests.filter(t => t.status === 'pending').length;
+    document.getElementById('dashTransportPendingSub').innerText = `${pendingTrans} Awaiting Approval`;
+
+    // Dashboard preview tables
+    const wTb = document.getElementById('dashWaterTableBody');
+    if (wTb) {
+        wTb.innerHTML = '';
+        waterReadingsList.slice(0, 3).forEach(w => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${w.date}</td><td>${w.wpl1} KL</td><td>${w.wpl2} KL</td><td style="font-weight:bold;">${w.total} KL</td>`;
+            wTb.appendChild(tr);
+        });
+        if (waterReadingsList.length === 0) {
+            wTb.innerHTML = `<tr><td colspan="4" style="color:var(--text-muted);">No water entries yet.</td></tr>`;
+        }
+    }
+
+    const eTb = document.getElementById('dashElecTableBody');
+    if (eTb) {
+        eTb.innerHTML = '';
+        electricityReadingsList.slice(0, 3).forEach(e => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${e.date}</td><td style="text-align:left;">${e.venue}</td><td style="font-weight:bold;">${e.reading.toLocaleString()} kWh</td>`;
+            eTb.appendChild(tr);
+        });
+        if (electricityReadingsList.length === 0) {
+            eTb.innerHTML = `<tr><td colspan="3" style="color:var(--text-muted);">No electricity entries yet.</td></tr>`;
+        }
+    }
+}
+
+// ================= REPORTS MODULE =================
+function changeReportType() {
+    const report = document.getElementById("reportType").value;
+    const area = document.getElementById("reportSpecific");
+
+    if (report === "water") {
+        area.innerHTML = `
+        <div class="form-group">
+            <label>Water Plant</label>
+            <select id="repWaterPlant"><option value="All">All Plants</option><option value="WPL-1">WPL-1</option><option value="WPL-2">WPL-2</option></select>
+        </div>`;
+    } else if (report === "electricity") {
+        let opts = '<option value="All">All Venues</option>';
+        electricityVenues.forEach(v => { opts += `<option value="${v}">${v}</option>`; });
+        area.innerHTML = `
+        <div class="form-group">
+            <label>Venue</label>
+            <select id="repElecVenue">${opts}</select>
+        </div>`;
+    } else {
+        area.innerHTML = "";
+    }
+}
+
+function changeReportFilter() {
+    const type = document.getElementById("reportFilterType").value;
+    const area = document.getElementById("reportDynamicFilter");
+    if (type === "date") {
+        area.innerHTML = `<div class="form-group"><label>Select Date</label><input type="date" id="repFilterDate"></div>`;
+    } else if (type === "month") {
+        area.innerHTML = `<div class="form-group"><label>Select Month</label><input type="month" id="repFilterMonth"></div>`;
+    } else if (type === "daterange") {
+        area.innerHTML = `
+            <div class="form-group"><label>From Date</label><input type="date" id="repFilterDateFrom"></div>
+            <div class="form-group"><label>To Date</label><input type="date" id="repFilterDateTo"></div>
+        `;
+    } else {
+        area.innerHTML = "";
+    }
+}
+
+function generateReport() {
+    const report = document.getElementById("reportType").value;
+    const fType = document.getElementById("reportFilterType").value;
+
+    if (report === "water") {
+        let filtered = [...waterReadingsList];
+        if (fType === 'date') {
+            const d = document.getElementById('repFilterDate')?.value;
+            if (d) filtered = filtered.filter(w => w.date === d);
+        } else if (fType === 'month') {
+            const m = document.getElementById('repFilterMonth')?.value;
+            if (m) filtered = filtered.filter(w => w.date.startsWith(m));
+        } else if (fType === 'daterange') {
+            const f = document.getElementById('repFilterDateFrom')?.value;
+            const t = document.getElementById('repFilterDateTo')?.value;
+            if (f) filtered = filtered.filter(w => w.date >= f);
+            if (t) filtered = filtered.filter(w => w.date <= t);
+        }
+
+        const plant = document.getElementById('repWaterPlant')?.value;
+        if (plant === "WPL-1") filtered = filtered.filter(w => w.wpl1 > 0);
+        else if (plant === "WPL-2") filtered = filtered.filter(w => w.wpl2 > 0);
+
+        const tb = document.getElementById("waterReportTableBody");
+        tb.innerHTML = filtered.length ? filtered.map(w => `
+            <tr><td>${w.date}</td><td>${w.wpl1} KL</td><td>${w.wpl2} KL</td><td><strong>${w.total} KL</strong></td></tr>
+        `).join('') : `<tr><td colspan="4">No matching records.</td></tr>`;
+
+        document.getElementById("waterReport").style.display = "block";
+        document.getElementById("electricityReport").style.display = "none";
+
+        const totalKL = filtered.reduce((acc, w) => acc + w.total, 0);
+        document.getElementById("repWaterCount").innerText = filtered.length;
+        document.getElementById("repWaterAvg").innerText = filtered.length ? `${(totalKL / filtered.length).toFixed(1)} KL` : '0 KL';
+        document.getElementById("repWaterMax").innerText = filtered.length ? `${Math.max(...filtered.map(w => w.total))} KL` : '0 KL';
+
+    } else if (report === "electricity") {
+        let filtered = [...electricityReadingsList];
+        if (fType === 'date') {
+            const d = document.getElementById('repFilterDate')?.value;
+            if (d) filtered = filtered.filter(e => e.date === d);
+        } else if (fType === 'month') {
+            const m = document.getElementById('repFilterMonth')?.value;
+            if (m) filtered = filtered.filter(e => e.date.startsWith(m));
+        } else if (fType === 'daterange') {
+            const f = document.getElementById('repFilterDateFrom')?.value;
+            const t = document.getElementById('repFilterDateTo')?.value;
+            if (f) filtered = filtered.filter(e => e.date >= f);
+            if (t) filtered = filtered.filter(e => e.date <= t);
+        }
+
+        const venue = document.getElementById('repElecVenue')?.value;
+        if (venue && venue !== "All") filtered = filtered.filter(e => e.venue.toLowerCase().includes(venue.toLowerCase()));
+
+        const tb = document.getElementById("electricityReportTableBody");
+        tb.innerHTML = filtered.length ? filtered.map(e => `
+            <tr><td>${e.date}</td><td style="text-align:left;">${e.venue}</td><td><strong>${e.reading.toLocaleString()} kWh</strong></td></tr>
+        `).join('') : `<tr><td colspan="3">No matching records.</td></tr>`;
+
+        document.getElementById("waterReport").style.display = "none";
+        document.getElementById("electricityReport").style.display = "block";
+
+        const totalKwh = filtered.reduce((acc, e) => acc + e.reading, 0);
+        document.getElementById("repElecCount").innerText = filtered.length;
+        document.getElementById("repElecAvg").innerText = filtered.length ? `${(totalKwh / filtered.length).toFixed(1)} kWh` : '0 kWh';
+        document.getElementById("repElecMax").innerText = filtered.length ? `${Math.max(...filtered.map(e => e.reading)).toLocaleString()} kWh` : '0 kWh';
+    }
+    showToast("Report preview generated!");
+}
+
+function resetReport() {
+    document.getElementById("reportType").selectedIndex = 0;
+    document.getElementById("reportFilterType").selectedIndex = 0;
+    document.getElementById("reportDynamicFilter").innerHTML = "";
+    document.getElementById("reportSpecific").innerHTML = "";
+    document.getElementById("waterReport").style.display = "none";
+    document.getElementById("electricityReport").style.display = "none";
+}
+
+// ================= CHART INITIALIZATION & UPDATE =================
+function initCharts() {
+    const ctxOverview = document.getElementById('dashOverviewChart').getContext('2d');
+    dashOverviewChartInstance = new Chart(ctxOverview, {
+        type: 'bar',
+        data: {
+            labels: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'],
+            datasets: [
+                { label: 'Water (KL)', data: [420, 450, 480, 500, 490, 434], backgroundColor: '#0D9488' },
+                { label: 'Electricity (kWh / 100)', data: [720, 750, 810, 880, 840, 769], backgroundColor: '#F97316' }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    const ctxWater = document.getElementById('waterChart').getContext('2d');
+    waterChartInstance = new Chart(ctxWater, {
+        type: 'line',
+        data: {
+            labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5'],
+            datasets: [
+                { label: 'WPL-1 (KL)', data: [407, 466, 539, 465, 517], borderColor: '#0F766E', fill: false, tension: 0.3 },
+                { label: 'WPL-2 (KL)', data: [27, 26, 37, 3, 32], borderColor: '#0284C7', fill: false, tension: 0.3 }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    const ctxElec = document.getElementById('elecChart').getContext('2d');
+    elecChartInstance = new Chart(ctxElec, {
+        type: 'doughnut',
+        data: {
+            labels: ['College Block', 'Medical College', 'Girls Hostel', 'Boys Hostel', 'Others'],
+            datasets: [{
+                data: [25015, 4672, 19565, 27701, 10000],
+                backgroundColor: ['#0F766E', '#0284C7', '#EC4899', '#3B82F6', '#10B981']
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    const ctxTrend = document.getElementById('reportsTrendChart').getContext('2d');
+    reportsTrendChartInstance = new Chart(ctxTrend, {
+        type: 'line',
+        data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+                label: 'Overall Resource Utilization Rate (%)',
+                data: [65, 78, 82, 74],
+                borderColor: '#10B981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+}
+
+function updateCharts() {
+    if (waterChartInstance && waterReadingsList.length > 0) {
+        const slice = [...waterReadingsList].reverse().slice(-7);
+        waterChartInstance.data.labels = slice.map(w => w.date);
+        waterChartInstance.data.datasets[0].data = slice.map(w => w.wpl1);
+        waterChartInstance.data.datasets[1].data = slice.map(w => w.wpl2);
+        waterChartInstance.update();
+    }
+}
+
+// ================= BOOTSTRAP APPLICATION =================
+window.onload = function() {
+    initCharts();
+    populateVenueDropdown();
+    initUserSession();
+    loadServerData();
+};
+</script>
+
+</body>
+</html>
