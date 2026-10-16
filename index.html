@@ -24,6 +24,7 @@
     --accent-orange: #F97316;
     --accent-blue: #0284C7;
     --accent-green: #10B981;
+    --accent-red: #EF4444;
     --bg-light: #F4F7F6;
     --card-bg: #FFFFFF;
     --text-dark: #1F2937;
@@ -53,7 +54,7 @@ body {
     display: none;
     align-items: center;
     gap: 10px;
-    z-index: 2000;
+    z-index: 2500;
     border-left: 5px solid #34D399;
     animation: toastSlideIn 0.3s ease-out;
 }
@@ -195,15 +196,6 @@ aside {
     margin-left: 5px;
 }
 
-.badge-soon {
-    font-size: 9px;
-    background: #D97706;
-    color: white;
-    padding: 2px 5px;
-    border-radius: 8px;
-    font-weight: normal;
-}
-
 .sidebar-footer {
     border-top: 1px solid rgba(255,255,255,0.1);
     padding: 5px 0;
@@ -223,7 +215,7 @@ aside {
 
 header {
     background: var(--card-bg);
-    padding: 15px 25px;
+    padding: 14px 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -257,7 +249,26 @@ header {
 .user-area {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
+}
+
+.btn-mailbox-header {
+    background: #F0FDF4;
+    color: var(--primary-dark);
+    border: 1px solid #A7F3D0;
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+    margin: 0;
+}
+.btn-mailbox-header:hover {
+    background: #DCFCE7;
 }
 
 .user-info {
@@ -369,9 +380,17 @@ main hr {
     border-top: 4px solid var(--primary);
 }
 
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .card h3 {
     color: var(--primary);
-    margin-bottom: 15px;
     font-size: 17px;
 }
 
@@ -422,7 +441,7 @@ button {
     background: var(--primary);
     color: white;
     border: none;
-    padding: 9px 20px;
+    padding: 9px 18px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 13px;
@@ -438,11 +457,25 @@ button:hover {
     background: var(--primary-dark);
 }
 
+.btn-secondary {
+    background: #0284C7;
+}
+.btn-secondary:hover {
+    background: #0369A1;
+}
+
 .btn-reset {
     background: #6B7280;
 }
 .btn-reset:hover {
     background: #4B5563;
+}
+
+.btn-danger {
+    background: #EF4444;
+}
+.btn-danger:hover {
+    background: #DC2626;
 }
 
 /* ================= STATUS PILLS ================= */
@@ -480,7 +513,7 @@ button:hover {
 }
 
 .btn-action-small {
-    padding: 5px 10px;
+    padding: 4px 8px;
     font-size: 11px;
     margin: 2px;
     border-radius: 4px;
@@ -494,7 +527,6 @@ button:hover {
 .btn-delivered { background: #7C3AED; }
 .btn-delivered:hover { background: #6D28D9; }
 
-/* Table Highlight for Targeted Link Approval */
 .highlight-row {
     background-color: #FEF3C7 !important;
     outline: 2px dashed #D97706;
@@ -544,7 +576,7 @@ tr:nth-child(even) { background: #F9FAFB; }
 tr:hover { background: #F0FDF4; }
 
 .elec-reading-input {
-    width: 150px;
+    width: 140px;
     text-align: right;
     font-weight: bold;
     font-size: 14px;
@@ -586,6 +618,49 @@ tr.category-row td {
     align-items: center;
 }
 
+/* Mailbox Notification Cards */
+.mail-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-left: 4px solid var(--primary);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    transition: 0.2s;
+}
+.mail-card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+.mail-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.mail-to {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.mail-date {
+    font-size: 11.5px;
+    color: #9CA3AF;
+}
+.mail-subject {
+    font-size: 13.5px;
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+.mail-body {
+    font-size: 12.5px;
+    color: #4B5563;
+    white-space: pre-line;
+    background: #F9FAFB;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: monospace;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -593,15 +668,17 @@ tr.category-row td {
     background: rgba(0,0,0,0.5);
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .modal-content {
     background: white;
     padding: 25px;
     border-radius: 12px;
-    width: 440px;
+    width: 480px;
     max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 footer {
@@ -709,6 +786,12 @@ footer {
     <div class="sidebar-footer">
         <ul class="nav-list">
             <li class="nav-item">
+                <a class="nav-link" onclick="openModal('notificationsModal')">
+                    <span>📬 Email & Alerts</span>
+                    <span id="sidebarNotifBadge" class="badge-count" style="display:none;">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" onclick="openModal('settingsModal')">⚙️ Settings (Role Switch)</a>
             </li>
             <li class="nav-item">
@@ -732,6 +815,12 @@ footer {
         </div>
 
         <div class="user-area">
+            <!-- Mailbox Trigger Button in Header -->
+            <button type="button" class="btn-mailbox-header" onclick="openModal('notificationsModal')" title="View Dispatched & Received Notifications">
+                <span>📬 Email Center</span>
+                <span id="headerNotifBadge" class="badge-count" style="display:none; margin:0;">0</span>
+            </button>
+
             <div class="user-info">
                 <div class="user-name" id="userNameDisplay">Logged In User</div>
                 <span class="user-role" id="roleDisplay">Administrator</span>
@@ -745,7 +834,7 @@ footer {
         <!-- Dynamic Role Banner for Testing Clarity -->
         <div class="role-banner-alert" id="roleBannerAlert">
             <div>
-                <strong>Active Mode:</strong> <span id="bannerRoleName">Administrator</span> &mdash; <span id="bannerRoleDesc">Full administrative control. All data and operational modules accessible.</span>
+                <strong>Active Mode:</strong> <span id="bannerRoleName">Administrator</span> &mdash; <span id="bannerRoleDesc">Full administrative control. All data, editable items, and approval actions accessible.</span>
             </div>
             <button type="button" class="btn-action-small btn-claim" onclick="openModal('settingsModal')" style="margin:0;">Switch Role</button>
         </div>
@@ -755,7 +844,6 @@ footer {
             <p class="subtitle">Real-time monitoring and executive summary of university resources.</p>
             <hr>
 
-            <!-- KPI Metric Summary Badges -->
             <div class="kpi-grid">
                 <div class="kpi-card green">
                     <h4>Today's Water Log</h4>
@@ -765,12 +853,12 @@ footer {
                 <div class="kpi-card orange">
                     <h4>Today's Electricity Log</h4>
                     <div class="val" id="dashElecTotal">0 kWh</div>
-                    <div class="kpi-sub">Campus Substation Meters</div>
+                    <div class="kpi-sub">Monitored Zones Total</div>
                 </div>
                 <div class="kpi-card blue">
-                    <h4>Stock Requisitions</h4>
-                    <div class="val" id="dashStockCount">0 Orders</div>
-                    <div class="kpi-sub">Supplies queued or delivered</div>
+                    <h4>Stock Inventory Items</h4>
+                    <div class="val" id="dashStockCount">0 Items</div>
+                    <div class="kpi-sub">Tracked physical assets</div>
                 </div>
                 <div class="kpi-card purple">
                     <h4>Venue Bookings</h4>
@@ -819,7 +907,7 @@ footer {
 
         <!-- ================= 2. WATER USAGE VIEW ================= -->
         <div id="waterView" class="view-section">
-            <p class="subtitle">Enter and view daily water consumption details.</p>
+            <p class="subtitle">Enter, modify, and audit daily water consumption details.</p>
             <hr>
 
             <!-- Daily Entry (Non-Teaching Staff & Admin/Unit Head Only) -->
@@ -830,7 +918,7 @@ footer {
                     <div class="form-group"><label><span class="plant-tag wpl1">WPL-1</span> (Flow Meter KL) *</label><input type="number" id="waterEntryWpl1" value="0" min="0" placeholder="Enter KL"></div>
                     <div class="form-group"><label><span class="plant-tag wpl2">WPL-2</span> (Approx. KL) *</label><input type="number" id="waterEntryWpl2" value="0" min="0" placeholder="Enter KL"></div>
                 </div>
-                <button type="button" onclick="submitWaterReading()">Submit Reading</button>
+                <button type="button" onclick="submitWaterReading()">Save Water Reading</button>
             </section>
 
             <!-- Water Chart -->
@@ -875,13 +963,22 @@ footer {
                 <button type="button" class="btn-reset" onclick="resetWaterFilter()">Reset</button>
             </section>
 
-            <!-- Reading History -->
+            <!-- Editable Reading History -->
             <section class="card">
-                <h3>Reading History</h3>
+                <div class="card-header-flex">
+                    <h3>Water Reading History (Editable)</h3>
+                    <span style="font-size:12px; color:var(--text-muted);">You can edit or delete any logged reading below.</span>
+                </div>
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr><th>Date</th><th><span class="plant-tag wpl1">WPL-1</span> (KL)</th><th><span class="plant-tag wpl2">WPL-2</span> (KL)</th><th>Daily Total (KL)</th></tr>
+                            <tr>
+                                <th>Date</th>
+                                <th><span class="plant-tag wpl1">WPL-1</span> (KL)</th>
+                                <th><span class="plant-tag wpl2">WPL-2</span> (KL)</th>
+                                <th>Daily Total (KL)</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody id="waterHistoryTableBody"></tbody>
                     </table>
@@ -891,12 +988,29 @@ footer {
 
         <!-- ================= 3. ELECTRICITY VIEW ================= -->
         <div id="electricityView" class="view-section">
-            <p class="subtitle">Enter and view daily electricity consumption details.</p>
+            <p class="subtitle">Enter, modify, and manage campus facility electricity readings (kWh).</p>
             <hr>
+
+            <!-- Manage Electricity Meter Locations / Zones -->
+            <section class="card" id="elecManageVenuesCard" style="border-top-color:#0284C7;">
+                <div class="card-header-flex">
+                    <div>
+                        <h3>⚡ Manage Meter Locations & Zones</h3>
+                        <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Add new buildings, labs, or hostels so you aren't limited to fixed locations.</p>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="openModal('addElecVenueModal')">➕ Add New Location / Zone</button>
+                </div>
+                <div id="elecLocationsPillsContainer" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+            </section>
 
             <!-- Daily Entry (Non-Teaching Staff & Admin/Unit Head Only) -->
             <section class="card" id="elecEntryCard">
-                <h3>Daily Electricity Entry</h3>
+                <div class="card-header-flex">
+                    <h3>Daily Electricity Entry</h3>
+                    <div style="font-size:12.5px; color:var(--primary-dark); font-weight:bold;">
+                        Total Logged Today: <span id="elecLiveCalcSum">0</span> kWh
+                    </div>
+                </div>
                 <div class="form-group" style="margin-bottom: 15px; max-width: 320px;">
                     <label>Select Date *</label>
                     <input type="date" id="elecEntryDate" value="2026-10-16">
@@ -905,40 +1019,17 @@ footer {
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr><th>Sl. No.</th><th>Venue / Zone</th><th>Reading (kWh)</th></tr>
+                            <tr><th>Sl. No.</th><th>Venue / Zone Name</th><th>Meter Reading (kWh)</th></tr>
                         </thead>
-                        <tbody id="elecEntryTableBody">
-                            <tr class="category-row"><td colspan="3">🏛️ College Block & Academic Wings</td></tr>
-                            <tr><td>1</td><td style="text-align:left; font-weight:600;">College Block - Medical College</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>2</td><td style="text-align:left; font-weight:600;">College Block - ACON</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>3</td><td style="text-align:left; font-weight:600;">College Block - ACOP</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>4</td><td style="text-align:left; font-weight:600;">College Block - TAU, ATC, Telecom, Cafeteria, Ooty House, Axis Bank</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>5</td><td style="text-align:left; font-weight:600;">Dr. PCR Knowledge Center (TAU Block)</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-
-                            <tr class="category-row"><td colspan="3">🏢 Hostels & Residential Quarters</td></tr>
-                            <tr><td>6</td><td style="text-align:left; font-weight:600;">Girls Hostel</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>7</td><td style="text-align:left; font-weight:600;">Boys Hostel</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>8</td><td style="text-align:left; font-weight:600;">Resident Hostel</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>9</td><td style="text-align:left; font-weight:600;">Deluxe Girls Hostel</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>10</td><td style="text-align:left; font-weight:600;">Deluxe Boys Hostel</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>11</td><td style="text-align:left; font-weight:600;">Teaching Quarters</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>12</td><td style="text-align:left; font-weight:600;">Non-Teaching Quarters</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-
-                            <tr class="category-row"><td colspan="3">⚡ Campus Amenities, Utilities & Auxiliary</td></tr>
-                            <tr><td>13</td><td style="text-align:left; font-weight:600;">Kitchen Block</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>14</td><td style="text-align:left; font-weight:600;">Guest House</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>15</td><td style="text-align:left; font-weight:600;">Maintenance Block (STP, WTP, Fire Pumps)</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>16</td><td style="text-align:left; font-weight:600;">Street Lights, Security Gate, Temple, Borewells</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                            <tr><td>17</td><td style="text-align:left; font-weight:600;">Others (Vendors, DBS, ICCO, Hari Narayana)</td><td><input type="number" class="elec-reading-input" value="0" placeholder="Enter Reading"></td></tr>
-                        </tbody>
+                        <tbody id="elecEntryTableBody"></tbody>
                     </table>
                 </div>
-                <button type="button" onclick="submitElectricityReading()">Submit Reading</button>
+                <button type="button" onclick="submitElectricityReading()">Save Electricity Readings</button>
             </section>
 
             <!-- Electricity Doughnut Breakdown Chart -->
             <section class="card">
-                <h3>⚡ Power Consumption Distribution by Venue</h3>
+                <h3>⚡ Power Consumption Distribution</h3>
                 <div class="chart-container" style="max-height:300px; display:flex; justify-content:center;">
                     <canvas id="elecChart"></canvas>
                 </div>
@@ -980,13 +1071,16 @@ footer {
                 <button type="button" class="btn-reset" onclick="resetElecFilter()">Reset</button>
             </section>
 
-            <!-- Reading History -->
+            <!-- Editable Reading History -->
             <section class="card">
-                <h3>Reading History</h3>
+                <div class="card-header-flex">
+                    <h3>Electricity Reading History (Editable)</h3>
+                    <span style="font-size:12px; color:var(--text-muted);">Mistakes can be edited or deleted anytime.</span>
+                </div>
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr><th>Date</th><th>Venue</th><th>Reading (kWh)</th></tr>
+                            <tr><th>Date</th><th>Venue / Zone</th><th>Reading (kWh)</th><th>Action</th></tr>
                         </thead>
                         <tbody id="elecHistoryTableBody"></tbody>
                     </table>
@@ -996,76 +1090,43 @@ footer {
 
         <!-- ================= 4. RESOURCE AVAILABILITY & STOCK MANAGEMENT ================= -->
         <div id="resourceAvailView" class="view-section">
-            <p class="subtitle">Check live availability of campus equipment, enter physical stock, and requisition supplies.</p>
+            <p class="subtitle">Check live availability of campus equipment, add custom resources, and requisition supplies.</p>
             <hr>
 
-            <!-- Current Stock Summary (Always viewable) -->
+            <!-- Current Stock Summary (Fully dynamic & editable) -->
             <section class="card" style="border-top-color: #0284C7;">
-                <h3>Current Stock Availability</h3>
+                <div class="card-header-flex">
+                    <div>
+                        <h3>Current Stock & Asset Availability</h3>
+                        <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Live counts of all campus supplies. You can add new resource types and adjust quantities directly.</p>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="openModal('addStockItemModal')">➕ Add New Resource Asset</button>
+                </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Stock Resource</th>
-                                <th>Current In-Stock Quantity</th>
+                                <th>Resource Item</th>
+                                <th>Category</th>
+                                <th>In-Stock Quantity</th>
                                 <th>Status</th>
+                                <th id="stockManageColHeader">Manage</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td style="font-weight:600; text-align:left;">💧 Water Bottles</td>
-                                <td><span class="stock-qty-chip" id="waterBottleDisplay">50</span> Crates</td>
-                                <td><span class="status-pill approved">● Available</span></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:600; text-align:left;">🪑 Chairs</td>
-                                <td><span class="stock-qty-chip" id="chairDisplay">200</span> Units</td>
-                                <td><span class="status-pill approved">● Available</span></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight:600; text-align:left;">🪵 Center Tables</td>
-                                <td><span class="stock-qty-chip" id="tableDisplay">15</span> Units</td>
-                                <td><span class="status-pill approved">● Available</span></td>
-                            </tr>
-                        </tbody>
+                        <tbody id="stockItemsTableBody"></tbody>
                     </table>
                 </div>
-            </section>
-
-            <!-- Enter / Modify Stock Availability (Non-Teaching Staff & Admin/Unit Head Only) -->
-            <section class="card" id="resourceUpdateCard" style="border-top-color: #10B981;">
-                <h3>📦 Enter / Modify Stock Availability (Staff Control)</h3>
-                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Non-Teaching Staff has direct access to update inventory counts for water bottles, chairs, and center tables.</p>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Water Bottles (Crates Available)</label>
-                        <input type="number" id="waterBottles" value="50" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Chairs (Units Available)</label>
-                        <input type="number" id="chairs" value="200" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Center Tables (Units Available)</label>
-                        <input type="number" id="centerTables" value="15" min="0">
-                    </div>
-                </div>
-                <button type="button" id="btnUpdateStock" onclick="updateInventoryStock()">Save Stock Availability</button>
             </section>
 
             <!-- Resource Booking / Requisition Form (Faculty, PC, Dean, Admin, Unit Head) -->
             <section class="card" id="resourceBookCard">
                 <h3>📝 Requisition Campus Resources</h3>
-                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Reserve water bottles, chairs, and center tables for academic sessions, seminars, or official events.</p>
+                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Reserve available equipment and supplies for official academic sessions, seminars, or events.</p>
                 <form onsubmit="handleResourceBooking(event)">
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Select Item *</label>
-                            <select id="bookItemSelect">
-                                <option value="Water Bottles">Water Bottles (Crates)</option>
-                                <option value="Chairs">Chairs</option>
-                                <option value="Center Tables">Center Tables</option>
-                            </select>
+                            <label>Select Resource Item *</label>
+                            <select id="bookItemSelect" required></select>
                         </div>
                         <div class="form-group">
                             <label>Required Quantity *</label>
@@ -1080,6 +1141,12 @@ footer {
                             <input type="time" id="bookEventTime" required>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Your Contact Email (for delivery updates) *</label>
+                            <input type="email" id="bookRequesterEmail" placeholder="e.g. faculty@apollo.edu" required>
+                        </div>
+                    </div>
                     <button type="submit">Submit Resource Requisition</button>
                 </form>
             </section>
@@ -1091,7 +1158,7 @@ footer {
                     <table>
                         <thead>
                             <tr>
-                                <th>Order ID</th><th>Item & Qty</th><th>Requested By</th><th>Required Date & Time</th><th>Staff Handler</th><th>Status</th><th>Action</th>
+                                <th>Order ID</th><th>Item & Qty</th><th>Requested By</th><th>Email</th><th>Required Date & Time</th><th>Staff Handler</th><th>Status</th><th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="resourceOrdersTableBody"></tbody>
@@ -1102,26 +1169,32 @@ footer {
 
         <!-- ================= 5. VENUE BOOKING VIEW ================= -->
         <div id="venueBookingView" class="view-section">
-            <p class="subtitle">Book auditoriums, seminar halls, and campus spaces.</p>
+            <p class="subtitle">Book auditoriums, seminar halls, and campus spaces with two-way email notifications.</p>
             <hr>
 
-            <!-- Admin Add Permanent Venue Card -->
-            <section class="card" id="adminAddVenueCard" style="display:none; border-top-color:#7C3AED;">
-                <h3>➕ Add New University Venue (Admin Only)</h3>
-                <form onsubmit="handleAddNewVenue(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Venue Name *</label>
-                            <input type="text" id="newVenueName" placeholder="e.g. Smart Seminar Hall 2" required>
-                        </div>
+            <!-- Manage Campus Venues (Add/Edit/Delete Venues) -->
+            <section class="card" id="adminManageVenuesCard" style="border-top-color:#7C3AED;">
+                <div class="card-header-flex">
+                    <div>
+                        <h3>🏛️ Manage Campus Venues Directory</h3>
+                        <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Add new auditoriums, seminar halls, and spaces to make them bookable across the campus.</p>
                     </div>
-                    <button type="submit" style="background:#059669;">Save Venue to Directory</button>
-                </form>
+                    <button type="button" class="btn-secondary" onclick="openModal('addVenueModal')">➕ Add New Venue</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Venue Name</th><th>Capacity</th><th>Location Block</th><th>Action</th></tr>
+                        </thead>
+                        <tbody id="venuesDirectoryTableBody"></tbody>
+                    </table>
+                </div>
             </section>
 
             <!-- Venue Booking Request Form -->
             <section class="card" id="venueBookingFormCard">
-                <h3>🏛️ Venue Reservation Portal</h3>
+                <h3>🏛️ Request Venue Reservation</h3>
+                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">When submitted, an automated email notification is sent to the Administrator for approval, and you will receive an approval/denial confirmation via email.</p>
                 <form id="venueBookingForm" onsubmit="handleVenueSubmit(event)">
                     <div class="form-row">
                         <div class="form-group">
@@ -1147,20 +1220,24 @@ footer {
                             <label>Purpose of Booking *</label>
                             <input type="text" id="venuePurpose" placeholder="e.g. National Healthcare Conference 2026" required>
                         </div>
+                        <div class="form-group">
+                            <label>Your Email Address (to receive approval/denial decision) *</label>
+                            <input type="email" id="venueRequesterEmail" placeholder="e.g. faculty@apollo.edu" required>
+                        </div>
                     </div>
 
-                    <button type="submit" id="venueSubmitBtn">Request Venue Booking</button>
+                    <button type="submit" id="venueSubmitBtn">Submit Venue Request</button>
                 </form>
             </section>
 
             <!-- Venue Booking Schedule & Approval Table -->
             <section class="card">
-                <h3>Venue Booking Requests & Schedule</h3>
+                <h3>Venue Booking Requests & Approvals</h3>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Req ID</th><th>Venue</th><th>Requested By</th><th>Date</th><th>Time Duration</th><th>Purpose</th><th>Status</th><th>Action</th>
+                                <th>Req ID</th><th>Venue</th><th>Requested By</th><th>Email</th><th>Date</th><th>Duration</th><th>Purpose</th><th>Status</th><th>Officer Decision</th>
                             </tr>
                         </thead>
                         <tbody id="venueTableBody"></tbody>
@@ -1171,13 +1248,15 @@ footer {
 
         <!-- ================= 6. TRANSPORT REQUEST VIEW ================= -->
         <div id="transportReqView" class="view-section">
-            <p class="subtitle">Request university vehicles for official travel and events.</p>
+            <p class="subtitle">Request university vehicles with automated email dispatch and officer decision links.</p>
             <hr>
 
             <!-- Transport Booking Request Form (PC, Dean, Admin, Unit Head) -->
             <section class="card" id="transportRequestForm">
                 <h3>🚌 Request University Transport</h3>
-                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">When a request is submitted, an email notification with a direct portal approval link is automatically dispatched to the Transport Officer.</p>
+                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">
+                    When requested, an email notification is automatically sent to the <strong>Transport Officer</strong> with a direct link. Once the Transport Officer approves or denies, an email will be sent back to your address.
+                </p>
                 <form onsubmit="submitTransportRequest(event)">
                     <div class="form-row">
                         <div class="form-group">
@@ -1219,6 +1298,10 @@ footer {
                             <label>Purpose of Official Travel</label>
                             <input type="text" id="transPurpose" placeholder="e.g. Official Convocation Guest Transit">
                         </div>
+                        <div class="form-group">
+                            <label>Requester Email (to receive approval/denial notification) *</label>
+                            <input type="email" id="transRequesterEmail" placeholder="e.g. dean@apollo.edu" required>
+                        </div>
                     </div>
 
                     <button type="submit">Submit Transport Request</button>
@@ -1227,13 +1310,15 @@ footer {
 
             <!-- Transport Bookings & Approval Table -->
             <section class="card" id="transportListCard">
-                <h3>🚌 Transport Booking Requests (Approval Management)</h3>
-                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;"><strong>Access Policy:</strong> Only the Transport Officer has authorization to Approve or Reject vehicle requisitions.</p>
+                <h3>🚌 Transport Booking Requests & Approvals</h3>
+                <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">
+                    <strong>Authorization:</strong> Only the <strong>Transport Officer</strong> can approve or deny vehicle requisitions. Requesters will immediately receive an email notification of the decision.
+                </p>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Req ID</th><th>Guest / Delegation</th><th>Vehicle Details</th><th>Date & Time</th><th>Destination</th><th>Status</th><th>Officer Decision</th>
+                                <th>Req ID</th><th>Guest / Delegation</th><th>Vehicle Details</th><th>Date & Time</th><th>Destination</th><th>Requester Email</th><th>Status</th><th>Officer Decision</th>
                             </tr>
                         </thead>
                         <tbody id="transportTableBody"></tbody>
@@ -1347,8 +1432,170 @@ footer {
     </main>
 
     <footer>
-        <p>Apollo University Resource Management System</p>
+        <p>Apollo University Resource Management System (CampusFlow)</p>
     </footer>
+</div>
+
+<!-- ================= MODAL: ADD CUSTOM STOCK RESOURCE ================= -->
+<div id="addStockItemModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--primary); margin-bottom:12px;">➕ Add New Resource / Asset</h3>
+        <form onsubmit="handleAddNewStockItem(event)">
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Resource Name *</label>
+                <input type="text" id="newStockItemName" placeholder="e.g. Projector Epson 4K, Wireless Mic, Podium" required>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Category</label>
+                <select id="newStockItemCategory">
+                    <option value="Furniture">Furniture</option>
+                    <option value="Audio-Visual">Audio-Visual & Electronics</option>
+                    <option value="Beverages">Beverages & Catering</option>
+                    <option value="Stationery">Stationery & General</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Starting Quantity Available *</label>
+                <input type="number" id="newStockItemQty" min="0" value="10" required>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Unit Label</label>
+                <input type="text" id="newStockItemUnit" value="Units" placeholder="e.g. Units, Crates, Sets">
+            </div>
+            <button type="submit" style="background:#059669;">Save Resource Asset</button>
+            <button type="button" class="btn-reset" onclick="closeModal('addStockItemModal')">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- ================= MODAL: EDIT STOCK QUANTITY ================= -->
+<div id="editStockQtyModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--primary); margin-bottom:12px;">✏️ Modify Stock Quantity</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;" id="editStockItemTitle"></p>
+        <form onsubmit="handleSaveEditedStockQty(event)">
+            <input type="hidden" id="editStockItemId">
+            <div class="form-group" style="margin-bottom:14px;">
+                <label>New Quantity Available *</label>
+                <input type="number" id="editStockItemNewQty" min="0" required>
+            </div>
+            <button type="submit">Update Quantity</button>
+            <button type="button" class="btn-reset" onclick="closeModal('editStockQtyModal')">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- ================= MODAL: ADD VENUE ================= -->
+<div id="addVenueModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--primary); margin-bottom:12px;">➕ Add New University Venue</h3>
+        <form onsubmit="handleAddNewVenue(event)">
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Venue Name *</label>
+                <input type="text" id="newVenueName" placeholder="e.g. Smart Seminar Hall 2, Mini Auditorium" required>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Seating Capacity</label>
+                <input type="number" id="newVenueCapacity" placeholder="e.g. 150" value="100" min="10">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Location / Campus Block</label>
+                <input type="text" id="newVenueLocation" placeholder="e.g. Pharmacy Block 3rd Floor" value="Main Campus">
+            </div>
+            <button type="submit" style="background:#059669;">Save Venue to Directory</button>
+            <button type="button" class="btn-reset" onclick="closeModal('addVenueModal')">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- ================= MODAL: ADD ELECTRICITY ZONE / LOCATION ================= -->
+<div id="addElecVenueModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--primary); margin-bottom:12px;">➕ Add Electricity Meter Location</h3>
+        <form onsubmit="handleAddNewElecVenue(event)">
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Location / Zone Name *</label>
+                <input type="text" id="newElecVenueName" placeholder="e.g. BioTech Research Center, New Pharmacy Lab" required>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Category</label>
+                <select id="newElecVenueCategory">
+                    <option value="Academic">Academic Block</option>
+                    <option value="Residential">Hostel / Residential</option>
+                    <option value="Utilities">Utilities & Infrastructure</option>
+                    <option value="Amenities">Amenities & Others</option>
+                </select>
+            </div>
+            <button type="submit" style="background:#059669;">Add Location</button>
+            <button type="button" class="btn-reset" onclick="closeModal('addElecVenueModal')">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- ================= MODAL: DECIDE VENUE BOOKING (APPROVE / DENY) ================= -->
+<div id="decideVenueModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--primary); margin-bottom:10px;">🏛️ Decide Venue Reservation</h3>
+        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;" id="decideVenueSubtext"></p>
+        <form onsubmit="handleSaveVenueDecision(event)">
+            <input type="hidden" id="decideVenueId">
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Decision *</label>
+                <select id="decideVenueStatus" required>
+                    <option value="approved">✅ Approve Booking</option>
+                    <option value="rejected">❌ Deny / Reject Booking</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+                <label>Decision Notes / Reason (Sent to requester via email) *</label>
+                <textarea id="decideVenueNotes" rows="3" placeholder="e.g. Approved. Key to be collected from campus facility office." required></textarea>
+            </div>
+            <button type="submit" style="background:#059669;">Submit Decision & Send Email</button>
+            <button type="button" class="btn-reset" onclick="closeModal('decideVenueModal')">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- ================= MODAL: DECIDE TRANSPORT REQUEST (APPROVE / DENY) ================= -->
+<div id="decideTransportModal" class="modal">
+    <div class="modal-content">
+        <h3 style="color:var(--primary); margin-bottom:10px;">🚌 Decide Transport Requisition</h3>
+        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;" id="decideTransportSubtext"></p>
+        <form onsubmit="handleSaveTransportDecision(event)">
+            <input type="hidden" id="decideTransportId">
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Decision *</label>
+                <select id="decideTransportStatus" required onchange="toggleDriverDetailsField(this.value)">
+                    <option value="approved">✅ Approve Request</option>
+                    <option value="rejected">❌ Deny / Reject Request</option>
+                </select>
+            </div>
+            <div class="form-group" id="driverDetailsGroup" style="margin-bottom:12px;">
+                <label>Assigned Vehicle / Driver Information</label>
+                <input type="text" id="decideTransportDriver" placeholder="e.g. Vehicle: AP-03-BX-1234, Driver: Rajesh (9876543210)">
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+                <label>Officer Decision Notes (Dispatched to requester email) *</label>
+                <textarea id="decideTransportNotes" rows="3" placeholder="e.g. Transport arranged as requested. Driver will report at pickup point 15 mins prior." required></textarea>
+            </div>
+            <button type="submit" style="background:#059669;">Confirm & Send Email Notification</button>
+            <button type="button" class="btn-reset" onclick="closeModal('decideTransportModal')">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- ================= MODAL: NOTIFICATIONS & EMAIL MAILBOX ================= -->
+<div id="notificationsModal" class="modal">
+    <div class="modal-content" style="width: 650px; max-width:95%;">
+        <div class="card-header-flex">
+            <h3 style="color:var(--primary); margin:0;">📬 Notifications & Email Center</h3>
+            <button type="button" class="btn-reset btn-action-small" onclick="closeModal('notificationsModal')">✕ Close</button>
+        </div>
+        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px;">
+            Real-time automated emails for new requisitions, approvals, and denials. Requesters and officers receive notifications here and via simulated dispatch.
+        </p>
+        <div id="notificationsContainer" style="max-height: 400px; overflow-y:auto; padding-right:4px;"></div>
+    </div>
 </div>
 
 <!-- ================= SETTINGS MODAL ================= -->
@@ -1376,31 +1623,12 @@ footer {
     </div>
 </div>
 
-<!-- ================= TRANSPORT EMAIL DISPATCH MODAL ================= -->
-<div id="transportEmailModal" class="modal">
-    <div class="modal-content" style="width: 520px; max-width:95%;">
-        <h3 style="color:var(--primary); margin-bottom:8px;">📧 Email Dispatched to Transport Officer</h3>
-        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">
-            An official automated vehicle requisition notification has been dispatched with a direct website link for one-click approval:
-        </p>
-        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:12px; font-size:12.5px; line-height:1.6; margin-bottom:14px;">
-            <div><strong>To:</strong> <span id="emailModalTo">transport.officer@apollo-uni.edu</span></div>
-            <div><strong>Subject:</strong> <span id="emailModalSubject" style="color:var(--primary-dark); font-weight:bold;"></span></div>
-            <div style="margin-top:8px; padding:10px; background:white; border-radius:6px; border:1px solid #E5E7EB; white-space:pre-line; max-height:160px; overflow-y:auto; font-family:monospace; font-size:12px;" id="emailModalBody"></div>
-        </div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button type="button" id="emailModalDirectLinkBtn" onclick="openApprovalFromEmail()">🔗 Click Link to Open Approval as Transport Officer</button>
-            <button type="button" class="btn-reset" onclick="closeModal('transportEmailModal')">Close</button>
-        </div>
-    </div>
-</div>
-
 <!-- ================= HELP MODAL ================= -->
 <div id="helpModal" class="modal">
     <div class="modal-content">
         <h3 style="color:var(--primary); margin-bottom:12px;">Help & Support</h3>
         <p style="color:var(--text-muted); font-size:13px; line-height:1.5;">
-            Apollo University Resource Management System supports utilities logging, inventory stock tracking, auditorium/venue scheduling, and vehicle transit.
+            Apollo University Resource Management System supports utilities logging, inventory stock tracking, auditorium/venue scheduling, and vehicle transit with automated email notifications.
         </p>
         <br>
         <p style="font-size:13px;"><strong>Support Email:</strong> support@apollo-uni.edu</p>
@@ -1411,66 +1639,60 @@ footer {
 </div>
 
 <script>
-// ================= STATE & ROLE CONFIGURATION =================
-let currentUser = { fullName: "System Administrator", role: "Administrator" };
+// ================= STATE & CONFIGURATION =================
+let currentUser = { fullName: "System Administrator", email: "admin@apollo.edu", role: "Administrator" };
 let currentRole = "Administrator";
 let targetHighlightReqId = null;
 
 // ================= RBAC POLICY MATRIX =================
-// 1. Administrator: All info seen and accessible.
-// 2. Teaching Faculty: Only resource managing (view & book) and venue booking.
-// 3. Program Coordinator & Dean: Venue booking, resource management (view & book), transport booking.
-// 4. Transport Officer: To see the booking and has access to approve or reject. Receives email with direct link.
-// 5. Non-Teaching Staff: Enter or modify water & electricity readings, and (water bottles, chairs, center tables) enter availability under resources.
-// 6. Unit Head: Management overview across utilities, stock, venues, and transit.
 const ROLE_PERMISSIONS = {
     "Administrator": {
         navs: ['dashboard', 'utilities', 'resources', 'venue', 'transport', 'reports'],
         defaultView: 'dashboardView',
         canEditUtilities: true,
-        canEnterStockAvailability: true,
+        canManageStock: true,
         canBookResource: true,
         canBookVenue: true,
-        canAddPermanentVenue: true,
+        canManageVenues: true,
         canApproveVenue: true,
         canRequestTransport: true,
         canApproveTransport: true,
-        description: "Full administrative control. All data, reports, utilities, venues and approvals are accessible."
+        description: "Full administrative control. All data, editable items, reports, and approvals are accessible."
     },
     "Unit Head": {
         navs: ['dashboard', 'utilities', 'resources', 'venue', 'transport', 'reports'],
         defaultView: 'dashboardView',
         canEditUtilities: true,
-        canEnterStockAvailability: true,
+        canManageStock: true,
         canBookResource: true,
         canBookVenue: true,
-        canAddPermanentVenue: false,
+        canManageVenues: false,
         canApproveVenue: true,
         canRequestTransport: true,
         canApproveTransport: false, // strictly Transport Officer
-        description: "Departmental executive. Has overview access, can book venues/stock/transport, but transport approval belongs strictly to Transport Officer."
+        description: "Departmental executive. Can book venues/stock/transport and approve venues; transport approval belongs strictly to Transport Officer."
     },
     "Transport Officer": {
         navs: ['transport'],
         defaultView: 'transportReqView',
         canEditUtilities: false,
-        canEnterStockAvailability: false,
+        canManageStock: false,
         canBookResource: false,
         canBookVenue: false,
-        canAddPermanentVenue: false,
+        canManageVenues: false,
         canApproveVenue: false,
         canRequestTransport: false,
         canApproveTransport: true, // Only Transport Officer can approve or reject!
-        description: "Transport Operations. Can view all vehicle booking requests and is the sole authority with access to Approve or Reject transport requisitions."
+        description: "Transport Operations. Can view all vehicle requests and is the sole authority with access to Approve or Deny transport requisitions."
     },
     "Teaching Faculty": {
         navs: ['resources', 'venue'],
         defaultView: 'resourceAvailView',
         canEditUtilities: false,
-        canEnterStockAvailability: false,
+        canManageStock: false,
         canBookResource: true,
         canBookVenue: true,
-        canAddPermanentVenue: false,
+        canManageVenues: false,
         canApproveVenue: false,
         canRequestTransport: false,
         canApproveTransport: false,
@@ -1480,10 +1702,10 @@ const ROLE_PERMISSIONS = {
         navs: ['resources', 'venue', 'transport'],
         defaultView: 'resourceAvailView',
         canEditUtilities: false,
-        canEnterStockAvailability: false,
+        canManageStock: false,
         canBookResource: true,
         canBookVenue: true,
-        canAddPermanentVenue: false,
+        canManageVenues: false,
         canApproveVenue: false,
         canRequestTransport: true,
         canApproveTransport: false, // Transport Officer only
@@ -1493,10 +1715,10 @@ const ROLE_PERMISSIONS = {
         navs: ['resources', 'venue', 'transport'],
         defaultView: 'resourceAvailView',
         canEditUtilities: false,
-        canEnterStockAvailability: false,
+        canManageStock: false,
         canBookResource: true,
         canBookVenue: true,
-        canAddPermanentVenue: false,
+        canManageVenues: false,
         canApproveVenue: false,
         canRequestTransport: true,
         canApproveTransport: false, // Transport Officer only
@@ -1505,47 +1727,30 @@ const ROLE_PERMISSIONS = {
     "Non-Teaching Staff": {
         navs: ['utilities', 'resources'],
         defaultView: 'waterView',
-        canEditUtilities: true, // enter or modify water & electricity readings
-        canEnterStockAvailability: true, // enter availability of water bottles, chairs, center tables
+        canEditUtilities: true,
+        canManageStock: true, // can enter availability of water bottles, chairs, center tables & other items
         canBookResource: false,
         canBookVenue: false,
-        canAddPermanentVenue: false,
+        canManageVenues: false,
         canApproveVenue: false,
         canRequestTransport: false,
         canApproveTransport: false,
-        description: "Campus Operations Staff. Has direct access to enter/modify Water & Electricity readings and update stock availability for water bottles, chairs, and center tables."
+        description: "Campus Operations Staff. Has direct access to enter/modify Water & Electricity readings and update stock availability for water bottles, chairs, center tables, and other resources."
     }
 };
 
-// ================= DATA ARRAYS =================
-let inventoryStock = { waterBottles: 50, chairs: 200, centerTables: 15 };
+// ================= DYNAMIC DATA ARRAYS =================
+let stockItems = [];
+let venuesList = [];
+let electricityLocations = [];
 let stockOrders = [];
-let venueOptions = ["Main Auditorium", "Dr. PCR Knowledge Center Seminar Hall", "Lecture Hall 101", "Conference Hall (TAU Block)"];
 let venueBookings = [];
 let transportRequests = [];
 let waterReadingsList = [];
 let electricityReadingsList = [];
-let electricityVenues = [
-    "College Block - Medical College",
-    "College Block - ACON",
-    "College Block - ACOP",
-    "College Block - TAU, ATC, Telecom, Cafeteria, Ooty House, Axis Bank",
-    "Dr. PCR Knowledge Center (TAU Block)",
-    "Girls Hostel",
-    "Boys Hostel",
-    "Resident Hostel",
-    "Deluxe Girls Hostel",
-    "Deluxe Boys Hostel",
-    "Teaching Quarters",
-    "Non-Teaching Quarters",
-    "Kitchen Block",
-    "Guest House",
-    "Maintenance Block (STP, WTP, Fire Pumps)",
-    "Street Lights, Security Gate, Temple, Borewells",
-    "Others (Vendors, DBS, ICCO, Hari Narayana)"
-];
+let notificationsList = [];
 
-// ================= CHART INSTANCES =================
+// Chart instances
 let dashOverviewChartInstance = null;
 let waterChartInstance = null;
 let elecChartInstance = null;
@@ -1563,7 +1768,7 @@ function showToast(msg, icon = '✅') {
     setTimeout(() => { toast.style.display = 'none'; }, 3400);
 }
 
-// ================= USER SESSION & ROLE MANAGEMENT =================
+// ================= INITIALIZE USER SESSION & ROLES =================
 function initUserSession() {
     const storedUser = localStorage.getItem('apollo_user');
     const savedRole = localStorage.getItem('apollo_active_role');
@@ -1577,7 +1782,7 @@ function initUserSession() {
         }
     } else {
         currentRole = savedRole || 'Administrator';
-        currentUser = { fullName: `${currentRole} User`, role: currentRole };
+        currentUser = { fullName: `${currentRole} User`, email: `${currentRole.toLowerCase().replace(/\s+/g, '')}@apollo.edu`, role: currentRole };
     }
 
     // Check URL parameters for direct link navigation
@@ -1597,31 +1802,42 @@ function initUserSession() {
     document.getElementById('roleDisplay').innerText = currentRole;
     document.getElementById('userNameDisplay').innerText = currentUser.fullName || `${currentRole} User`;
 
+    // Pre-populate requester emails in forms
+    const defEmail = currentUser.email || `${currentRole.toLowerCase().replace(/\s+/g, '')}@apollo.edu`;
+    const venueEmailInput = document.getElementById('venueRequesterEmail');
+    if (venueEmailInput) venueEmailInput.value = defEmail;
+    const transEmailInput = document.getElementById('transRequesterEmail');
+    if (transEmailInput) transEmailInput.value = defEmail;
+    const bookEmailInput = document.getElementById('bookRequesterEmail');
+    if (bookEmailInput) bookEmailInput.value = defEmail;
+
     applyRolePermissions();
 
     if (urlView) {
-        const navEl = document.querySelector(`[onclick*="${urlView}"]`);
-        switchView(urlView, navEl);
+        switchView(urlView);
         if (urlReqId) {
-            setTimeout(() => {
-                highlightTransportRow(urlReqId);
-            }, 400);
+            setTimeout(() => { highlightTransportRow(urlReqId); }, 400);
         }
     }
 }
 
-// Called directly when the role dropdown inside Settings Modal changes
 function changeUserRole() {
     const sel = document.getElementById('roleSelector');
     currentRole = sel.value;
     localStorage.setItem('apollo_active_role', currentRole);
     if (currentUser) {
         currentUser.role = currentRole;
+        currentUser.email = `${currentRole.toLowerCase().replace(/\s+/g, '')}@apollo.edu`;
         localStorage.setItem('apollo_user', JSON.stringify(currentUser));
     }
 
     document.getElementById('roleDisplay').innerText = currentRole;
     document.getElementById('userNameDisplay').innerText = `${currentRole} User`;
+
+    const defEmail = currentUser.email;
+    if (document.getElementById('venueRequesterEmail')) document.getElementById('venueRequesterEmail').value = defEmail;
+    if (document.getElementById('transRequesterEmail')) document.getElementById('transRequesterEmail').value = defEmail;
+    if (document.getElementById('bookRequesterEmail')) document.getElementById('bookRequesterEmail').value = defEmail;
 
     applyRolePermissions();
     showToast(`Active role switched to: ${currentRole}`, '👤');
@@ -1639,11 +1855,9 @@ function handleLogout() {
 function applyRolePermissions() {
     const perm = ROLE_PERMISSIONS[currentRole] || ROLE_PERMISSIONS["Administrator"];
 
-    // Update Banner Info
     document.getElementById('bannerRoleName').innerText = currentRole;
     document.getElementById('bannerRoleDesc').innerText = perm.description;
 
-    // Show / Hide Navigation items in Sidebar
     const navMapping = {
         'dashboard': document.getElementById('navItem-dashboard'),
         'utilities': document.getElementById('navItem-utilities'),
@@ -1654,35 +1868,28 @@ function applyRolePermissions() {
     };
 
     for (const [key, el] of Object.entries(navMapping)) {
-        if (el) {
-            el.style.display = perm.navs.includes(key) ? 'block' : 'none';
-        }
+        if (el) el.style.display = perm.navs.includes(key) ? 'block' : 'none';
     }
 
-    // Module Specific Permissions
-    // 1. Utilities Form (Water & Electricity Daily Entry)
+    // Form and Card Visibility
     const waterEntryCard = document.getElementById('waterEntryCard');
     const elecEntryCard = document.getElementById('elecEntryCard');
+    const elecManageVenuesCard = document.getElementById('elecManageVenuesCard');
     if (waterEntryCard) waterEntryCard.style.display = perm.canEditUtilities ? 'block' : 'none';
     if (elecEntryCard) elecEntryCard.style.display = perm.canEditUtilities ? 'block' : 'none';
+    if (elecManageVenuesCard) elecManageVenuesCard.style.display = perm.canEditUtilities ? 'block' : 'none';
 
-    // 2. Resource Availability (Physical Stock Update vs Requisition)
-    const resourceUpdateCard = document.getElementById('resourceUpdateCard');
     const resourceBookCard = document.getElementById('resourceBookCard');
-    if (resourceUpdateCard) resourceUpdateCard.style.display = perm.canEnterStockAvailability ? 'block' : 'none';
     if (resourceBookCard) resourceBookCard.style.display = perm.canBookResource ? 'block' : 'none';
 
-    // 3. Venue Booking (Add Permanent Venue vs Request Booking)
-    const adminAddVenueCard = document.getElementById('adminAddVenueCard');
+    const adminManageVenuesCard = document.getElementById('adminManageVenuesCard');
     const venueBookingFormCard = document.getElementById('venueBookingFormCard');
-    if (adminAddVenueCard) adminAddVenueCard.style.display = perm.canAddPermanentVenue ? 'block' : 'none';
+    if (adminManageVenuesCard) adminManageVenuesCard.style.display = (perm.canManageVenues || currentRole === 'Administrator') ? 'block' : 'none';
     if (venueBookingFormCard) venueBookingFormCard.style.display = perm.canBookVenue ? 'block' : 'none';
 
-    // 4. Transport Request Form
     const transportRequestForm = document.getElementById('transportRequestForm');
     if (transportRequestForm) transportRequestForm.style.display = perm.canRequestTransport ? 'block' : 'none';
 
-    // Check if the current view is permitted for this role; if not, switch to default permitted view
     const currentActiveView = document.querySelector('.view-section.active-view')?.id;
     const viewToNavMap = {
         'dashboardView': 'dashboard',
@@ -1698,59 +1905,45 @@ function applyRolePermissions() {
         switchView(perm.defaultView);
     }
 
+    renderStockItemsTable();
+    renderVenuesDirectory();
     renderVenueTable();
     renderTransportTable();
     renderResourceOrdersTable();
+    renderNotifications();
     updateDashboardWidgets();
 }
 
-// ================= BACKEND DATA LOAD =================
+// ================= LOAD SERVER DATA =================
 async function loadServerData() {
     try {
         const res = await fetch('/api/data');
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
 
-        if (data.inventoryStock) {
-            inventoryStock = data.inventoryStock;
-            document.getElementById('waterBottleDisplay').innerText = inventoryStock.waterBottles;
-            document.getElementById('chairDisplay').innerText = inventoryStock.chairs;
-            document.getElementById('tableDisplay').innerText = inventoryStock.centerTables;
-            document.getElementById('waterBottles').value = inventoryStock.waterBottles;
-            document.getElementById('chairs').value = inventoryStock.chairs;
-            document.getElementById('centerTables').value = inventoryStock.centerTables;
-        }
+        stockItems = data.stockItems || [];
+        venuesList = data.venues || [];
+        electricityLocations = data.electricityLocations || [];
+        stockOrders = data.stockOrders || [];
+        venueBookings = data.venueBookings || [];
+        transportRequests = data.transportRequests || [];
+        waterReadingsList = data.waterReadings || [];
+        electricityReadingsList = data.electricityReadings || [];
+        notificationsList = data.notifications || [];
 
-        if (Array.isArray(data.venueOptions)) {
-            venueOptions = data.venueOptions;
-            populateVenueDropdown();
-        }
-
-        if (Array.isArray(data.stockOrders)) {
-            stockOrders = data.stockOrders;
-            renderResourceOrdersTable();
-        }
-
-        if (Array.isArray(data.venueBookings)) {
-            venueBookings = data.venueBookings;
-            renderVenueTable();
-        }
-
-        if (Array.isArray(data.transportRequests)) {
-            transportRequests = data.transportRequests;
-            renderTransportTable();
-        }
-
-        if (Array.isArray(data.waterReadings)) {
-            waterReadingsList = data.waterReadings;
-            renderWaterHistoryTable(waterReadingsList);
-        }
-
-        if (Array.isArray(data.electricityReadings)) {
-            electricityReadingsList = data.electricityReadings;
-            renderElecHistoryTable(electricityReadingsList);
-        }
-
+        renderStockItemsTable();
+        populateResourceRequisitionDropdown();
+        renderVenuesDirectory();
+        populateVenueSelectDropdown();
+        renderElecLocationsPills();
+        renderElecEntryTableRows();
+        populateElecVenueFilter();
+        renderWaterHistoryTable(waterReadingsList);
+        renderElecHistoryTable(electricityReadingsList);
+        renderResourceOrdersTable();
+        renderVenueTable();
+        renderTransportTable();
+        renderNotifications();
         updateDashboardWidgets();
         updateCharts();
 
@@ -1758,19 +1951,18 @@ async function loadServerData() {
             highlightTransportRow(targetHighlightReqId);
         }
     } catch (err) {
-        console.warn('Backend load notice (operating with local state):', err.message);
+        console.warn('Backend load note:', err.message);
     }
 }
 
-// ================= NAVIGATION VIEW SWITCHER =================
+// ================= NAVIGATION =================
 function switchView(viewId, navEl) {
     document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active-view'));
     const target = document.getElementById(viewId);
     if (target) target.classList.add('active-view');
 
     document.querySelectorAll('.nav-link, .dropdown-menu a').forEach(l => {
-        l.classList.remove('active');
-        l.classList.remove('sub-active');
+        l.classList.remove('active', 'sub-active');
     });
 
     if (navEl) {
@@ -1815,7 +2007,898 @@ function toggleDropdown(menuId, arrowId) {
 function openModal(id) { document.getElementById(id).style.display = "flex"; }
 function closeModal(id) { document.getElementById(id).style.display = "none"; }
 
-// ================= UTILITIES: WATER MODULE =================
+// ================= 1. DYNAMIC & EDITABLE STOCK RESOURCES =================
+function renderStockItemsTable() {
+    const tbody = document.getElementById('stockItemsTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const perm = ROLE_PERMISSIONS[currentRole] || ROLE_PERMISSIONS["Administrator"];
+    const canManage = perm.canManageStock;
+
+    if (stockItems.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-state-text">No resources registered. Click "+ Add New Resource Asset" to create one.</div></div></td></tr>`;
+        return;
+    }
+
+    stockItems.forEach(item => {
+        const tr = document.createElement('tr');
+        let statusBadge = item.quantity > 0
+            ? `<span class="status-pill approved">● In Stock</span>`
+            : `<span class="status-pill rejected">● Out of Stock</span>`;
+
+        let actionHtml = '';
+        if (canManage) {
+            actionHtml = `
+                <button type="button" class="btn-action-small btn-secondary" onclick="openEditStockQtyModal('${item.id}', '${item.name}', ${item.quantity})">✏️ Edit Qty</button>
+                <button type="button" class="btn-action-small btn-reject" onclick="deleteStockItem('${item.id}', '${item.name}')">🗑️</button>
+            `;
+        } else {
+            actionHtml = `<span style="font-size:11px; color:var(--text-muted);">View Only</span>`;
+        }
+
+        tr.innerHTML = `
+            <td style="font-weight:600; text-align:left;">${item.name}</td>
+            <td><span style="font-size:11.5px; background:#F1F5F9; padding:2px 8px; border-radius:4px; font-weight:600;">${item.category || 'General'}</span></td>
+            <td><span class="stock-qty-chip">${item.quantity}</span> <span style="font-size:12px; color:var(--text-muted);">${item.unit || 'Units'}</span></td>
+            <td>${statusBadge}</td>
+            <td>${actionHtml}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    populateResourceRequisitionDropdown();
+}
+
+function populateResourceRequisitionDropdown() {
+    const sel = document.getElementById('bookItemSelect');
+    if (!sel) return;
+    sel.innerHTML = '';
+    stockItems.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.name;
+        opt.innerText = `${item.name} (${item.quantity} ${item.unit || 'Units'} Available)`;
+        sel.appendChild(opt);
+    });
+}
+
+async function handleAddNewStockItem(e) {
+    e.preventDefault();
+    const name = document.getElementById('newStockItemName').value.trim();
+    const category = document.getElementById('newStockItemCategory').value;
+    const qty = parseInt(document.getElementById('newStockItemQty').value) || 0;
+    const unit = document.getElementById('newStockItemUnit').value.trim() || 'Units';
+
+    if (!name) return;
+
+    try {
+        const res = await fetch('/api/stock/items', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, category, quantity: qty, unit })
+        });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.stockItems)) {
+            stockItems = data.stockItems;
+        } else {
+            stockItems.push({ id: 'res_' + Date.now(), name, category, quantity: qty, unit });
+        }
+    } catch(err) {
+        stockItems.push({ id: 'res_' + Date.now(), name, category, quantity: qty, unit });
+    }
+
+    renderStockItemsTable();
+    closeModal('addStockItemModal');
+    e.target.reset();
+    showToast(`Added new resource: ${name}`);
+}
+
+function openEditStockQtyModal(id, name, currentQty) {
+    document.getElementById('editStockItemId').value = id;
+    document.getElementById('editStockItemTitle').innerText = `Resource: ${name} (Current: ${currentQty})`;
+    document.getElementById('editStockItemNewQty').value = currentQty;
+    openModal('editStockQtyModal');
+}
+
+async function handleSaveEditedStockQty(e) {
+    e.preventDefault();
+    const id = document.getElementById('editStockItemId').value;
+    const newQty = parseInt(document.getElementById('editStockItemNewQty').value) || 0;
+
+    try {
+        await fetch(`/api/stock/items/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ quantity: newQty })
+        });
+        const item = stockItems.find(i => i.id === id);
+        if (item) item.quantity = newQty;
+    } catch (err) {
+        const item = stockItems.find(i => i.id === id);
+        if (item) item.quantity = newQty;
+    }
+
+    renderStockItemsTable();
+    closeModal('editStockQtyModal');
+    showToast("Stock quantity updated successfully!");
+}
+
+async function deleteStockItem(id, name) {
+    if (!confirm(`Are you sure you want to delete "${name}" from inventory?`)) return;
+    try {
+        await fetch(`/api/stock/items/${id}`, { method: 'DELETE' });
+    } catch(e){}
+    stockItems = stockItems.filter(i => i.id !== id);
+    renderStockItemsTable();
+    showToast(`Removed "${name}" from stock.`);
+}
+
+// Resource Booking Requisition
+async function handleResourceBooking(e) {
+    e.preventDefault();
+    const itemName = document.getElementById('bookItemSelect').value;
+    const qty = parseInt(document.getElementById('bookItemQty').value) || 0;
+    const date = document.getElementById('bookEventDate').value;
+    const time = document.getElementById('bookEventTime').value;
+    const reqEmail = document.getElementById('bookRequesterEmail').value.trim() || currentUser.email;
+
+    const stock = stockItems.find(i => i.name === itemName);
+    if (!stock || stock.quantity < qty) {
+        alert(`Insufficient stock! Currently available: ${stock ? stock.quantity : 0}`);
+        return;
+    }
+
+    const newOrder = {
+        id: 'RO-' + Math.floor(500 + Math.random() * 500),
+        item: itemName,
+        qty: qty,
+        requestedBy: `${currentUser.fullName} (${currentRole})`,
+        requesterEmail: reqEmail,
+        dateTime: `${date} at ${time}`,
+        claimedBy: null,
+        status: 'pending'
+    };
+
+    try {
+        const res = await fetch('/api/stock/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newOrder)
+        });
+        const data = await res.json();
+        if (data.success && data.order) stockOrders.unshift(data.order);
+        else stockOrders.unshift(newOrder);
+    } catch(err) {
+        stockOrders.unshift(newOrder);
+    }
+
+    if (stock) stock.quantity -= qty;
+    renderStockItemsTable();
+    renderResourceOrdersTable();
+    updateDashboardWidgets();
+    e.target.reset();
+    showToast(`Requisition #${newOrder.id} submitted for ${qty}x ${itemName}!`);
+}
+
+function renderResourceOrdersTable() {
+    const tbody = document.getElementById('resourceOrdersTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const unclaimedCount = stockOrders.filter(o => o.claimedBy === null).length;
+    const badge = document.getElementById('resourceStaffBadge');
+    if (badge) {
+        badge.style.display = (currentRole === "Non-Teaching Staff" && unclaimedCount > 0) ? 'inline-block' : 'none';
+        badge.innerText = unclaimedCount;
+    }
+
+    if (stockOrders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-state-text">No resource requisitions logged yet.</div></div></td></tr>`;
+        return;
+    }
+
+    stockOrders.forEach(order => {
+        const row = document.createElement('tr');
+        let statusBadge = `<span class="status-pill ${order.status}">● ${order.status.toUpperCase()}</span>`;
+        let actionHTML = '';
+
+        if (currentRole === "Non-Teaching Staff" || currentRole === "Administrator") {
+            if (order.claimedBy === null) {
+                actionHTML = `<button type="button" class="btn-action-small btn-claim" onclick="claimResourceOrder('${order.id}')">Claim</button>`;
+            } else if (order.status === 'claimed') {
+                actionHTML = `<button type="button" class="btn-action-small btn-delivered" onclick="markResourceDelivered('${order.id}')">Mark Delivered</button>`;
+            } else {
+                actionHTML = `<span style="font-size:11px; color:var(--text-muted);">Completed</span>`;
+            }
+        } else {
+            actionHTML = `<span style="font-size:11px; color:var(--text-muted);">${order.status}</span>`;
+        }
+
+        row.innerHTML = `
+            <td><strong>#${order.id}</strong></td>
+            <td style="text-align:left; font-weight:bold;">${order.qty}x ${order.item}</td>
+            <td>${order.requestedBy}</td>
+            <td><span style="font-size:11.5px; color:var(--primary);">${order.requesterEmail || 'staff@apollo.edu'}</span></td>
+            <td>${order.dateTime}</td>
+            <td>${order.claimedBy ? '<strong>' + order.claimedBy + '</strong>' : '<span style="color:var(--text-muted);">Unassigned</span>'}</td>
+            <td>${statusBadge}</td>
+            <td>${actionHTML}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+async function claimResourceOrder(id) {
+    const order = stockOrders.find(o => o.id === id);
+    if (!order) return;
+    order.claimedBy = `${currentRole}`;
+    order.status = 'claimed';
+    try {
+        await fetch(`/api/stock/orders/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'claimed', claimedBy: currentRole })
+        });
+    } catch(e){}
+    renderResourceOrdersTable();
+    showToast(`Order #${id} claimed.`);
+}
+
+async function markResourceDelivered(id) {
+    const order = stockOrders.find(o => o.id === id);
+    if (!order) return;
+    order.status = 'delivered';
+    try {
+        await fetch(`/api/stock/orders/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'delivered' })
+        });
+    } catch(e){}
+    renderResourceOrdersTable();
+    showToast(`Order #${id} marked as delivered!`);
+}
+
+// ================= 2. DYNAMIC & EDITABLE VENUES =================
+function renderVenuesDirectory() {
+    const tbody = document.getElementById('venuesDirectoryTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (venuesList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="empty-state-text">No venues found in directory. Add one above!</div></div></td></tr>`;
+        return;
+    }
+
+    venuesList.forEach(v => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="font-weight:bold; text-align:left; color:var(--primary-dark);">${v.name}</td>
+            <td>${v.capacity || 100} Seats</td>
+            <td>${v.location || 'Campus'}</td>
+            <td>
+                <button type="button" class="btn-action-small btn-reject" onclick="deleteVenue('${v.id}', '${v.name}')">🗑️ Remove</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+    populateVenueSelectDropdown();
+}
+
+function populateVenueSelectDropdown() {
+    const sel = document.getElementById('venueSelect');
+    if (!sel) return;
+    sel.innerHTML = '';
+    venuesList.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.name;
+        opt.innerText = `${v.name} (${v.capacity || 100} seats - ${v.location || 'Campus'})`;
+        sel.appendChild(opt);
+    });
+}
+
+async function handleAddNewVenue(e) {
+    e.preventDefault();
+    const name = document.getElementById('newVenueName').value.trim();
+    const capacity = parseInt(document.getElementById('newVenueCapacity').value) || 100;
+    const location = document.getElementById('newVenueLocation').value.trim() || 'Campus';
+
+    if (!name) return;
+
+    try {
+        const res = await fetch('/api/venues', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, capacity, location })
+        });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.venues)) {
+            venuesList = data.venues;
+        } else {
+            venuesList.push({ id: 'v_' + Date.now(), name, capacity, location });
+        }
+    } catch(err) {
+        venuesList.push({ id: 'v_' + Date.now(), name, capacity, location });
+    }
+
+    renderVenuesDirectory();
+    closeModal('addVenueModal');
+    e.target.reset();
+    showToast(`Added venue: ${name}`);
+}
+
+async function deleteVenue(id, name) {
+    if (!confirm(`Are you sure you want to remove "${name}" from the venues directory?`)) return;
+    try {
+        await fetch(`/api/venues/${id}`, { method: 'DELETE' });
+    } catch(e){}
+    venuesList = venuesList.filter(v => v.id !== id);
+    renderVenuesDirectory();
+    showToast(`Removed venue: ${name}`);
+}
+
+// Request Venue Booking
+async function handleVenueSubmit(e) {
+    e.preventDefault();
+    const vName = document.getElementById('venueSelect').value;
+    const vDate = document.getElementById('venueDate').value;
+    const fromT = document.getElementById('venueFromTime').value;
+    const toT = document.getElementById('venueToTime').value;
+    const purp = document.getElementById('venuePurpose').value;
+    const reqEmail = document.getElementById('venueRequesterEmail').value.trim() || currentUser.email;
+
+    const newBooking = {
+        id: 'VB-' + Math.floor(200 + Math.random() * 800),
+        venue: vName,
+        bookedBy: `${currentUser.fullName} (${currentRole})`,
+        requesterEmail: reqEmail,
+        date: vDate,
+        timeDuration: `${fromT} - ${toT}`,
+        purpose: purp,
+        status: 'pending'
+    };
+
+    try {
+        const res = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newBooking)
+        });
+        const data = await res.json();
+        if (data.success && data.booking) venueBookings.unshift(data.booking);
+        else venueBookings.unshift(newBooking);
+    } catch (e) {
+        venueBookings.unshift(newBooking);
+    }
+
+    renderVenueTable();
+    updateDashboardWidgets();
+    loadNotifications();
+    e.target.reset();
+    showToast(`Venue request #${newBooking.id} submitted! Email alert sent to Admin.`, '✉️');
+}
+
+function renderVenueTable() {
+    const tbody = document.getElementById('venueTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const perm = ROLE_PERMISSIONS[currentRole] || ROLE_PERMISSIONS["Administrator"];
+
+    if (venueBookings.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="empty-state-text">No venue bookings registered yet.</div></div></td></tr>`;
+        return;
+    }
+
+    venueBookings.forEach(b => {
+        const row = document.createElement('tr');
+        let actionHTML = '';
+        if (perm.canApproveVenue) {
+            if (b.status === 'pending') {
+                actionHTML = `
+                    <button type="button" class="btn-action-small btn-approve" onclick="openDecideVenueModal('${b.id}', 'approved')">Approve</button>
+                    <button type="button" class="btn-action-small btn-reject" onclick="openDecideVenueModal('${b.id}', 'rejected')">Deny</button>
+                `;
+            } else {
+                actionHTML = `<span style="font-size:11px; color:var(--text-muted); font-weight:bold;">${b.status.toUpperCase()}</span>`;
+            }
+        } else {
+            actionHTML = `<span style="font-size:11px; color:var(--text-muted);">View Only</span>`;
+        }
+
+        row.innerHTML = `
+            <td><strong>#${b.id}</strong></td>
+            <td style="text-align:left; font-weight:bold; color:var(--primary-dark);">${b.venue}</td>
+            <td>${b.bookedBy}</td>
+            <td><span style="font-size:11.5px; color:var(--primary);">${b.requesterEmail || 'faculty@apollo.edu'}</span></td>
+            <td><span style="font-weight:600;">${b.date}</span></td>
+            <td>${b.timeDuration}</td>
+            <td style="text-align:left;">${b.purpose}</td>
+            <td><span class="status-pill ${b.status}">● ${b.status.toUpperCase()}</span></td>
+            <td>${actionHTML}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function openDecideVenueModal(id, decision) {
+    const booking = venueBookings.find(b => b.id === id);
+    if (!booking) return;
+    document.getElementById('decideVenueId').value = id;
+    document.getElementById('decideVenueStatus').value = decision;
+    document.getElementById('decideVenueSubtext').innerText = `Requisition #${id} for ${booking.venue} by ${booking.bookedBy} (${booking.requesterEmail || 'faculty@apollo.edu'}). An email notification will be sent to the requester upon confirmation.`;
+    document.getElementById('decideVenueNotes').value = decision === 'approved'
+        ? 'Approved. Please coordinate with facilities staff for setup.'
+        : 'Denied due to slot conflict or maintenance scheduling.';
+    openModal('decideVenueModal');
+}
+
+async function handleSaveVenueDecision(e) {
+    e.preventDefault();
+    const id = document.getElementById('decideVenueId').value;
+    const status = document.getElementById('decideVenueStatus').value;
+    const decisionNotes = document.getElementById('decideVenueNotes').value.trim();
+
+    try {
+        const res = await fetch(`/api/bookings/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status, decisionNotes, decidedBy: `${currentUser.fullName} (${currentRole})` })
+        });
+        const data = await res.json();
+        const b = venueBookings.find(x => x.id === id);
+        if (b) {
+            b.status = status;
+            b.decisionNotes = decisionNotes;
+        }
+    } catch(err) {
+        const b = venueBookings.find(x => x.id === id);
+        if (b) b.status = status;
+    }
+
+    renderVenueTable();
+    updateDashboardWidgets();
+    loadNotifications();
+    closeModal('decideVenueModal');
+    showToast(`Decision recorded & notification email sent to requester!`, '✉️');
+}
+
+// ================= 3. TRANSPORT REQUISITION & EMAIL DISPATCH =================
+async function submitTransportRequest(e) {
+    e.preventDefault();
+    const guest = document.getElementById('transGuest').value;
+    const vCount = document.getElementById('transVehicleCount').value;
+    const vType = document.getElementById('transVehicleType').value;
+    const date = document.getElementById('transDate').value;
+    const time = document.getElementById('transTime').value;
+    const dest = document.getElementById('transDestination').value;
+    const purp = document.getElementById('transPurpose').value;
+    const reqEmail = document.getElementById('transRequesterEmail').value.trim() || currentUser.email;
+
+    const newReq = {
+        id: 'TR-' + Math.floor(1000 + Math.random() * 9000),
+        guest: guest,
+        vehicle: `${vCount}x ${vType}`,
+        vehicleCount: parseInt(vCount) || 1,
+        vehicleType: vType,
+        dateTime: `${date} at ${time}`,
+        destination: dest,
+        purpose: purp,
+        requestedBy: `${currentUser.fullName} (${currentRole})`,
+        requesterEmail: reqEmail,
+        status: 'pending'
+    };
+
+    try {
+        const res = await fetch('/api/transport', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newReq)
+        });
+        const data = await res.json();
+        if (data.success && data.transport) transportRequests.unshift(data.transport);
+        else transportRequests.unshift(newReq);
+    } catch (err) {
+        transportRequests.unshift(newReq);
+    }
+
+    renderTransportTable();
+    updateDashboardWidgets();
+    loadNotifications();
+    e.target.reset();
+    showToast(`Transport #${newReq.id} submitted! Email dispatched to Transport Officer with direct approval link.`, '✉️');
+}
+
+function renderTransportTable() {
+    const tbody = document.getElementById('transportTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const perm = ROLE_PERMISSIONS[currentRole] || ROLE_PERMISSIONS["Administrator"];
+    const pendingCount = transportRequests.filter(r => r.status === 'pending').length;
+    const badge = document.getElementById('transportPendingBadge');
+    if (badge) {
+        badge.style.display = (currentRole === "Transport Officer" && pendingCount > 0) ? 'inline-block' : 'none';
+        badge.innerText = pendingCount;
+    }
+
+    if (transportRequests.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-state-text">No transport requests recorded yet.</div></div></td></tr>`;
+        return;
+    }
+
+    transportRequests.forEach(req => {
+        const row = document.createElement('tr');
+        if (targetHighlightReqId && req.id === targetHighlightReqId) {
+            row.classList.add('highlight-row');
+        }
+
+        let actionHTML = '';
+        if (perm.canApproveTransport) {
+            if (req.status === 'pending') {
+                actionHTML = `
+                    <button type="button" class="btn-action-small btn-approve" onclick="openDecideTransportModal('${req.id}', 'approved')">Approve</button>
+                    <button type="button" class="btn-action-small btn-reject" onclick="openDecideTransportModal('${req.id}', 'rejected')">Deny</button>
+                `;
+            } else {
+                actionHTML = `<span style="font-size:11px; color:var(--text-muted); font-weight:bold;">${req.status.toUpperCase()}</span>`;
+            }
+        } else {
+            actionHTML = `<span style="font-size:11px; color:var(--text-muted); font-style:italic;">Transport Officer Only</span>`;
+        }
+
+        row.innerHTML = `
+            <td><strong>#${req.id}</strong></td>
+            <td style="text-align:left; font-weight:bold;">${req.guest}</td>
+            <td>${req.vehicle}</td>
+            <td><span style="font-weight:600;">${req.dateTime}</span></td>
+            <td style="text-align:left; color:var(--primary-dark);">${req.destination}</td>
+            <td><span style="font-size:11.5px; color:var(--primary);">${req.requesterEmail || 'requester@apollo.edu'}</span></td>
+            <td><span class="status-pill ${req.status}">● ${req.status.toUpperCase()}</span></td>
+            <td>${actionHTML}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function openDecideTransportModal(id, decision) {
+    const req = transportRequests.find(r => r.id === id);
+    if (!req) return;
+    document.getElementById('decideTransportId').value = id;
+    document.getElementById('decideTransportStatus').value = decision;
+    toggleDriverDetailsField(decision);
+    document.getElementById('decideTransportSubtext').innerText = `Requisition #${id} for ${req.guest} to ${req.destination}. When confirmed, an email notification with vehicle/driver information will be sent to ${req.requesterEmail || 'the requester'}.`;
+    document.getElementById('decideTransportNotes').value = decision === 'approved'
+        ? 'Official vehicle scheduled as requested.'
+        : 'Vehicle not available for the requested time slot.';
+    openModal('decideTransportModal');
+}
+
+function toggleDriverDetailsField(status) {
+    const group = document.getElementById('driverDetailsGroup');
+    if (group) group.style.display = status === 'approved' ? 'block' : 'none';
+}
+
+async function handleSaveTransportDecision(e) {
+    e.preventDefault();
+    const id = document.getElementById('decideTransportId').value;
+    const status = document.getElementById('decideTransportStatus').value;
+    const driverDetails = document.getElementById('decideTransportDriver').value.trim();
+    const decisionNotes = document.getElementById('decideTransportNotes').value.trim();
+
+    try {
+        const res = await fetch(`/api/transport/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                status,
+                driverDetails,
+                decisionNotes,
+                decidedBy: `${currentUser.fullName} (${currentRole})`
+            })
+        });
+        const t = transportRequests.find(r => r.id === id);
+        if (t) {
+            t.status = status;
+            t.driverDetails = driverDetails;
+            t.decisionNotes = decisionNotes;
+        }
+    } catch(err) {
+        const t = transportRequests.find(r => r.id === id);
+        if (t) t.status = status;
+    }
+
+    renderTransportTable();
+    updateDashboardWidgets();
+    loadNotifications();
+    closeModal('decideTransportModal');
+    showToast(`Decision recorded & notification email sent to requester!`, '✉️');
+}
+
+function highlightTransportRow(reqId) {
+    document.querySelectorAll('#transportTableBody tr').forEach(tr => {
+        tr.classList.remove('highlight-row');
+        if (tr.innerText.includes(`#${reqId}`)) {
+            tr.classList.add('highlight-row');
+            tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+}
+
+// ================= 4. DYNAMIC ELECTRICITY LOCATIONS & LOGGING =================
+function renderElecLocationsPills() {
+    const container = document.getElementById('elecLocationsPillsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    electricityLocations.forEach(loc => {
+        const pill = document.createElement('div');
+        pill.style.cssText = 'background:#F1F5F9; border:1px solid #CBD5E1; padding:4px 10px; border-radius:14px; font-size:12px; display:inline-flex; align-items:center; gap:6px;';
+        pill.innerHTML = `
+            <span>📍 ${loc.name}</span>
+            <span style="font-size:10px; color:#64748B;">(${loc.category || 'General'})</span>
+            <span style="cursor:pointer; color:#EF4444; font-weight:bold;" onclick="deleteElecLocation('${loc.id}', '${loc.name}')" title="Remove this location">×</span>
+        `;
+        container.appendChild(pill);
+    });
+    renderElecEntryTableRows();
+    populateElecVenueFilter();
+}
+
+function renderElecEntryTableRows() {
+    const tbody = document.getElementById('elecEntryTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (electricityLocations.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3"><div class="empty-state"><div class="empty-state-text">No meter locations registered. Add one above!</div></div></td></tr>`;
+        return;
+    }
+
+    electricityLocations.forEach((loc, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td style="text-align:left; font-weight:600;">${loc.name}</td>
+            <td><input type="number" class="elec-reading-input" data-venue="${loc.name}" value="0" min="0" oninput="calculateElecLiveSum()"></td>
+        `;
+        tbody.appendChild(tr);
+    });
+    calculateElecLiveSum();
+}
+
+function calculateElecLiveSum() {
+    const inputs = document.querySelectorAll('#elecEntryTableBody .elec-reading-input');
+    let sum = 0;
+    inputs.forEach(i => { sum += (parseFloat(i.value) || 0); });
+    document.getElementById('elecLiveCalcSum').innerText = sum.toLocaleString();
+}
+
+function populateElecVenueFilter() {
+    const sel = document.getElementById('elecVenueFilter');
+    if (!sel) return;
+    sel.innerHTML = '<option value="All">All Venues</option>';
+    electricityLocations.forEach(loc => {
+        const opt = document.createElement('option');
+        opt.value = loc.name;
+        opt.innerText = loc.name;
+        sel.appendChild(opt);
+    });
+}
+
+async function handleAddNewElecVenue(e) {
+    e.preventDefault();
+    const name = document.getElementById('newElecVenueName').value.trim();
+    const category = document.getElementById('newElecVenueCategory').value;
+
+    if (!name) return;
+
+    try {
+        const res = await fetch('/api/electricity/venues', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, category })
+        });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.locations)) {
+            electricityLocations = data.locations;
+        } else {
+            electricityLocations.push({ id: 'el_' + Date.now(), name, category });
+        }
+    } catch(err) {
+        electricityLocations.push({ id: 'el_' + Date.now(), name, category });
+    }
+
+    renderElecLocationsPills();
+    closeModal('addElecVenueModal');
+    e.target.reset();
+    showToast(`Added meter location: ${name}`);
+}
+
+async function deleteElecLocation(id, name) {
+    if (!confirm(`Are you sure you want to remove "${name}" from monitored locations?`)) return;
+    try {
+        await fetch(`/api/electricity/venues/${id}`, { method: 'DELETE' });
+    } catch(e){}
+    electricityLocations = electricityLocations.filter(l => l.id !== id);
+    renderElecLocationsPills();
+    showToast(`Removed location: ${name}`);
+}
+
+async function submitElectricityReading() {
+    const d = document.getElementById('elecEntryDate').value;
+    if (!d) {
+        alert("Please select a date.");
+        return;
+    }
+
+    const inputs = document.querySelectorAll('#elecEntryTableBody .elec-reading-input');
+    const newRecords = [];
+
+    inputs.forEach(input => {
+        const val = parseFloat(input.value) || 0;
+        if (val > 0) {
+            const venueName = input.getAttribute('data-venue');
+            if (venueName) newRecords.push({ date: d, venue: venueName, reading: val });
+        }
+    });
+
+    if (newRecords.length === 0) {
+        alert("Please enter at least one location reading greater than 0.");
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/electricity', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newRecords)
+        });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.allElec)) {
+            electricityReadingsList = data.allElec;
+        } else {
+            newRecords.forEach(r => upsertLocalElec(r));
+        }
+    } catch (e) {
+        newRecords.forEach(r => upsertLocalElec(r));
+    }
+
+    renderElecHistoryTable(electricityReadingsList);
+    updateDashboardWidgets();
+    updateCharts();
+    showToast(`${newRecords.length} electricity reading(s) saved for ${d}`);
+}
+
+function upsertLocalElec(record) {
+    const idx = electricityReadingsList.findIndex(e => e.date === record.date && e.venue === record.venue);
+    if (idx !== -1) electricityReadingsList[idx] = record;
+    else electricityReadingsList.unshift(record);
+}
+
+function renderElecHistoryTable(data) {
+    const tbody = document.getElementById('elecHistoryTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="empty-state-text">No electricity readings recorded yet.</div></div></td></tr>`;
+        return;
+    }
+
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="font-weight:600;">${row.date}</td>
+            <td style="text-align:left; font-weight:600;">${row.venue}</td>
+            <td style="font-weight:bold; color:var(--accent-orange);">${row.reading.toLocaleString()} kWh</td>
+            <td>
+                <button type="button" class="btn-action-small btn-secondary" onclick="editElectricityReading('${row.id || ''}', '${row.date}', '${row.venue}', ${row.reading})">✏️ Edit</button>
+                <button type="button" class="btn-action-small btn-reject" onclick="deleteElectricityReading('${row.id || ''}', '${row.date}', '${row.venue}')">🗑️</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+async function editElectricityReading(id, date, venue, oldVal) {
+    const newVal = prompt(`Edit reading for ${venue} on ${date} (kWh):`, oldVal);
+    if (newVal === null) return;
+    const num = parseFloat(newVal);
+    if (isNaN(num)) { alert("Please enter a valid number"); return; }
+
+    const entry = electricityReadingsList.find(e => (id && e.id === id) || (e.date === date && e.venue === venue));
+    if (entry) entry.reading = num;
+
+    try {
+        if (id) {
+            await fetch(`/api/electricity/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reading: num })
+            });
+        } else {
+            await fetch('/api/electricity', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify([{ date, venue, reading: num }])
+            });
+        }
+    } catch(e){}
+
+    renderElecHistoryTable(electricityReadingsList);
+    updateDashboardWidgets();
+    showToast(`Updated reading for ${venue}: ${num} kWh`);
+}
+
+async function deleteElectricityReading(id, date, venue) {
+    if (!confirm(`Delete electricity entry for "${venue}" on ${date}?`)) return;
+    try {
+        if (id) await fetch(`/api/electricity/${id}`, { method: 'DELETE' });
+    } catch(e){}
+    electricityReadingsList = electricityReadingsList.filter(e => (id && e.id !== id) || (e.date !== date || e.venue !== venue));
+    renderElecHistoryTable(electricityReadingsList);
+    updateDashboardWidgets();
+    showToast(`Deleted reading for ${venue}`);
+}
+
+function changeElecFilter() {
+    const type = document.getElementById("elecFilterType").value;
+    const container = document.getElementById("elecDynamicFilter");
+    if (type === "date") {
+        container.innerHTML = `<div class="form-group"><label>Select Date</label><input type="date" id="elecFilterSpecificDate"></div>`;
+    } else if (type === "month") {
+        container.innerHTML = `<div class="form-group"><label>Select Month</label><input type="month" id="elecFilterSpecificMonth"></div>`;
+    } else if (type === "daterange") {
+        container.innerHTML = `
+            <div class="form-group"><label>From Date</label><input type="date" id="elecFilterDateFrom"></div>
+            <div class="form-group"><label>To Date</label><input type="date" id="elecFilterDateTo"></div>
+        `;
+    } else {
+        container.innerHTML = "";
+    }
+}
+
+function applyElecFilter() {
+    const filterType = document.getElementById('elecFilterType').value;
+    const venue = document.getElementById('elecVenueFilter').value;
+    const sort = document.getElementById('elecSortOrder').value;
+
+    let filtered = [...electricityReadingsList];
+    if (filterType === 'date') {
+        const val = document.getElementById('elecFilterSpecificDate')?.value;
+        if (val) filtered = filtered.filter(r => r.date === val);
+    } else if (filterType === 'month') {
+        const val = document.getElementById('elecFilterSpecificMonth')?.value;
+        if (val) filtered = filtered.filter(r => r.date.startsWith(val));
+    } else if (filterType === 'daterange') {
+        const from = document.getElementById('elecFilterDateFrom')?.value;
+        const to = document.getElementById('elecFilterDateTo')?.value;
+        if (from) filtered = filtered.filter(r => r.date >= from);
+        if (to) filtered = filtered.filter(r => r.date <= to);
+    }
+
+    if (venue !== "All") {
+        filtered = filtered.filter(r => r.venue.toLowerCase().includes(venue.toLowerCase()));
+    }
+
+    if (sort === 'oldest') filtered.sort((a,b) => a.date.localeCompare(b.date));
+    else if (sort === 'newest') filtered.sort((a,b) => b.date.localeCompare(a.date));
+    else if (sort === 'highest') filtered.sort((a,b) => b.reading - a.reading);
+    else if (sort === 'lowest') filtered.sort((a,b) => a.reading - b.reading);
+
+    renderElecHistoryTable(filtered);
+    showToast(`Filter applied: ${filtered.length} record(s) found.`);
+}
+
+function resetElecFilter() {
+    document.getElementById('elecFilterType').value = "";
+    document.getElementById('elecVenueFilter').value = "All";
+    document.getElementById('elecSortOrder').value = "newest";
+    document.getElementById('elecDynamicFilter').innerHTML = "";
+    renderElecHistoryTable(electricityReadingsList);
+}
+
+// ================= 5. WATER READINGS (EDITABLE) =================
 async function submitWaterReading() {
     const d = document.getElementById('waterEntryDate').value;
     const w1 = parseFloat(document.getElementById('waterEntryWpl1').value) || 0;
@@ -1863,7 +2946,7 @@ function renderWaterHistoryTable(data) {
     tbody.innerHTML = '';
 
     if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="empty-state-text">No water readings recorded yet.</div></div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-state-text">No water readings recorded yet.</div></div></td></tr>`;
         return;
     }
 
@@ -1874,9 +2957,50 @@ function renderWaterHistoryTable(data) {
             <td><span class="plant-tag wpl1">${row.wpl1} KL</span></td>
             <td><span class="plant-tag wpl2">${row.wpl2} KL</span></td>
             <td style="font-weight:bold; color:var(--primary-dark);">${row.total} KL</td>
+            <td>
+                <button type="button" class="btn-action-small btn-secondary" onclick="editWaterReading('${row.date}', ${row.wpl1}, ${row.wpl2})">✏️ Edit</button>
+                <button type="button" class="btn-action-small btn-reject" onclick="deleteWaterReading('${row.date}')">🗑️</button>
+            </td>
         `;
         tbody.appendChild(tr);
     });
+}
+
+async function editWaterReading(date, oldW1, oldW2) {
+    const newW1 = prompt(`Edit WPL-1 Flow (KL) for ${date}:`, oldW1);
+    if (newW1 === null) return;
+    const newW2 = prompt(`Edit WPL-2 Approx (KL) for ${date}:`, oldW2);
+    if (newW2 === null) return;
+
+    const w1 = parseFloat(newW1) || 0;
+    const w2 = parseFloat(newW2) || 0;
+    const total = w1 + w2;
+
+    const rec = { date, wpl1: w1, wpl2: w2, total };
+    upsertLocalWater(rec);
+
+    try {
+        await fetch('/api/water', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(rec)
+        });
+    } catch(e){}
+
+    renderWaterHistoryTable(waterReadingsList);
+    updateDashboardWidgets();
+    showToast(`Updated water reading for ${date}: ${total} KL`);
+}
+
+async function deleteWaterReading(date) {
+    if (!confirm(`Delete water reading for ${date}?`)) return;
+    try {
+        await fetch(`/api/water/${date}`, { method: 'DELETE' });
+    } catch(e){}
+    waterReadingsList = waterReadingsList.filter(w => w.date !== date);
+    renderWaterHistoryTable(waterReadingsList);
+    updateDashboardWidgets();
+    showToast(`Deleted reading for ${date}`);
 }
 
 function changeWaterFilter() {
@@ -1935,634 +3059,54 @@ function resetWaterFilter() {
     renderWaterHistoryTable(waterReadingsList);
 }
 
-// ================= UTILITIES: ELECTRICITY MODULE =================
-async function submitElectricityReading() {
-    const d = document.getElementById('elecEntryDate').value;
-    if (!d) {
-        alert("Please select a date.");
-        return;
-    }
-
-    const inputs = document.querySelectorAll('#electricityView .elec-reading-input');
-    const newRecords = [];
-
-    inputs.forEach(input => {
-        const val = parseFloat(input.value) || 0;
-        if (val > 0) {
-            const row = input.closest('tr');
-            const venueName = row ? row.children[1].innerText.trim() : '';
-            if (venueName) newRecords.push({ date: d, venue: venueName, reading: val });
-        }
-    });
-
-    if (newRecords.length === 0) {
-        alert("Please enter at least one venue reading greater than 0.");
-        return;
-    }
-
+// ================= 6. NOTIFICATION & EMAIL CENTER =================
+async function loadNotifications() {
     try {
-        const res = await fetch('/api/electricity', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newRecords)
-        });
+        const res = await fetch('/api/notifications');
         const data = await res.json();
-        if (data.success && Array.isArray(data.allElec)) {
-            electricityReadingsList = data.allElec;
-        } else {
-            newRecords.forEach(r => upsertLocalElec(r));
+        if (data.success && Array.isArray(data.notifications)) {
+            notificationsList = data.notifications;
+            renderNotifications();
         }
-    } catch (e) {
-        newRecords.forEach(r => upsertLocalElec(r));
-    }
-
-    renderElecHistoryTable(electricityReadingsList);
-    updateDashboardWidgets();
-    updateCharts();
-    showToast(`${newRecords.length} electricity reading(s) saved for ${d}`);
-}
-
-function upsertLocalElec(record) {
-    const idx = electricityReadingsList.findIndex(e => e.date === record.date && e.venue === record.venue);
-    if (idx !== -1) electricityReadingsList[idx] = record;
-    else electricityReadingsList.unshift(record);
-}
-
-function renderElecHistoryTable(data) {
-    const tbody = document.getElementById('elecHistoryTableBody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3"><div class="empty-state"><div class="empty-state-text">No electricity readings recorded yet.</div></div></td></tr>`;
-        return;
-    }
-
-    data.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td style="font-weight:600;">${row.date}</td>
-            <td style="text-align:left; font-weight:600;">${row.venue}</td>
-            <td style="font-weight:bold; color:var(--accent-orange);">${row.reading.toLocaleString()} kWh</td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-function changeElecFilter() {
-    const type = document.getElementById("elecFilterType").value;
-    const container = document.getElementById("elecDynamicFilter");
-    if (type === "date") {
-        container.innerHTML = `<div class="form-group"><label>Select Date</label><input type="date" id="elecFilterSpecificDate"></div>`;
-    } else if (type === "month") {
-        container.innerHTML = `<div class="form-group"><label>Select Month</label><input type="month" id="elecFilterSpecificMonth"></div>`;
-    } else if (type === "daterange") {
-        container.innerHTML = `
-            <div class="form-group"><label>From Date</label><input type="date" id="elecFilterDateFrom"></div>
-            <div class="form-group"><label>To Date</label><input type="date" id="elecFilterDateTo"></div>
-        `;
-    } else {
-        container.innerHTML = "";
-    }
-}
-
-function applyElecFilter() {
-    const filterType = document.getElementById('elecFilterType').value;
-    const venue = document.getElementById('elecVenueFilter').value;
-    const sort = document.getElementById('elecSortOrder').value;
-
-    let filtered = [...electricityReadingsList];
-    if (filterType === 'date') {
-        const val = document.getElementById('elecFilterSpecificDate')?.value;
-        if (val) filtered = filtered.filter(r => r.date === val);
-    } else if (filterType === 'month') {
-        const val = document.getElementById('elecFilterSpecificMonth')?.value;
-        if (val) filtered = filtered.filter(r => r.date.startsWith(val));
-    } else if (filterType === 'daterange') {
-        const from = document.getElementById('elecFilterDateFrom')?.value;
-        const to = document.getElementById('elecFilterDateTo')?.value;
-        if (from) filtered = filtered.filter(r => r.date >= from);
-        if (to) filtered = filtered.filter(r => r.date <= to);
-    }
-
-    if (venue !== "All") {
-        filtered = filtered.filter(r => r.venue.toLowerCase().includes(venue.toLowerCase()));
-    }
-
-    if (sort === 'oldest') filtered.sort((a,b) => a.date.localeCompare(b.date));
-    else if (sort === 'newest') filtered.sort((a,b) => b.date.localeCompare(a.date));
-    else if (sort === 'highest') filtered.sort((a,b) => b.reading - a.reading);
-    else if (sort === 'lowest') filtered.sort((a,b) => a.reading - b.reading);
-
-    renderElecHistoryTable(filtered);
-    showToast(`Electricity filter applied: ${filtered.length} record(s) found.`);
-}
-
-function resetElecFilter() {
-    document.getElementById('elecFilterType').value = "";
-    document.getElementById('elecVenueFilter').value = "All";
-    document.getElementById('elecSortOrder').value = "newest";
-    document.getElementById('elecDynamicFilter').innerHTML = "";
-    renderElecHistoryTable(electricityReadingsList);
-}
-
-// ================= RESOURCE AVAILABILITY & STOCK MANAGEMENT =================
-// Non-Teaching Staff & Admin/Unit Head can enter availability
-async function updateInventoryStock() {
-    const wb = parseInt(document.getElementById('waterBottles').value) || 0;
-    const ch = parseInt(document.getElementById('chairs').value) || 0;
-    const ct = parseInt(document.getElementById('centerTables').value) || 0;
-
-    inventoryStock = { waterBottles: wb, chairs: ch, centerTables: ct };
-    document.getElementById('waterBottleDisplay').innerText = wb;
-    document.getElementById('chairDisplay').innerText = ch;
-    document.getElementById('tableDisplay').innerText = ct;
-
-    try {
-        await fetch('/api/stock', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(inventoryStock)
-        });
-        showToast("Stock availability updated successfully in database!");
-    } catch (e) {
-        showToast("Stock availability saved locally.");
-    }
-}
-
-// Faculty, PC, Dean, Admin, Unit Head can requisition/book resources
-async function handleResourceBooking(e) {
-    e.preventDefault();
-    const item = document.getElementById('bookItemSelect').value;
-    const qty = parseInt(document.getElementById('bookItemQty').value) || 0;
-    const date = document.getElementById('bookEventDate').value;
-    const time = document.getElementById('bookEventTime').value;
-
-    let available = 0;
-    if (item === "Water Bottles") available = inventoryStock.waterBottles;
-    else if (item === "Chairs") available = inventoryStock.chairs;
-    else if (item === "Center Tables") available = inventoryStock.centerTables;
-
-    if (qty > available) {
-        alert(`Insufficient stock! Currently available in campus inventory: ${available}`);
-        return;
-    }
-
-    if (item === "Water Bottles") inventoryStock.waterBottles -= qty;
-    else if (item === "Chairs") inventoryStock.chairs -= qty;
-    else if (item === "Center Tables") inventoryStock.centerTables -= qty;
-
-    document.getElementById('waterBottleDisplay').innerText = inventoryStock.waterBottles;
-    document.getElementById('chairDisplay').innerText = inventoryStock.chairs;
-    document.getElementById('tableDisplay').innerText = inventoryStock.centerTables;
-
-    const newOrder = {
-        id: 'RO-' + Math.floor(500 + Math.random() * 500),
-        item: item,
-        qty: qty,
-        requestedBy: `${currentUser.fullName} (${currentRole})`,
-        dateTime: `${date} at ${time}`,
-        claimedBy: null,
-        status: 'pending'
-    };
-
-    try {
-        await fetch('/api/stock/orders', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newOrder)
-        });
-        await fetch('/api/stock', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(inventoryStock)
-        });
     } catch (e) {}
-
-    stockOrders.unshift(newOrder);
-    renderResourceOrdersTable();
-    updateDashboardWidgets();
-    showToast(`Resource requisition #${newOrder.id} submitted!`);
-    e.target.reset();
 }
 
-function renderResourceOrdersTable() {
-    const tbody = document.getElementById('resourceOrdersTableBody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
+function renderNotifications() {
+    const container = document.getElementById('notificationsContainer');
+    if (!container) return;
+    container.innerHTML = '';
 
-    const unclaimedCount = stockOrders.filter(o => o.claimedBy === null).length;
-    const badge = document.getElementById('resourceStaffBadge');
-    if (badge) {
-        badge.style.display = (currentRole === "Non-Teaching Staff" && unclaimedCount > 0) ? 'inline-block' : 'none';
-        badge.innerText = unclaimedCount;
+    const count = notificationsList.length;
+    const headerBadge = document.getElementById('headerNotifBadge');
+    const sidebarBadge = document.getElementById('sidebarNotifBadge');
+    if (headerBadge) {
+        headerBadge.style.display = count > 0 ? 'inline-block' : 'none';
+        headerBadge.innerText = count;
+    }
+    if (sidebarBadge) {
+        sidebarBadge.style.display = count > 0 ? 'inline-block' : 'none';
+        sidebarBadge.innerText = count;
     }
 
-    if (stockOrders.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-state-text">No resource requisitions logged yet.</div></div></td></tr>`;
+    if (count === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-text">No emails or alerts dispatched yet. Submitting requisitions or decisions will record email notices here.</div></div>`;
         return;
     }
 
-    stockOrders.forEach(order => {
-        const row = document.createElement('tr');
-        let statusBadge = `<span class="status-pill ${order.status}">● ${order.status.toUpperCase()}</span>`;
-        let actionHTML = '';
-
-        if (currentRole === "Non-Teaching Staff") {
-            if (order.claimedBy === null) {
-                actionHTML = `<button type="button" class="btn-action-small btn-claim" onclick="claimResourceOrder('${order.id}')">Claim Order</button>`;
-            } else if (order.status === 'claimed') {
-                actionHTML = `<button type="button" class="btn-action-small btn-delivered" onclick="markResourceDelivered('${order.id}')">Mark Delivered</button>`;
-            } else {
-                actionHTML = `<span style="font-size:11px; color:var(--text-muted);">Completed</span>`;
-            }
-        } else {
-            if (order.status === 'delivered') {
-                actionHTML = `
-                    <button type="button" class="btn-action-small btn-approve" onclick="confirmResourceDelivery('${order.id}', 'approved')">Confirm</button>
-                    <button type="button" class="btn-action-small btn-reject" onclick="confirmResourceDelivery('${order.id}', 'rejected')">Issue</button>
-                `;
-            } else {
-                actionHTML = `<span style="font-size:11px; color:var(--text-muted);">${order.status}</span>`;
-            }
-        }
-
-        row.innerHTML = `
-            <td><strong>#${order.id}</strong></td>
-            <td style="text-align:left; font-weight:bold;">${order.qty}x ${order.item}</td>
-            <td>${order.requestedBy}</td>
-            <td>${order.dateTime}</td>
-            <td>${order.claimedBy ? '<strong>' + order.claimedBy + '</strong>' : '<span style="color:var(--text-muted);">Unassigned</span>'}</td>
-            <td>${statusBadge}</td>
-            <td>${actionHTML}</td>
+    notificationsList.forEach(n => {
+        const card = document.createElement('div');
+        card.className = 'mail-card';
+        card.innerHTML = `
+            <div class="mail-card-header">
+                <span class="mail-to"><strong>To:</strong> ${n.to}</span>
+                <span class="mail-date">${new Date(n.sentAt).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', month:'short', day:'numeric' })}</span>
+            </div>
+            <div class="mail-subject">${n.subject}</div>
+            <div class="mail-body">${n.body}</div>
+            ${n.actionLink ? `<div style="margin-top:8px;"><a href="${n.actionLink}" style="font-size:12px; font-weight:bold; color:var(--primary); text-decoration:none;">🔗 Open Decision Link</a></div>` : ''}
         `;
-        tbody.appendChild(row);
+        container.appendChild(card);
     });
-}
-
-async function claimResourceOrder(id) {
-    const order = stockOrders.find(o => o.id === id);
-    if (!order) return;
-    order.claimedBy = "Non-Teaching Staff";
-    order.status = 'claimed';
-    try {
-        await fetch(`/api/stock/orders/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: 'claimed', claimedBy: 'Non-Teaching Staff' })
-        });
-    } catch(e){}
-    renderResourceOrdersTable();
-    showToast(`Order #${id} claimed by Non-Teaching Staff.`);
-}
-
-async function markResourceDelivered(id) {
-    const order = stockOrders.find(o => o.id === id);
-    if (!order) return;
-    order.status = 'delivered';
-    try {
-        await fetch(`/api/stock/orders/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: 'delivered' })
-        });
-    } catch(e){}
-    renderResourceOrdersTable();
-    showToast(`Order #${id} marked as delivered.`);
-}
-
-async function confirmResourceDelivery(id, status) {
-    const order = stockOrders.find(o => o.id === id);
-    if (!order) return;
-    order.status = status;
-    try {
-        await fetch(`/api/stock/orders/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status })
-        });
-    } catch(e){}
-    renderResourceOrdersTable();
-    showToast(`Order #${id} status: ${status.toUpperCase()}`);
-}
-
-// ================= VENUE BOOKING MODULE =================
-function populateVenueDropdown() {
-    const sel = document.getElementById('venueSelect');
-    if (sel) {
-        sel.innerHTML = '';
-        venueOptions.forEach(v => {
-            const opt = document.createElement('option');
-            opt.value = v;
-            opt.innerText = v;
-            sel.appendChild(opt);
-        });
-    }
-
-    const elecFilterSel = document.getElementById('elecVenueFilter');
-    if (elecFilterSel) {
-        elecFilterSel.innerHTML = '<option value="All">All Venues</option>';
-        electricityVenues.forEach(v => {
-            const opt = document.createElement('option');
-            opt.value = v;
-            opt.innerText = v;
-            elecFilterSel.appendChild(opt);
-        });
-    }
-}
-
-async function handleAddNewVenue(e) {
-    e.preventDefault();
-    const newName = document.getElementById('newVenueName').value.trim();
-    if (!newName) return;
-    if (venueOptions.includes(newName)) {
-        alert("Venue already exists!");
-        return;
-    }
-
-    try {
-        const res = await fetch('/api/venues', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: newName })
-        });
-        const data = await res.json();
-        if (data.success && Array.isArray(data.venueOptions)) {
-            venueOptions = data.venueOptions;
-        } else {
-            venueOptions.push(newName);
-        }
-    } catch(err) {
-        venueOptions.push(newName);
-    }
-
-    populateVenueDropdown();
-    showToast(`Venue added to directory: ${newName}`);
-    e.target.reset();
-}
-
-async function handleVenueSubmit(e) {
-    e.preventDefault();
-    const vName = document.getElementById('venueSelect').value;
-    const vDate = document.getElementById('venueDate').value;
-    const fromT = document.getElementById('venueFromTime').value;
-    const toT = document.getElementById('venueToTime').value;
-    const purp = document.getElementById('venuePurpose').value;
-
-    const newBooking = {
-        id: 'VB-' + Math.floor(200 + Math.random() * 800),
-        venue: vName,
-        bookedBy: `${currentUser.fullName} (${currentRole})`,
-        date: vDate,
-        timeDuration: `${fromT} - ${toT}`,
-        purpose: purp,
-        status: 'pending'
-    };
-
-    try {
-        const res = await fetch('/api/bookings', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newBooking)
-        });
-        const data = await res.json();
-        if (data.success && data.booking) {
-            venueBookings.unshift(data.booking);
-        } else {
-            venueBookings.unshift(newBooking);
-        }
-    } catch (e) {
-        venueBookings.unshift(newBooking);
-    }
-
-    renderVenueTable();
-    updateDashboardWidgets();
-    e.target.reset();
-    showToast(`Venue request #${newBooking.id} submitted for review!`);
-}
-
-function renderVenueTable() {
-    const tbody = document.getElementById('venueTableBody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    const perm = ROLE_PERMISSIONS[currentRole] || ROLE_PERMISSIONS["Administrator"];
-
-    if (venueBookings.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-state-text">No venue bookings registered yet.</div></div></td></tr>`;
-        return;
-    }
-
-    venueBookings.forEach(b => {
-        const row = document.createElement('tr');
-        let actionHTML = '';
-        if (perm.canApproveVenue) {
-            if (b.status === 'pending') {
-                actionHTML = `
-                    <button type="button" class="btn-action-small btn-approve" onclick="updateVenueDecision('${b.id}', 'approved')">Approve</button>
-                    <button type="button" class="btn-action-small btn-reject" onclick="updateVenueDecision('${b.id}', 'rejected')">Reject</button>
-                `;
-            } else {
-                actionHTML = `<span style="font-size:11px; color:var(--text-muted); font-weight:bold;">${b.status.toUpperCase()}</span>`;
-            }
-        } else {
-            actionHTML = `<span style="font-size:11px; color:var(--text-muted);">View Only</span>`;
-        }
-
-        row.innerHTML = `
-            <td><strong>#${b.id}</strong></td>
-            <td style="text-align:left; font-weight:bold; color:var(--primary-dark);">${b.venue}</td>
-            <td>${b.bookedBy}</td>
-            <td><span style="font-weight:600;">${b.date}</span></td>
-            <td>${b.timeDuration}</td>
-            <td style="text-align:left;">${b.purpose}</td>
-            <td><span class="status-pill ${b.status}">● ${b.status.toUpperCase()}</span></td>
-            <td>${actionHTML}</td>
-        `;
-        tbody.appendChild(row);
-    });
-}
-
-async function updateVenueDecision(id, decision) {
-    const b = venueBookings.find(x => x.id === id);
-    if (!b) return;
-    b.status = decision;
-    try {
-        await fetch(`/api/bookings/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: decision })
-        });
-    } catch(e){}
-    renderVenueTable();
-    updateDashboardWidgets();
-    showToast(`Venue booking #${id} marked as ${decision.toUpperCase()}`);
-}
-
-// ================= TRANSPORT MODULE & EMAIL NOTIFICATION =================
-// Only Transport Officer can approve or reject. When someone requests, an email is dispatched with direct link!
-async function submitTransportRequest(e) {
-    e.preventDefault();
-    const guest = document.getElementById('transGuest').value;
-    const vCount = document.getElementById('transVehicleCount').value;
-    const vType = document.getElementById('transVehicleType').value;
-    const date = document.getElementById('transDate').value;
-    const time = document.getElementById('transTime').value;
-    const dest = document.getElementById('transDestination').value;
-    const purp = document.getElementById('transPurpose').value;
-
-    const newReq = {
-        id: 'TR-' + Math.floor(1000 + Math.random() * 9000),
-        guest: guest,
-        vehicle: `${vCount}x ${vType}`,
-        vehicleCount: parseInt(vCount) || 1,
-        vehicleType: vType,
-        dateTime: `${date} at ${time}`,
-        destination: dest,
-        purpose: purp,
-        requestedBy: `${currentUser.fullName} (${currentRole})`,
-        status: 'pending'
-    };
-
-    let emailNotification = null;
-
-    try {
-        const res = await fetch('/api/transport', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newReq)
-        });
-        const data = await res.json();
-        if (data.success && data.transport) {
-            transportRequests.unshift(data.transport);
-            emailNotification = data.emailNotification;
-        } else {
-            transportRequests.unshift(newReq);
-        }
-    } catch (e) {
-        transportRequests.unshift(newReq);
-    }
-
-    renderTransportTable();
-    updateDashboardWidgets();
-    e.target.reset();
-
-    // Trigger Email Notification Modal displaying the link to Transport Officer
-    targetHighlightReqId = newReq.id;
-    showTransportEmailModal(newReq, emailNotification);
-}
-
-function showTransportEmailModal(req, emailData) {
-    const to = emailData ? emailData.to : 'transport.officer@apollo-uni.edu';
-    const sub = emailData ? emailData.subject : `Action Required: Transport Requisition #${req.id}`;
-    const body = emailData ? emailData.body : `Dear Transport Officer,\n\nA new transport booking #${req.id} for "${req.guest}" to "${req.destination}" has been submitted by ${req.requestedBy}.\n\nVehicle: ${req.vehicle}\nDate: ${req.dateTime}\n\nPlease click the approval link to review and decide.`;
-
-    document.getElementById('emailModalTo').innerText = to;
-    document.getElementById('emailModalSubject').innerText = sub;
-    document.getElementById('emailModalBody').innerText = body;
-
-    openModal('transportEmailModal');
-}
-
-// Clicking the link opens the website directly in Transport Officer mode with the target request highlighted!
-function openApprovalFromEmail() {
-    closeModal('transportEmailModal');
-
-    // Automatically switch active role to Transport Officer
-    currentRole = "Transport Officer";
-    document.getElementById('roleSelector').value = "Transport Officer";
-    document.getElementById('roleDisplay').innerText = "Transport Officer";
-    document.getElementById('userNameDisplay').innerText = "Transport Officer";
-    localStorage.setItem('apollo_active_role', "Transport Officer");
-
-    applyRolePermissions();
-    switchView('transportReqView');
-
-    if (targetHighlightReqId) {
-        setTimeout(() => {
-            highlightTransportRow(targetHighlightReqId);
-        }, 300);
-    }
-
-    showToast("Opened via Email Link: Transport Officer Mode Active. You can now Approve or Reject.", "🚌");
-}
-
-function highlightTransportRow(reqId) {
-    document.querySelectorAll('#transportTableBody tr').forEach(tr => {
-        tr.classList.remove('highlight-row');
-        if (tr.innerText.includes(`#${reqId}`)) {
-            tr.classList.add('highlight-row');
-            tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    });
-}
-
-function renderTransportTable() {
-    const tbody = document.getElementById('transportTableBody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    const perm = ROLE_PERMISSIONS[currentRole] || ROLE_PERMISSIONS["Administrator"];
-    const pendingCount = transportRequests.filter(r => r.status === 'pending').length;
-    const badge = document.getElementById('transportPendingBadge');
-    if (badge) {
-        badge.style.display = (currentRole === "Transport Officer" && pendingCount > 0) ? 'inline-block' : 'none';
-        badge.innerText = pendingCount;
-    }
-
-    if (transportRequests.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-state-text">No transport requests recorded yet.</div></div></td></tr>`;
-        return;
-    }
-
-    transportRequests.forEach(req => {
-        const row = document.createElement('tr');
-        if (targetHighlightReqId && req.id === targetHighlightReqId) {
-            row.classList.add('highlight-row');
-        }
-
-        let actionHTML = '';
-        // Only Transport Officer (and Administrator) can approve or reject
-        if (perm.canApproveTransport) {
-            if (req.status === 'pending') {
-                actionHTML = `
-                    <button type="button" class="btn-action-small btn-approve" onclick="updateTransportDecision('${req.id}', 'approved')">Approve</button>
-                    <button type="button" class="btn-action-small btn-reject" onclick="updateTransportDecision('${req.id}', 'rejected')">Reject</button>
-                `;
-            } else {
-                actionHTML = `<span style="font-size:11px; color:var(--text-muted); font-weight:bold;">${req.status.toUpperCase()}</span>`;
-            }
-        } else {
-            actionHTML = `<span style="font-size:11px; color:var(--text-muted); font-style:italic;">Transport Officer Only</span>`;
-        }
-
-        row.innerHTML = `
-            <td><strong>#${req.id}</strong></td>
-            <td style="text-align:left; font-weight:bold;">${req.guest}</td>
-            <td>${req.vehicle}</td>
-            <td><span style="font-weight:600;">${req.dateTime}</span></td>
-            <td style="text-align:left; color:var(--primary-dark);">${req.destination}</td>
-            <td><span class="status-pill ${req.status}">● ${req.status.toUpperCase()}</span></td>
-            <td>${actionHTML}</td>
-        `;
-        tbody.appendChild(row);
-    });
-}
-
-async function updateTransportDecision(id, decision) {
-    const req = transportRequests.find(r => r.id === id);
-    if (!req) return;
-    req.status = decision;
-    try {
-        await fetch(`/api/transport/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: decision })
-        });
-    } catch(e){}
-    renderTransportTable();
-    updateDashboardWidgets();
-    showToast(`Transport request #${id} marked as ${decision.toUpperCase()} by Transport Officer.`);
 }
 
 // ================= DASHBOARD SUMMARY DATA =================
@@ -2573,7 +3117,7 @@ function updateDashboardWidgets() {
     const latestElecSum = electricityReadingsList.slice(0, 5).reduce((acc, r) => acc + (r.reading || 0), 0);
     document.getElementById('dashElecTotal').innerText = `${latestElecSum.toLocaleString()} kWh`;
 
-    document.getElementById('dashStockCount').innerText = `${stockOrders.length} Orders`;
+    document.getElementById('dashStockCount').innerText = `${stockItems.length} Items`;
     document.getElementById('dashVenueCount').innerText = `${venueBookings.length} Booked`;
     document.getElementById('dashTransportCount').innerText = `${transportRequests.length} Logged`;
 
@@ -2583,7 +3127,6 @@ function updateDashboardWidgets() {
     const pendingTrans = transportRequests.filter(t => t.status === 'pending').length;
     document.getElementById('dashTransportPendingSub').innerText = `${pendingTrans} Awaiting Approval`;
 
-    // Dashboard preview tables
     const wTb = document.getElementById('dashWaterTableBody');
     if (wTb) {
         wTb.innerHTML = '';
@@ -2624,7 +3167,7 @@ function changeReportType() {
         </div>`;
     } else if (report === "electricity") {
         let opts = '<option value="All">All Venues</option>';
-        electricityVenues.forEach(v => { opts += `<option value="${v}">${v}</option>`; });
+        electricityLocations.forEach(v => { opts += `<option value="${v.name}">${v.name}</option>`; });
         area.innerHTML = `
         <div class="form-group">
             <label>Venue</label>
@@ -2763,10 +3306,10 @@ function initCharts() {
     elecChartInstance = new Chart(ctxElec, {
         type: 'doughnut',
         data: {
-            labels: ['College Block', 'Medical College', 'Girls Hostel', 'Boys Hostel', 'Others'],
+            labels: ['Academic', 'Residential', 'Utilities'],
             datasets: [{
-                data: [25015, 4672, 19565, 27701, 10000],
-                backgroundColor: ['#0F766E', '#0284C7', '#EC4899', '#3B82F6', '#10B981']
+                data: [45, 35, 20],
+                backgroundColor: ['#0F766E', '#0284C7', '#10B981']
             }]
         },
         options: { responsive: true, maintainAspectRatio: false }
@@ -2803,7 +3346,6 @@ function updateCharts() {
 // ================= BOOTSTRAP APPLICATION =================
 window.onload = function() {
     initCharts();
-    populateVenueDropdown();
     initUserSession();
     loadServerData();
 };

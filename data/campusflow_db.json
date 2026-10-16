@@ -4,226 +4,278 @@
       "id": "usr_admin",
       "fullName": "System Administrator",
       "email": "admin@apollo.edu",
-      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.0T4jqtpazJsvBG2m3XpwbaBaX.EXZ5O",
+      "password": "$2a$10$e7QJkM5qXw9Y4pXh2l0s8eR3wQ9p8yG5j8j4yK1a4e1j4wQ9p8yG5",
       "role": "Administrator"
     },
     {
       "id": "usr_unithead",
       "fullName": "Prof. Ramesh Rao (Unit Head)",
       "email": "unithead@apollo.edu",
-      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.P4H2JNIT8kI6A/APfEFyyfKEIRDdn.y",
+      "password": "$2a$10$e7QJkM5qXw9Y4pXh2l0s8eR3wQ9p8yG5j8j4yK1a4e1j4wQ9p8yG5",
       "role": "Unit Head"
     },
     {
       "id": "usr_transport",
       "fullName": "Mr. Venkat Reddy (Transport Officer)",
       "email": "transport@apollo.edu",
-      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.NcLAv2EJJ18Me3K6HGHl.B1y9b0GcQK",
+      "password": "$2a$10$e7QJkM5qXw9Y4pXh2l0s8eR3wQ9p8yG5j8j4yK1a4e1j4wQ9p8yG5",
       "role": "Transport Officer"
     },
     {
       "id": "usr_faculty",
       "fullName": "Dr. Anita Desai (Faculty)",
       "email": "faculty@apollo.edu",
-      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.c9Z341LJlXOeDLhEM9yuOt0t0ne7e8K",
+      "password": "$2a$10$e7QJkM5qXw9Y4pXh2l0s8eR3wQ9p8yG5j8j4yK1a4e1j4wQ9p8yG5",
       "role": "Teaching Faculty"
     },
     {
       "id": "usr_pc",
       "fullName": "Dr. Suresh Kumar (Program Coordinator)",
       "email": "pc@apollo.edu",
-      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.47wngPvm8AcI0nxogN0gjq4mXxzSAla",
+      "password": "$2a$10$e7QJkM5qXw9Y4pXh2l0s8eR3wQ9p8yG5j8j4yK1a4e1j4wQ9p8yG5",
       "role": "Program Coordinator"
     },
     {
       "id": "usr_dean",
       "fullName": "Dr. Meenakshi Sundaram (Dean)",
       "email": "dean@apollo.edu",
-      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.B4iVFeSl1uZ98usfOet2aib/mdWp3ga",
+      "password": "$2a$10$e7QJkM5qXw9Y4pXh2l0s8eR3wQ9p8yG5j8j4yK1a4e1j4wQ9p8yG5",
       "role": "Dean"
     },
     {
       "id": "usr_staff",
       "fullName": "Sri Krishna Murthy (Staff)",
       "email": "staff@apollo.edu",
-      "password": "$2b$10$6ecnAbj5p6o0Y6Sjjuk1B.HB9tdLR4jmSpBbZMErcUcMGyE8jYCL2",
+      "password": "$2a$10$e7QJkM5qXw9Y4pXh2l0s8eR3wQ9p8yG5j8j4yK1a4e1j4wQ9p8yG5",
       "role": "Non-Teaching Staff"
     }
   ],
-  "stock": {
-    "waterBottles": 50,
-    "chairs": 200,
-    "centerTables": 15
-  },
+  "stockItems": [
+    {
+      "id": "res_1",
+      "name": "Water Bottles",
+      "quantity": 50,
+      "unit": "Crates",
+      "category": "Beverages"
+    },
+    {
+      "id": "res_2",
+      "name": "Chairs",
+      "quantity": 200,
+      "unit": "Units",
+      "category": "Furniture"
+    },
+    {
+      "id": "res_3",
+      "name": "Center Tables",
+      "quantity": 15,
+      "unit": "Units",
+      "category": "Furniture"
+    },
+    {
+      "id": "res_1792128616438",
+      "name": "Sony 4K Laser Projector",
+      "quantity": 8,
+      "unit": "Units",
+      "category": "Audio-Visual"
+    }
+  ],
   "venues": [
     {
-      "id": "v1",
-      "name": "Main Auditorium"
+      "id": "v_1",
+      "name": "Main Auditorium",
+      "capacity": 800,
+      "location": "Campus Ground Floor"
     },
     {
-      "id": "v2",
-      "name": "Dr. PCR Knowledge Center Seminar Hall"
+      "id": "v_2",
+      "name": "Dr. PCR Knowledge Center Seminar Hall",
+      "capacity": 250,
+      "location": "TAU Block 2nd Floor"
     },
     {
-      "id": "v3",
-      "name": "Lecture Hall 101"
+      "id": "v_3",
+      "name": "Lecture Hall 101",
+      "capacity": 120,
+      "location": "Medical Block"
     },
     {
-      "id": "v4",
-      "name": "Conference Hall (TAU Block)"
+      "id": "v_4",
+      "name": "Conference Hall (TAU Block)",
+      "capacity": 60,
+      "location": "TAU Block 1st Floor"
+    },
+    {
+      "id": "v_1792128616381",
+      "name": "Central AI Research Complex",
+      "capacity": 300,
+      "location": "Technology Wing"
     }
   ],
-  "stockOrders": [
+  "electricityLocations": [
     {
-      "id": "RO-101",
-      "item": "Water Bottles",
-      "qty": 15,
-      "requestedBy": "Dr. Anita Desai (Teaching Faculty)",
-      "dateTime": "2026-10-18 at 10:00",
-      "claimedBy": "Non-Teaching Staff",
-      "status": "delivered"
+      "id": "el_1",
+      "name": "College Block - Medical College",
+      "category": "Academic"
     },
     {
-      "id": "RO-102",
-      "item": "Chairs",
-      "qty": 40,
-      "requestedBy": "Dr. Suresh Kumar (Program Coordinator)",
-      "dateTime": "2026-10-19 at 14:00",
-      "claimedBy": null,
-      "status": "pending"
+      "id": "el_2",
+      "name": "College Block - ACON",
+      "category": "Academic"
+    },
+    {
+      "id": "el_3",
+      "name": "College Block - ACOP",
+      "category": "Academic"
+    },
+    {
+      "id": "el_4",
+      "name": "College Block - TAU, ATC, Telecom, Cafeteria, Ooty House, Axis Bank",
+      "category": "Academic"
+    },
+    {
+      "id": "el_5",
+      "name": "Dr. PCR Knowledge Center (TAU Block)",
+      "category": "Academic"
+    },
+    {
+      "id": "el_6",
+      "name": "Girls Hostel",
+      "category": "Residential"
+    },
+    {
+      "id": "el_7",
+      "name": "Boys Hostel",
+      "category": "Residential"
+    },
+    {
+      "id": "el_8",
+      "name": "Resident Hostel",
+      "category": "Residential"
+    },
+    {
+      "id": "el_9",
+      "name": "Deluxe Girls Hostel",
+      "category": "Residential"
+    },
+    {
+      "id": "el_10",
+      "name": "Deluxe Boys Hostel",
+      "category": "Residential"
+    },
+    {
+      "id": "el_11",
+      "name": "Teaching Quarters",
+      "category": "Residential"
+    },
+    {
+      "id": "el_12",
+      "name": "Non-Teaching Quarters",
+      "category": "Residential"
+    },
+    {
+      "id": "el_13",
+      "name": "Kitchen Block",
+      "category": "Utilities"
+    },
+    {
+      "id": "el_14",
+      "name": "Guest House",
+      "category": "Utilities"
+    },
+    {
+      "id": "el_15",
+      "name": "Maintenance Block (STP, WTP, Fire Pumps)",
+      "category": "Utilities"
+    },
+    {
+      "id": "el_16",
+      "name": "Street Lights, Security Gate, Temple, Borewells",
+      "category": "Utilities"
+    },
+    {
+      "id": "el_17",
+      "name": "Others (Vendors, DBS, ICCO, Hari Narayana)",
+      "category": "Utilities"
     }
   ],
+  "stockOrders": [],
   "venueBookings": [
     {
-      "id": "VB-201",
-      "venue": "Main Auditorium",
-      "bookedBy": "Dr. Suresh Kumar (Program Coordinator)",
-      "date": "2026-10-20",
-      "timeDuration": "09:30 - 13:00",
-      "purpose": "Annual IEEE Technical Symposium",
-      "status": "approved"
-    },
-    {
-      "id": "VB-202",
-      "venue": "Conference Hall (TAU Block)",
-      "bookedBy": "Dr. Anita Desai (Teaching Faculty)",
-      "date": "2026-10-22",
-      "timeDuration": "14:00 - 16:30",
-      "purpose": "Department Board of Studies Meeting",
-      "status": "pending"
+      "venue": "Central AI Research Complex",
+      "bookedBy": "Dr. Anita Desai (Faculty)",
+      "requesterEmail": "faculty@apollo.edu",
+      "date": "2026-10-28",
+      "timeDuration": "10:00 - 13:00",
+      "purpose": "AI & Data Science Hackathon",
+      "id": "VB-482",
+      "status": "approved",
+      "decisionNotes": "Approved. Key available with reception.",
+      "decidedBy": "Dean of Academics"
     }
   ],
   "transportRequests": [
     {
-      "guest": "Dr. Vikram Chandra",
-      "vehicle": "1x Executive Sedan (Innova/Ciaz)",
-      "dateTime": "2026-10-26 at 11:00",
-      "destination": "Tirupati Railway Station",
-      "purpose": "Guest Lecture",
+      "guest": "Prof. Sundararajan",
+      "vehicle": "1x Executive Sedan",
+      "dateTime": "2026-10-29 at 09:30",
+      "destination": "Chennai Central Station",
+      "purpose": "Guest Faculty Transit",
       "requestedBy": "Dr. Suresh Kumar (Program Coordinator)",
-      "id": "TR-7887",
-      "status": "approved"
-    },
-    {
-      "id": "TR-1001",
-      "guest": "Prof. K. Narayanan (AIIMS New Delhi)",
-      "vehicle": "1x Executive Sedan (Innova/Ciaz)",
-      "vehicleCount": 1,
-      "vehicleType": "Executive Sedan (Innova/Ciaz)",
-      "dateTime": "2026-10-21 at 08:30",
-      "destination": "Tirupati Airport (TIR) to Campus Guest House",
-      "purpose": "Keynote Speaker for National Medical Conclave",
-      "requestedBy": "Dr. Meenakshi Sundaram (Dean)",
-      "status": "pending"
-    },
-    {
-      "id": "TR-1002",
-      "guest": "Accreditation Inspection Committee (4 Members)",
-      "vehicle": "1x SUV (Scorpio/Fortuner)",
-      "vehicleCount": 1,
-      "vehicleType": "SUV (Scorpio/Fortuner)",
-      "dateTime": "2026-10-25 at 09:00",
-      "destination": "Renigunta Railway Station to Campus Block A",
-      "purpose": "Official Inspection Visit",
-      "requestedBy": "Dr. Suresh Kumar (Program Coordinator)",
-      "status": "approved"
+      "requesterEmail": "pc@apollo.edu",
+      "id": "TR-8255",
+      "status": "rejected",
+      "decisionNotes": "Sedan unavailable due to convoy duties. Please book minivan.",
+      "driverDetails": "",
+      "decidedBy": "Transport Officer"
     }
   ],
-  "waterReadings": [
+  "waterReadings": [],
+  "electricityReadings": [],
+  "notifications": [
     {
-      "date": "2026-10-15",
-      "wpl1": 420,
-      "wpl2": 30,
-      "total": 450
+      "type": "transport_decision",
+      "to": "pc@apollo.edu",
+      "subject": "❌ DENIED: Transport Requisition #TR-8255",
+      "body": "Dear Dr. Suresh Kumar (Program Coordinator),\n\nYour vehicle requisition for \"Prof. Sundararajan\" has been REJECTED by the Transport Officer.\n\nRequisition Summary:\n- Request ID: #TR-8255\n- Guest/Delegation: Prof. Sundararajan\n- Destination: Chennai Central Station\n- Date & Time: 2026-10-29 at 09:30\n- Assigned Vehicle: 1x Executive Sedan\n- Officer Notes: Sedan unavailable due to convoy duties. Please book minivan.\n\nView live status on the CampusFlow portal:\nhttp://localhost:3000/index.html?view=transportReqView",
+      "actionLink": "http://localhost:3000/index.html?view=transportReqView",
+      "relatedId": "TR-8255",
+      "id": "EML-1792128616568-410",
+      "sentAt": "2026-10-16T05:30:16.568Z",
+      "from": "campusflow-notifications@apollo-uni.edu"
     },
     {
-      "date": "2026-10-14",
-      "wpl1": 410,
-      "wpl2": 28,
-      "total": 438
-    },
-    {
-      "date": "2026-10-13",
-      "wpl1": 435,
-      "wpl2": 32,
-      "total": 467
-    },
-    {
-      "date": "2026-10-12",
-      "wpl1": 395,
-      "wpl2": 25,
-      "total": 420
-    },
-    {
-      "date": "2026-10-11",
-      "wpl1": 415,
-      "wpl2": 29,
-      "total": 444
-    }
-  ],
-  "electricityReadings": [
-    {
-      "date": "2026-10-15",
-      "venue": "College Block - Medical College",
-      "reading": 25015
-    },
-    {
-      "date": "2026-10-15",
-      "venue": "College Block - ACON",
-      "reading": 4672
-    },
-    {
-      "date": "2026-10-15",
-      "venue": "Girls Hostel",
-      "reading": 19565
-    },
-    {
-      "date": "2026-10-15",
-      "venue": "Boys Hostel",
-      "reading": 27701
-    },
-    {
-      "date": "2026-10-15",
-      "venue": "Dr. PCR Knowledge Center (TAU Block)",
-      "reading": 12450
-    },
-    {
-      "date": "2026-10-15",
-      "venue": "Street Lights, Security Gate, Temple, Borewells",
-      "reading": 8320
-    }
-  ],
-  "transportEmails": [
-    {
-      "id": "EML-1792127821461",
-      "transportId": "TR-7887",
+      "type": "transport_request",
       "to": "transport.officer@apollo-uni.edu",
-      "from": "campusflow-notifications@apollo-uni.edu",
-      "subject": "Action Required: Transport Request #TR-7887 for Dr. Vikram Chandra",
-      "body": "Dear Transport Officer,\n\nA new university vehicle requisition has been submitted:\n- Request ID: #TR-7887\n- Guest/Delegation: Dr. Vikram Chandra\n- Vehicle Details: 1x Executive Sedan (Innova/Ciaz)\n- Date & Time: 2026-10-26 at 11:00\n- Destination: Tirupati Railway Station\n- Requested By: Dr. Suresh Kumar (Program Coordinator)\n- Purpose: Guest Lecture\n\nClick the link below to review, approve or reject this booking directly on the CampusFlow portal:\nhttp://localhost:3000/index.html?view=transportReqView&reqId=TR-7887&role=Transport+Officer",
-      "approvalLink": "http://localhost:3000/index.html?view=transportReqView&reqId=TR-7887&role=Transport+Officer",
-      "sentAt": "2026-10-16T05:17:01.461Z",
-      "status": "sent"
+      "subject": "🚌 Action Required: Transport Requisition #TR-8255 for Prof. Sundararajan",
+      "body": "Dear Transport Officer,\n\nA new official vehicle requisition has been submitted:\n- Request ID: #TR-8255\n- Guest/Delegation: Prof. Sundararajan\n- Vehicle Details: 1x Executive Sedan\n- Date & Time: 2026-10-29 at 09:30\n- Destination: Chennai Central Station\n- Requested By: Dr. Suresh Kumar (Program Coordinator) (pc@apollo.edu)\n- Purpose: Guest Faculty Transit\n\nClick the link below to review, approve or reject this booking directly on the CampusFlow portal:\nhttp://localhost:3000/index.html?view=transportReqView&reqId=TR-8255&role=Transport+Officer",
+      "actionLink": "http://localhost:3000/index.html?view=transportReqView&reqId=TR-8255&role=Transport+Officer",
+      "relatedId": "TR-8255",
+      "id": "EML-1792128616530-727",
+      "sentAt": "2026-10-16T05:30:16.530Z",
+      "from": "campusflow-notifications@apollo-uni.edu"
+    },
+    {
+      "type": "venue_decision",
+      "to": "faculty@apollo.edu",
+      "subject": "✅ APPROVED: Venue Reservation #VB-482 (Central AI Research Complex)",
+      "body": "Dear Dr. Anita Desai (Faculty),\n\nYour reservation request for \"Central AI Research Complex\" has been APPROVED by Dean of Academics.\n\nDetails:\n- Booking ID: #VB-482\n- Venue: Central AI Research Complex\n- Date: 2026-10-28\n- Time Duration: 10:00 - 13:00\n- Decision Notes: Approved. Key available with reception.\n\nYou can view the live status on the CampusFlow portal:\nhttp://localhost:3000/index.html?view=venueBookingView",
+      "actionLink": "http://localhost:3000/index.html?view=venueBookingView",
+      "relatedId": "VB-482",
+      "id": "EML-1792128616511-132",
+      "sentAt": "2026-10-16T05:30:16.511Z",
+      "from": "campusflow-notifications@apollo-uni.edu"
+    },
+    {
+      "type": "venue_request",
+      "to": "admin@apollo.edu",
+      "subject": "🏛️ Action Required: Venue Booking #VB-482 for Central AI Research Complex",
+      "body": "Dear Administrator / Unit Head,\n\nA new venue booking requisition has been submitted:\n- Booking ID: #VB-482\n- Venue: Central AI Research Complex\n- Requested By: Dr. Anita Desai (Faculty) (faculty@apollo.edu)\n- Date: 2026-10-28\n- Time Duration: 10:00 - 13:00\n- Purpose: AI & Data Science Hackathon\n\nClick to review and decide:\nhttp://localhost:3000/index.html?view=venueBookingView&bookingId=VB-482",
+      "actionLink": "http://localhost:3000/index.html?view=venueBookingView&bookingId=VB-482",
+      "relatedId": "VB-482",
+      "id": "EML-1792128616454-93",
+      "sentAt": "2026-10-16T05:30:16.454Z",
+      "from": "campusflow-notifications@apollo-uni.edu"
     }
   ]
 }
